@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>그림일기</title>
+<style>
+  /* 글씨체는 푸어스토리(Poor Story, OFL) 하나로 통일 (2026-09-30 닿 확정). 폰트는 fonts/에 번들 — 인터넷 없어도 같게 나온다 */
+  @font-face { font-family: "PoorStory"; src: url("__FONT_DIR__/PoorStory-Regular.ttf"); }
+  :root {
+    --paper: #fffaf0;
+    --ink: #5b4a3d;        /* 검정 대신 톤다운된 갈색 먹 */
+    --accent: #d9826b;
+    --rule: #eadfca;
+    --fs: 42px;           /* 본문 글자 크기 — 글이 길면 스크립트가 줄인다 */
+    --lh: 80px;           /* 본문 한 줄 높이 = 공책 줄 간격 */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  /* 인스타 세로 게시물 1080×1350(4:5) 한 장에 딱 맞춘다 */
+  html, body { width: 1080px; height: 1350px; background: var(--paper); }
+  .page {
+    width: 1080px; height: 1350px; position: relative;
+    padding: 64px 68px 64px;
+    display: flex; flex-direction: column;
+    color: var(--ink);
+    font-family: "PoorStory", sans-serif;
+    font-weight: 400;
+  }
+  .meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 34px; color: #7a6a5b;
+  }
+  .weather { display: flex; gap: 8px; font-size: 32px; letter-spacing: 0; }
+  .weather span { opacity: .28; width: 52px; height: 52px; display: grid; place-items: center; }
+  .weather span.on { opacity: 1; border: 3px solid var(--accent); border-radius: 50%; }
+  .title {
+    font-size: 54px; font-weight: 400; line-height: 1.25; margin: 10px 0 0;
+    padding-bottom: 16px; border-bottom: 3px dashed var(--accent);
+  }
+  /* 사진 한 장을 삐뚤게 놓고 마스킹테이프로 붙인 느낌 */
+  .picture {
+    position: relative; flex: none;
+    width: 860px; margin: 40px auto 0;
+    padding: 14px; background: #fff;
+    transform: rotate(-1.8deg);
+    box-shadow: 0 3px 10px rgba(80, 60, 30, .18);
+  }
+  .picture img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; display: block; }
+  .tape {
+    position: absolute; top: -20px; width: 150px; height: 42px;
+    background: repeating-linear-gradient(45deg, rgba(246, 206, 120, .82) 0 10px, rgba(250, 222, 160, .82) 10px 20px);
+    /* 양 끝을 뜯은 것처럼 들쭉날쭉 */
+    clip-path: polygon(0 8%, 4% 0, 8% 10%, 12% 0, 100% 0, 96% 12%, 100% 25%, 96% 40%, 100% 55%, 96% 70%, 100% 85%, 96% 100%, 0 100%, 4% 85%, 0 70%, 4% 55%, 0 40%, 4% 25%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+  }
+  .tape.l { left: -34px; transform: rotate(-32deg); }
+  .tape.r { right: -34px; transform: rotate(28deg); background: repeating-linear-gradient(45deg, rgba(168, 206, 190, .82) 0 10px, rgba(196, 224, 210, .82) 10px 20px); }
+  .text {
+    margin-top: 44px; flex: 1; overflow: hidden;
+    font-size: var(--fs); line-height: var(--lh); word-break: keep-all;
+    /* 공책 줄: 글줄마다 아래에 옅은 선 하나 */
+    background-image: linear-gradient(to bottom, transparent calc(var(--lh) - 2px), var(--rule) calc(var(--lh) - 2px));
+    background-size: 100% var(--lh);
+  }
+  .sign { flex: none; text-align: right; margin-top: 20px; font-size: 32px; color: #7a6a5b; }  /* 아래 여백 = 위 여백(64px) */
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="meta">
+    <span id="date"></span>
+    <span class="weather" id="w"></span>
+  </div>
+  <h1 class="title" id="title"></h1>
+  <div class="picture"><img id="img" alt=""><i class="tape l"></i><i class="tape r"></i></div>
+  <p class="text" id="text"></p>
+  <div class="sign" id="sign"></div>
+</div>
+<script>
+  // 데이터는 render.mjs가 window.DIARY로 넣어준다. 브라우저에서 직접 열면 아래 예시로 보인다.
+  const d = window.DIARY || {
+    date: "2026년 9월 30일 수요일", weather: "맑음", title: "제목",
+    image: "", text: "여기에 일기를 씁니다.", sign: ""
+  };
+  const WEATHERS = [["맑음", "☀️"], ["구름", "⛅"], ["흐림", "☁️"], ["비", "🌧️"], ["눈", "❄️"]];
+  document.getElementById("date").textContent = d.date;
+  document.getElementById("w").innerHTML = WEATHERS
+    .map(([k, e]) => `<span class="${k === d.weather ? "on" : ""}" title="${k}">${e}</span>`).join("");
+  document.getElementById("title").textContent = d.title;
+  document.getElementById("img").src = d.image;
+  document.getElementById("text").textContent = d.text;
+  document.getElementById("sign").textContent = d.sign || "";
+
+  // 글이 칸을 넘치면 글자를 한 단계씩 줄인다 (최소 30px).
+  // 폰트가 다 읽힌 뒤에 재야 한다 — 먼저 재면 대체 글꼴 폭으로 재서 괜히 줄어든다
+  document.fonts.ready.then(() => {
+    const box = document.getElementById("text"), root = document.documentElement.style;
+    for (let fs = 42; fs >= 30 && box.scrollHeight > box.clientHeight; fs -= 2) {
+      root.setProperty("--fs", fs + "px");
+      root.setProperty("--lh", Math.round(fs * 1.9) + "px");
+    }
+  });
+</script>
+</body>
+</html>
