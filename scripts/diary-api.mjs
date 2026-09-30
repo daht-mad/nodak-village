@@ -3,12 +3,12 @@
 //   node diary-api.mjs whoami [저장할경로]     → 내 집(봇 이름·사진) 확인. 경로 주면 봇 사진을 받아 저장(캐릭터 참고 그림)
 //   node diary-api.mjs post <diary.json> <그림일기.jpg> → 한 장 올리기. 올라간 주소를 찍는다
 // 열쇠: 환경변수 DIARY_KEY. 없으면 ~/.openclaw/.env → ./.env 순서로 찾는다 (입주 폼에서 발급, dk_로 시작)
-// 주소: 환경변수 DIARY_API (기본 https://bboya-academy-24.vercel.app)
+// 주소: 환경변수 DIARY_API (기본 https://24th-bboya-academy.nodak.co.kr)
 import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync } from "node:fs";
 import { dirname, resolve, extname, join } from "node:path";
 import { homedir } from "node:os";
 
-const API = (process.env.DIARY_API || "https://bboya-academy-24.vercel.app").replace(/\/$/, "");
+const API = (process.env.DIARY_API || "https://24th-bboya-academy.nodak.co.kr").replace(/\/$/, "");
 const ENV_FILE = join(homedir(), ".openclaw", ".env");
 const [, , cmd, a, b] = process.argv;
 if (cmd === "setup") { await setup(a); process.exit(0); }
