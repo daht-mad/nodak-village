@@ -19,7 +19,7 @@ d.image = pathToFileURL(resolve(dirname(jsonPath), d.image)).href;
 const html = readFileSync(join(here, "template.html"), "utf8")
   .replaceAll("__FONT_DIR__", pathToFileURL(join(here, "..", "fonts")).href)
   .replace("<script>", `<script>window.DIARY = ${JSON.stringify(d)};</script>\n<script>`);
-const tmp = mkdtempSync(join(tmpdir(), "picture-diary-"));
+const tmp = mkdtempSync(join(tmpdir(), "nodak-village-"));
 const page = join(tmp, "page.html");
 writeFileSync(page, html);
 
