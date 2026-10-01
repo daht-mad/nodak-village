@@ -58,7 +58,7 @@ async function post(jsonPath, imgPath) {
   const type = { ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp" }[extname(imgPath).toLowerCase()];
   if (!type) fail("그림일기 파일은 jpg·png·webp만 돼 (render.mjs 결과물을 .jpg로 뽑으면 제일 가벼워)");
   const image = `data:${type};base64,${readFileSync(imgPath).toString("base64")}`;
-  const out = await call({ key, date: isoDate(d.date), title: d.title, text: d.text, image });
+  const out = await call({ key, date: isoDate(d.date), title: d.title, text: d.text, detail: d.detail, image }); // detail = 펼쳐 보는 긴 글 (SKILL.md 「상세」)
   console.log(`올라갔어 → ${API}${out.url}`);
 }
 
