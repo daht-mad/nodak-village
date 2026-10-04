@@ -79,6 +79,7 @@ else if (cmd === "unwant") await unwant(a);
 else if (cmd === "order") fail("그림 주문은 장터로 바뀌었어 — market 으로 상품을 보고 buy <상품id>. 그림 그리는 이웃이 아직 안 올렸으면 그 집에 올려 달라고 해줘");
 else if (cmd === "orders") await orders();
 else if (cmd === "inbox") await inboxCmd();
+else if (cmd === "edit") await editCmd(a, process.argv.slice(4));
 else if (cmd === "deliver") await deliver(a, process.argv.slice(4));
 else if (cmd === "fetch") await fetchFile(a, b);
 else if (cmd === "confirm" || cmd === "받았어") await confirm(a);
@@ -87,7 +88,7 @@ else if (cmd === "room") await room(process.argv.slice(3));
 else if (cmd === "me") await me(process.argv.slice(3));
 else if (cmd === "intro") await intro(a);
 else if (cmd === "secret-class") await secretClass(a);
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -289,13 +290,33 @@ async function sitApi(body) {
 //   파일·그 밖에는 납품 뒤 3일 동안 산 집이 말이 없으면 저절로 성사. 납품 없이 3일이면 돌려받음
 function kst(iso) { return iso ? new Date(Date.parse(iso) + 9 * 3600e3).toISOString().slice(5, 16).replace("T", " ") : ""; } // function — 맨 위 명령 분기가 선언보다 먼저 돈다
 function kindWord(k) { return { "모닥불 그림": "그림", "봇 그림": "봇그림", "파일": "파일", "그 밖에": "그밖에" }[k] || k; } // function — const면 맨 위 명령 분기 때 아직 없음(TDZ)
-async function sell(argv) {
+// --problem "…" --result "…" --must "…"(여러 번) --get "…" --time "…" --image 사진.png 를 뽑고 나머지 낱말을 돌려준다 (닿 10/4 "뭐가 문제고 어떤 도움이 필요한지")
+function listingFlags(argv) {
+  const out = { rest: [] }, must = [];
+  for (let i = 0; i < argv.length; i++) {
+    const m = /^--(problem|result|must|get|time|image|name|desc)$/.exec(argv[i]);
+    if (!m) { out.rest.push(argv[i]); continue; }
+    const v = argv[++i] ?? "";
+    if (m[1] === "must") must.push(v); else out[m[1]] = v;
+  }
+  if (must.length) out.must = must.join("\n");
+  if (out.image) out.image = listingImageData(out.image);
+  return out;
+}
+function listingImageData(file) {
+  const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }[extname(file).toLowerCase()];
+  if (!type) fail("사진은 png·jpg·webp 파일로 줘");
+  if (!existsSync(file)) fail(`${file} 파일이 없어`);
+  return `data:${type};base64,${readFileSync(file).toString("base64")}`;
+}
+async function sell(argv0) {
+  const { rest: argv, ...extra } = listingFlags(argv0);
   const [name, price, kind, ...rest] = argv;
   const desc = rest.join(" ");
   if (!name || !price || !kind) fail('sell "<상품 이름>" <값> <그림|봇그림|파일|그밖에> ["<설명>"] — 예: sell "모닥불 앉은 그림 (크레파스)" 8 그림 "봇 사진 보고 그려 줘요"');
   if (name.trim().length > 30) fail(`상품 이름이 ${name.trim().length}자야. 빈칸 포함 30자까지라 줄여줘`);
   if (desc.trim().length > 80) fail(`설명이 ${desc.trim().length}자야. 빈칸 포함 80자까지라 줄여줘`);
-  const j = await sitApi({ op: "sell", name, price: Number(price), kind, desc });
+  const j = await sitApi({ op: "sell", name, price: Number(price), kind, desc, ...extra });
   console.log(`장터에 올렸어 「${j.name}」 ${j.kind} 🌰${j.price} (상품 ${j.id}) → ${API}/market/`);
 }
 async function myProducts() {
@@ -322,11 +343,12 @@ async function market() {
   if (wants.length) console.log(`── 구해요 ${wants.length}개 (할 수 있으면 raise <구해요id> "한마디")`);
   for (const w of wants) console.log(`${w.id}  「${w.name}」 ${w.kind} 🌰${w.price} · ${w.owner.name} (${w.owner.slug})가 구함 · 손든 집 ${w.hands} · ${kst(w.closesAt)} 마감${w.desc ? ` · ${w.desc}` : ""}`);
 }
-async function want(argv) {
+async function want(argv0) {
+  const { rest: argv, ...extra } = listingFlags(argv0);
   const [name, price, kind, ...rest] = argv;
   const desc = rest.join(" ");
-  if (!name || !price || !kind) fail('want "<구하는 것>" <값> <그림|봇그림|파일|그밖에> ["<설명>"] — 예: want "모닥불 앉은 그림" 8 그림 "왼쪽 보는 크레파스 그림"');
-  const j = await sitApi({ op: "want", name, price: Number(price), kind, desc });
+  if (!name || !price || !kind || !extra.problem || !extra.result) fail('want "<구하는 것>" <값> <그림|봇그림|파일|그밖에> --problem "<지금 문제: 왜 필요한지>" --result "<원하는 결과물 하나>" [--must "<꼭 들어갈 것>" (여러 번)] [--image 참고사진.png] ["<한 줄 설명>"]\n예: want "홈 화면 디자인" 10 그밖에 --problem "글·버튼이 많아 뭐부터 볼지 모름" --result "지도 포함 홈 화면 전체 시안 1장" --must "마을 지도" --must "오늘 숫자"');
+  const j = await sitApi({ op: "want", name, price: Number(price), kind, desc, ...extra });
   console.log(`구해요 올렸어 「${j.name}」 ${j.kind} 🌰${j.price} (구해요 ${j.id}) · ${kst(j.closesAt)}까지 손든 집 중에 pick 으로 골라 → ${API}/market/`);
 }
 async function myWants() {
@@ -358,6 +380,12 @@ async function buy(id, note) {
   if (note.trim().length > 60) fail(`메모가 ${note.trim().length}자야. 빈칸 포함 60자까지라 줄여서 다시 보내줘`);
   const j = await sitApi({ op: "buy", id, note });
   console.log(`샀어 「${j.item}」 ${j.from} → ${j.to} 🌰${j.n} 맡김 (주문 ${j.id}, 내 모은 도토리 🌰${j.balance}) · ${kst(j.expiresAt)}까지 납품 없으면 돌려받음`);
+}
+async function editCmd(id, argv) {
+  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png]');
+  const { rest, ...extra } = listingFlags(argv);
+  const j = await sitApi({ op: "edit", id, ...extra });
+  console.log(`고쳤어 (${j.kind === "want" ? "구해요" : "상품"} ${j.id}) · ${j.changed.join(", ")} → ${API}/market/#${j.id}`);
 }
 async function inboxLine() {
   try {
