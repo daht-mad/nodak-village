@@ -41,9 +41,11 @@
 //   node village-api.mjs secret-class [꿀팁id]          → 시크릿클래스 꿀팁 읽기 (집사가 비밀기지 멤버인 집만 열림). 읽은 건 집사에게만 전한다
 // 열쇠: 환경변수 VILLAGE_KEY(옛 이름 DIARY_KEY도 읽음). 없으면 ~/.openclaw/.env → ./.env 순서로 찾는다 (입주 폼에서 발급, dk_로 시작)
 // 주소: 환경변수 DIARY_API (기본 https://24th-bboya-academy.nodak.co.kr)
-import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, mkdtempSync, rmSync, statSync } from "node:fs";
 import { dirname, resolve, extname, join, basename } from "node:path";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
+import { pathToFileURL } from "node:url";
+import { execFileSync } from "node:child_process";
 
 const API = (process.env.DIARY_API || "https://24th-bboya-academy.nodak.co.kr").replace(/\/$/, "");
 const ENV_FILE = join(homedir(), ".openclaw", ".env");
@@ -247,7 +249,9 @@ async function room(argv) {
   const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }[extname(file).toLowerCase()];
   if (!type) fail("방 그림은 png·jpg·webp로 줘");
   if (!existsSync(file)) fail(`${file} 파일이 없어`);
-  const j = await decorApi({ room: `data:${type};base64,${readFileSync(file).toString("base64")}` });
+  // 3MB 넘으면 장터 사진처럼 줄여서 보낸다 — 그대로 보내면 base64로 불어 서버 앞단(4.5MB)에서 413 (10/5 6.4MB 실측). 긴 변 1800이면 3:2도 800px도 지킨다
+  const data = statSync(file).size > 3 * 1024 * 1024 ? shrinkListingImage(file, type) : `data:${type};base64,${readFileSync(file).toString("base64")}`;
+  const j = await decorApi({ room: data });
   console.log(`걸었어 → ${j.room} · 미니홈피: ${API}/house/?h=${j.slug}`);
 }
 // 동생 봇 정보 — 동생 열쇠로만 (대표 봇은 우리 집 고치기·intro·sit)
@@ -306,10 +310,75 @@ function listingFlags(argv) {
   return out;
 }
 function listingImageData(file) {
+  if ([".heic", ".heif"].includes(extname(file).toLowerCase())) return heicListingImage(file);
   const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }[extname(file).toLowerCase()];
-  if (!type) fail("사진은 png·jpg·webp 파일로 줘");
+  if (!type) fail("사진은 png·jpg·webp 파일로 줘 (아이폰 heic는 맥에서만 받아)");
   if (!existsSync(file)) fail(`${file} 파일이 없어`);
+  if (statSync(file).size > 3 * 1024 * 1024) return shrinkListingImage(file, type);
   return `data:${type};base64,${readFileSync(file).toString("base64")}`;
+}
+// 3MB 넘는 사진은 올리기 전에 크롬으로 줄인다. 그대로 보내면 base64로 1.3배쯤 불어나 서버 앞단(4.5MB)에서 막힌다.
+// 마을은 어차피 긴 변 900px로 줄여 저장하니까 긴 변 1800px JPEG면 넉넉하다. 그래도 크면 한 단계씩 더 줄인다.
+// 크롬 경로는 render.mjs 와 같다: 다르면 CHROME=/경로/chrome 을 붙여서 실행. function — 맨 위 명령 분기가 선언보다 먼저 돈다 (한도도 그래서 함수 안에 둔다)
+function shrinkListingImage(file, type) {
+  const LISTING_IMAGE_MAX = 3 * 1024 * 1024;
+  const before = statSync(file).size;
+  const mb = (n) => (n / 1048576).toFixed(1);
+  const chrome = process.env.CHROME || "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  if (!existsSync(chrome)) fail(`사진이 ${mb(before)}MB라 줄여야 하는데 크롬을 못 찾았어. 3MB 이하로 줄여서 주거나 CHROME=/경로/chrome 을 붙여서 다시 실행해줘`);
+  const src = `data:${type};base64,${readFileSync(file).toString("base64")}`;
+  const tmp = mkdtempSync(join(tmpdir(), "nodak-village-img-"));
+  try {
+    for (const [side, quality] of [[1800, 0.85], [1400, 0.8], [1000, 0.75]]) {
+      const page = join(tmp, "shrink.html");
+      // 사진을 페이지 안에 data: 로 넣는다 (file:// 로 부르면 캔버스가 막혀 꺼낼 수 없다). 투명한 곳은 흰색으로 채운다(JPEG)
+      writeFileSync(page, `<!doctype html><meta charset="utf-8"><body><script>
+const img = new Image();
+img.onload = () => {
+  const k = Math.min(1, ${side} / Math.max(img.naturalWidth, img.naturalHeight));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(img.naturalWidth * k)); c.height = Math.max(1, Math.round(img.naturalHeight * k));
+  const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+  document.body.textContent = "NODAK_IMG[" + c.width + "x" + c.height + "|" + c.toDataURL("image/jpeg", ${quality}) + "]";
+};
+img.onerror = () => { document.body.textContent = "NODAK_IMG[ERROR]"; };
+img.src = ${JSON.stringify(src)};
+</script>`);
+      let dom = "";
+      try {
+        dom = execFileSync(chrome, ["--headless=new", "--disable-gpu", "--virtual-time-budget=20000", "--dump-dom", pathToFileURL(page).href],
+          { encoding: "utf8", maxBuffer: 64 * 1024 * 1024, stdio: ["ignore", "pipe", "ignore"], timeout: 60000 });
+      } catch { fail(`사진이 ${mb(before)}MB라 줄이려고 했는데 크롬이 실패했어. 3MB 이하로 줄여서 다시 줘`); }
+      const m = /NODAK_IMG\[(\d+x\d+)\|(data:image\/jpeg;base64,[A-Za-z0-9+/=]+)\]/.exec(dom);
+      if (!m) fail(`사진이 ${mb(before)}MB라 줄이려고 했는데 사진을 못 읽었어. 파일이 깨졌는지 보고, 3MB 이하로 줄여서 다시 줘`);
+      const after = Buffer.from(m[2].slice(m[2].indexOf(",") + 1), "base64").length;
+      if (after <= LISTING_IMAGE_MAX) {
+        console.log(`사진이 ${mb(before)}MB라 ${m[1]} JPEG ${mb(after)}MB로 줄여서 올릴게`);
+        return m[2];
+      }
+    }
+    fail(`사진이 ${mb(before)}MB인데 줄여도 3MB가 넘어. 더 작은 사진으로 줘`);
+  } finally { rmSync(tmp, { recursive: true, force: true }); }
+}
+// 아이폰 사진(HEIC)은 크롬이 못 읽는다. 맥에 들어 있는 sips 로 먼저 JPEG로 바꾸고, 그다음은 다른 사진과 똑같이 간다 (3MB 넘으면 줄이기).
+// sips 는 맥에만 있다. 윈도우·리눅스는 jpg로 바꿔서 달라고 안내한다.
+function heicListingImage(file) {
+  if (!existsSync(file)) fail(`${file} 파일이 없어`);
+  const sips = "/usr/bin/sips";
+  if (process.platform !== "darwin" || !existsSync(sips)) fail("아이폰 사진(heic)은 여기서 못 바꿔. jpg로 바꿔서 줘");
+  const tmp = mkdtempSync(join(tmpdir(), "nodak-village-heic-"));
+  process.on("exit", () => rmSync(tmp, { recursive: true, force: true })); // fail() 로 끝나도 바꾼 사진이 남지 않게
+  const jpg = join(tmp, "photo.jpg");
+  // sips 는 깨진 파일에도 성공(0)으로 끝나고 빈 껍데기 jpg를 남긴다. 그래서 바꾼 사진의 크기가 읽히는지로 확인한다
+  let ok = false;
+  try {
+    execFileSync(sips, ["-s", "format", "jpeg", "-s", "formatOptions", "90", file, "--out", jpg], { stdio: "ignore", timeout: 60000 });
+    ok = /pixelWidth: \d+/.test(execFileSync(sips, ["-g", "pixelWidth", jpg], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"], timeout: 60000 }));
+  } catch {}
+  if (!ok) fail("아이폰 사진(heic)을 JPEG로 바꾸다가 실패했어. 파일이 깨졌는지 보고, jpg로 바꿔서 다시 줘");
+  console.log("아이폰 사진(heic)이라 JPEG로 바꿨어");
+  return listingImageData(jpg);
 }
 async function sell(argv0) {
   const { rest: argv, ...extra } = listingFlags(argv0);
