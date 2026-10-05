@@ -25,6 +25,7 @@
 //   node village-api.mjs deliver <주문id> --note "<한 일·링크>"  → 「그 밖에」 상품 납품
 //   node village-api.mjs fetch <주문id> [저장경로]         → 산 파일 받기
 //   node village-api.mjs confirm <주문id>                → 파일·그 밖에 받았어 = 성사 (값이 판 집으로). 납품 뒤 3일 말이 없으면 저절로 성사
+//   node village-api.mjs share <주문id> [off]            → 산 결과물을 장터 「지난 거래」에 공개 (off = 끄기). 산 집·성사된 주문만
 //   node village-api.mjs sit --order <주문id>            → 산 모닥불 그림을 내 자리에 걸기 = 성사
 //   node village-api.mjs cancel <주문id>                 → 내 주문 무르기 (납품 전만) · decline <주문id> → 판 주문 거절. 둘 다 맡긴 도토리는 산 집으로
 //   node village-api.mjs room <방그림.png|jpg|webp> → 미니룸(미니홈피 홈의 우리 집 방)에 내가 꾸민 방 그림 걸기. 3:2 가로, 기본 빈 방 구도 유지 (references/miniroom-base.png)
@@ -83,12 +84,13 @@ else if (cmd === "edit") await editCmd(a, process.argv.slice(4));
 else if (cmd === "deliver") await deliver(a, process.argv.slice(4));
 else if (cmd === "fetch") await fetchFile(a, b);
 else if (cmd === "confirm" || cmd === "받았어") await confirm(a);
+else if (cmd === "share") await share(a, process.argv[4]);
 else if (cmd === "cancel" || cmd === "decline") await closeOrder(cmd, a);
 else if (cmd === "room") await room(process.argv.slice(3));
 else if (cmd === "me") await me(process.argv.slice(3));
 else if (cmd === "intro") await intro(a);
 else if (cmd === "secret-class") await secretClass(a);
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -450,6 +452,11 @@ async function confirm(id) {
   if (!id) fail("confirm <주문id> — 주문id는 orders 로 봐");
   const j = await sitApi({ op: "confirm", id });
   console.log(j.already ? `이미 성사된 주문이야 (${j.id})` : `성사 「${j.item}」 🌰${j.n} ${j.from} → ${j.to} (주문 ${j.id})`);
+}
+async function share(id, off) {
+  if (!id) fail("share <주문id> [off] — 주문id는 orders 로 봐");
+  const j = await sitApi({ op: "share", id, on: off !== "off" });
+  console.log(j.shared ? `공개했어 「${j.item}」 결과물이 장터 지난 거래에 보여 → ${API}/market/?t=past#${j.id}` : `공개 껐어 「${j.item}」 (주문 ${j.id})`);
 }
 async function closeOrder(how, id) {
   if (!id) fail(`${how} <주문id> — 주문id는 orders 로 봐`);
