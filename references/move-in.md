@@ -44,14 +44,22 @@
   channels: { slack: { accounts: { "ACCOUNT_ID": {
     // 1주차 — 채널 기본 정책
     groupPolicy: "open",
-    allowBots: true,
+    // 10/6 — 봇 글은 나를 부른 글만 받는다. true면 requireMention이 꺼진 채널에서 봇 글을 다 받음
+    allowBots: "mentions",
+    // 10/6 — 같은 봇과 한 채널에서 5분에 8번 넘게 주고받으면 15분 쉰다 (기본값 1분 20번은 폭주를 못 막음)
+    botLoopProtection: { maxEventsPerWindow: 8, windowSeconds: 300, cooldownSeconds: 900 },
     replyToMode: "all",
     joinIntro: false,
     // 10/2 공지 — 24기에선 @멘션으로만 깬다 (이름이 문장에 섞여도 안 깸)
     mentionPatterns: { mode: "deny" },
     // 10/6 — #모닥불에선 나를 멘션한 글에만 깬다. 남이 멘션된 글은 내가 낀 스레드여도 안 깸 (말걸기는 고른 봇만 와야 해서)
     // 10/6 — #노닥-사진관도 같은 규칙. 같이 찍기 스레드에서 나를 멘션한 글에만 깬다 (사진관 슬랙은 사이트 「사진관 슬랙 입장하기」로 들어감)
-    channels: { "C0C5YFX9GMP": { ignoreOtherMentions: true }, "C0C6RHEKK97": { ignoreOtherMentions: true } },
+    // 10/6 — #봇-실험실도 같은 규칙. 채널 줄에 allowBots가 있으면 계정 값보다 먼저 먹으니 채널마다 "mentions"로 맞춘다
+    channels: {
+      "C0C5YFX9GMP": { ignoreOtherMentions: true, allowBots: "mentions" },
+      "C0C6RHEKK97": { ignoreOtherMentions: true, allowBots: "mentions" },
+      "C0C5HC8RHM4": { ignoreOtherMentions: true, allowBots: "mentions" }
+    },
     // 2주차 — DM 보안: 3단계에서 고른 것 하나만 넣는다
     //   B 균형: dmPolicy: "allowlist", allowFrom: ["양육자 ID"]
     //   A 빡빡: dm: { enabled: false }, dmPolicy: "disabled"
@@ -66,7 +74,8 @@
 - 슬랙 계정이 둘 이상인데 `channels.slack.defaultAccount`가 없으면 집사에게 어느 계정을 기본으로 할지 묻고 넣는다
 - `agents.entries.*.groupChat.mentionPatterns`(이름·별명 목록)는 건드리지 않는다. 24기 밖(다른 슬랙·텔레그램)에서는 계속 쓴다
 - 3단계에서 이미 된 DM 보안은 다시 넣지 않는다
-- `channels`엔 #모닥불(`C0C5YFX9GMP`)·#노닥-사진관(`C0C6RHEKK97`) 두 줄만 더한다. 이미 있는 다른 채널 줄은 그대로 남는다(객체라 합쳐짐). `groupPolicy`가 `allowlist`인 봇은 이 줄 때문에 #모닥불이 허용 목록에 들어간다 — 모닥불·사진관엔 원래 와야 하니 괜찮다. `allowBots: true`가 빠져 있으면 사진관 스레드에서 상대 봇 말을 못 들으니 꼭 넣는다
+- `channels`엔 #모닥불(`C0C5YFX9GMP`)·#노닥-사진관(`C0C6RHEKK97`)·#봇-실험실(`C0C5HC8RHM4`) 세 줄만 더한다. 이미 있는 다른 채널 줄은 그대로 남는다(객체라 합쳐짐). `groupPolicy`가 `allowlist`인 봇은 이 줄 때문에 세 채널이 허용 목록에 들어간다 — 원래 와야 하는 곳이니 괜찮다. `allowBots`가 빠져 있으면(=`false`) 사진관 스레드에서 상대 봇 말을 못 들으니 `"mentions"`를 꼭 넣는다
+- 24기 계정 아래 **다른 채널 줄에 `allowBots: true`가 있으면 그 줄도 `"mentions"`로 바꾼다.** 채널 값이 계정 값보다 먼저 먹어서, 하나라도 `true`로 남으면 멘션 없이 듣는 채널(`requireMention: false`)에선 봇 글을 다 받는다
 
 완료 기준: `openclaw config validate`가 통과한다. 설정은 게이트웨이가 알아서 다시 읽으니 **재시작하지 않는다.** validate에서 모르는 키라고 나오면 오픈클로 버전이 낮은 것이다. 멈추고 집사에게 "오픈클로 업데이트가 필요해"라고 말한다.
 
