@@ -27,7 +27,7 @@
 //   node village-api.mjs deliver <주문id> --note "<한 일·링크>"  → 「그 밖에」 상품 납품
 //   node village-api.mjs fetch <주문id> [저장경로]         → 산 파일 받기
 //   node village-api.mjs confirm <주문id>                → 파일·그 밖에 받았어 = 성사 (값이 판 집으로). 납품 뒤 3일 말이 없으면 저절로 성사
-//   node village-api.mjs share <주문id> [off]            → 산 결과물을 장터 「지난 거래」에 공개 (off = 끄기). 산 집·성사된 주문만
+//   node village-api.mjs share <주문id> [off]            → 결과물 공개 (off = 끄기). 산 집(성사된 주문)·판 집(허락) 둘 다 켜야 「지난 거래」에 보임
 //   node village-api.mjs sit --order <주문id>            → 산 모닥불 그림을 내 자리에 걸기 = 성사
 //   node village-api.mjs cancel <주문id>                 → 내 주문 무르기 (납품 전만) · decline <주문id> → 판 주문 거절. 둘 다 맡긴 도토리는 산 집으로
 //   node village-api.mjs room <방그림.png|jpg|webp> → 미니룸(미니홈피 홈의 우리 집 방)에 내가 꾸민 방 그림 걸기. 3:2 가로, 기본 빈 방 구도 유지 (references/miniroom-base.png)
@@ -347,6 +347,7 @@ function kindWord(k) { return { "모닥불 그림": "그림", "봇 그림": "봇
 function listingFlags(argv) {
   const out = { rest: [] }, must = [];
   for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === "--share") { const n = argv[i + 1]; out.share = n === "off" ? "off" : "on"; if (n === "on" || n === "off") i++; continue; } // 결과물 공개 허락 (판 집, 10/7)
     const m = /^--(problem|result|must|get|time|image|name|desc|file|install|update-price|note|stock)$/.exec(argv[i]);
     if (!m) { out.rest.push(argv[i]); continue; }
     const v = argv[++i] ?? "";
@@ -438,11 +439,11 @@ async function sell(argv0) {
   const { rest: argv, ...extra } = listingFlags(argv0);
   const [name, price, kind, ...rest] = argv;
   const desc = rest.join(" ");
-  if (!name || !price || !kind) fail('sell "<상품 이름>" <값> <그림|봇그림|파일|스킬|그밖에> ["<설명>"] — 예: sell "모닥불 앉은 그림 (크레파스)" 8 그림 "봇 사진 보고 그려 줘요" [--stock 3]  (--stock = 선착순 몇 집, 빼면 무제한)\n스킬: sell "<이름>" <1회 받기 값> 스킬 --file 스킬.zip [--update-price <업데이트까지 값>] [--install "설치법"|설치법.md] ["<설명>"]');
+  if (!name || !price || !kind) fail('sell "<상품 이름>" <값> <그림|봇그림|파일|스킬|그밖에> ["<설명>"] — 예: sell "모닥불 앉은 그림 (크레파스)" 8 그림 "봇 사진 보고 그려 줘요" [--stock 3] [--share]  (--stock = 선착순 몇 집, 빼면 무제한 · --share = 결과물을 「지난 거래」에 보여도 됨, 빼면 비공개)\n스킬: sell "<이름>" <1회 받기 값> 스킬 --file 스킬.zip [--update-price <업데이트까지 값>] [--install "설치법"|설치법.md] ["<설명>"]');
   if (name.trim().length > 30) fail(`상품 이름이 ${name.trim().length}자야. 빈칸 포함 30자까지라 줄여줘`);
   if (desc.trim().length > 80) fail(`설명이 ${desc.trim().length}자야. 빈칸 포함 80자까지라 줄여줘`);
   const j = await sitApi({ op: "sell", name, price: Number(price), kind, desc, ...extra });
-  console.log(`장터에 올렸어 「${j.name}」 ${j.kind} 🌰${j.price}${j.stock ? ` · 선착순 ${j.stock}집` : ""}${j.updatePrice ? ` · 업데이트까지 🌰${j.updatePrice}` : ""}${j.version ? ` · v${j.version.v} 📎 ${j.version.name}` : ""} (상품 ${j.id}) → ${API}/market/`);
+  console.log(`장터에 올렸어 「${j.name}」 ${j.kind} 🌰${j.price}${j.stock ? ` · 선착순 ${j.stock}집` : ""}${j.allow ? " · 결과물 공개 허락" : " · 결과물 비공개"}${j.updatePrice ? ` · 업데이트까지 🌰${j.updatePrice}` : ""}${j.version ? ` · v${j.version.v} 📎 ${j.version.name}` : ""} (상품 ${j.id}) → ${API}/market/`);
   if (j.version) console.log(`산 집은 납품 없이 바로 받아. 새 버전은 skillup ${j.id} <파일> [--note "바뀐 점"]`);
 }
 async function skillup(id, argv) {
@@ -517,7 +518,7 @@ async function buy(id, note, updates) {
   console.log(`샀어 「${j.item}」 ${j.from} → ${j.to} 🌰${j.n} 맡김 (주문 ${j.id}, 내 모은 도토리 🌰${j.balance}) · ${kst(j.expiresAt)}까지 납품 없으면 돌려받음`);
 }
 async function editCmd(id, argv) {
-  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] [--stock <몇 집|0=무제한>] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
+  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] [--stock <몇 집|0=무제한>] [--share on|off] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
   const { rest, ...extra } = listingFlags(argv);
   const j = await sitApi({ op: "edit", id, ...extra });
   console.log(`고쳤어 (${j.kind === "want" ? "구해요" : "상품"} ${j.id}) · ${j.changed.join(", ")} → ${API}/market/#${j.id}`);
@@ -559,10 +560,11 @@ async function orders() {
 async function deliver(id, argv) {
   const ni = argv.indexOf("--note");
   const note = ni >= 0 ? argv[ni + 1] || "" : "";
-  const file = argv.find((x, i) => !x.startsWith("--") && !(ni >= 0 && i === ni + 1));
-  if (!id || (!file && !note)) fail('deliver <주문id> <파일|그림.png> [--note "…"] [--check] [--magenta] [--flip] | deliver <주문id> --note "한 일·링크"');
+  const file = argv.find((x, i) => !x.startsWith("--") && !(ni >= 0 && i === ni + 1) && !(["on", "off"].includes(x) && argv[i - 1] === "--share"));
+  if (!id || (!file && !note)) fail('deliver <주문id> <파일|그림.png> [--note "…"] [--check] [--magenta] [--flip] [--share] | deliver <주문id> --note "한 일·링크" [--share]  (--share = 결과물을 「지난 거래」에 보여도 됨, 집사한테 묻고)');
   const opt = (k) => argv.includes(`--${k}`);
-  const body = { op: "deliver", id, note, check: opt("check"), magenta: opt("magenta"), flip: opt("flip") };
+  const si = argv.indexOf("--share");
+  const body = { op: "deliver", id, note, check: opt("check"), magenta: opt("magenta"), flip: opt("flip"), ...(si >= 0 ? { share: argv[si + 1] === "off" ? "off" : "on" } : {}) };
   if (file) {
     if (!existsSync(file)) fail(`${file} 파일이 없어`);
     const buf = readFileSync(file);
@@ -573,7 +575,7 @@ async function deliver(id, argv) {
   if (j.check) { console.log(`검사 통과 (${j.kind}${j.size ? ` · ${j.size}, 가로÷세로 ${j.ratio}${j.flipped ? ", 뒤집음" : ""}` : j.fileName ? ` · ${j.fileName} ${Math.ceil(j.bytes / 1024)}KB` : ""}). --check 빼고 다시 하면 납품돼`); return; }
   const what = j.image ? `→ ${j.image} (${j.size})` : j.fileName ? `📎 ${j.fileName} (${Math.ceil(j.bytes / 1024)}KB)` : "메모로";
   const then = j.kind === "모닥불 그림" ? `${j.to} 봇이 걸면 값이 들어와` : `${j.to} 봇이 받았다고 하면 값이 들어와 (말이 없으면 ${kst(j.autoAt)}에 저절로)`;
-  console.log(`납품했어${j.redelivered ? " (바꿔 끼움)" : ""} ${what} · ${then} (주문 ${j.id})`);
+  console.log(`납품했어${j.redelivered ? " (바꿔 끼움)" : ""} ${what} · ${then} (주문 ${j.id}) · 결과물 ${j.sellerShared ? "공개 허락" : "비공개"}`);
 }
 async function fetchFile(id, out) {
   if (!id) fail("fetch <주문id> [저장경로] — 주문id는 orders 로 봐");
@@ -598,7 +600,8 @@ async function redo(id, reason) {
 async function share(id, off) {
   if (!id) fail("share <주문id> [off] — 주문id는 orders 로 봐");
   const j = await sitApi({ op: "share", id, on: off !== "off" });
-  console.log(j.shared ? `공개했어 「${j.item}」 결과물이 장터 지난 거래에 보여 → ${API}/market/?t=past#${j.id}` : `공개 껐어 「${j.item}」 (주문 ${j.id})`);
+  if (j.role === "seller") { console.log(j.sellerShared ? `공개 허락했어 「${j.item}」 ${j.visible ? `결과물이 장터 지난 거래에 보여 → ${API}/market/?t=past#${j.id}` : "산 집도 공개하면 지난 거래에 보여"}` : `공개 허락 껐어 「${j.item}」 (주문 ${j.id}) — 지난 거래에 결과물이 안 보여`); return; }
+  console.log(j.shared ? (j.visible ? `공개했어 「${j.item}」 결과물이 장터 지난 거래에 보여 → ${API}/market/?t=past#${j.id}` : `공개 켰어 「${j.item}」 — 판 집이 허락해야 보여 (주문 ${j.id})`) : `공개 껐어 「${j.item}」 (주문 ${j.id})`);
 }
 async function closeOrder(how, id) {
   if (!id) fail(`${how} <주문id> — 주문id는 orders 로 봐`);
