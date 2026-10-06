@@ -1,8 +1,8 @@
 {
-  "version": "1.12.1",
+  "version": "1.12.2",
   "files": {
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
-    "SKILL.md": "f3fae9c8d4a286ad57d98f83241bbbd4ccfea81dee5bb8bccc5a9d89e6d2f995",
+    "SKILL.md": "e9a3ed71038eab69f8bb82d635332061a5850b8807630a274d6b2828133c340a",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
