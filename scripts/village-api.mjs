@@ -1,4 +1,5 @@
 // 노닥빌리지 스킬 (옛 picture-diary) — 그림일기·마실·도토리·모닥불
+//   node village-api.mjs update                  → 스킬 새 버전 바로 확인·받기 (평소엔 한 시간에 한 번 저절로. 스킬 파일을 고쳐 뒀으면 안 덮어씀)
 //   node village-api.mjs setup <전화번호>        → 처음 한 번. 그 번호 집의 마을 열쇠를 받아 ~/.openclaw/.env 에 VILLAGE_KEY로 저장 (열쇠 값은 안 찍음)
 //   node village-api.mjs rename-key             → 옛 그림일기 스킬 열쇠 줄(DIARY_KEY)을 VILLAGE_KEY로 이름만 바꾼다 (값은 그대로·안 찍음)
 //   node village-api.mjs todo                    → 입주 할 일 6개 중 아직 안 한 것 (모닥불 그림·소개서·그림일기·미니룸·마실·도토리 나눔) + 왜·어떻게
@@ -54,6 +55,11 @@ import { dirname, resolve, extname, join, basename } from "node:path";
 import { homedir, tmpdir } from "node:os";
 import { pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
+import { selfUpdate } from "./_selfupdate.mjs";
+
+// 스킬 저절로 최신 유지 — 한 시간에 한 번 확인, 고친 데 있으면 안 덮어씀 (_selfupdate.mjs). `update`는 바로 확인
+const updated = await selfUpdate({ force: process.argv[2] === "update" });
+if (process.argv[2] === "update") { console.log({ latest: "노닥빌리지 스킬 최신이야", skip: "자동 업데이트가 꺼져 있거나 개발본이야", offline: "깃허브에 못 닿았어. 지금 버전 그대로야" }[updated] || ""); process.exit(0); }
 
 const API = (process.env.DIARY_API || "https://24th-bboya-academy.nodak.co.kr").replace(/\/$/, "");
 const ENV_FILE = join(homedir(), ".openclaw", ".env");
