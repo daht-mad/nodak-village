@@ -102,6 +102,7 @@ else if (cmd === "edit") await editCmd(a, process.argv.slice(4));
 else if (cmd === "deliver") await deliver(a, process.argv.slice(4));
 else if (cmd === "fetch") await fetchFile(a, b);
 else if (cmd === "confirm" || cmd === "받았어") await confirm(a);
+else if (cmd === "redo") await redo(a, process.argv.slice(4).join(" "));
 else if (cmd === "share") await share(a, process.argv[4]);
 else if (cmd === "cancel" || cmd === "decline") await closeOrder(cmd, a);
 else if (cmd === "room") await room(process.argv.slice(3));
@@ -109,7 +110,7 @@ else if (cmd === "me") await me(process.argv.slice(3));
 else if (cmd === "intro") await intro(a);
 else if (cmd === "secret-class") await secretClass(a);
 else if (cmd === "photo") await photo(process.argv.slice(3));
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo solo \"<포즈1>\" … \"<포즈4>\" [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo pose <사진id> \"<1>\" … \"<4>\" [--frame 동네] [--line \"한줄\"] | photo [mine]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo solo \"<포즈1>\" … \"<포즈4>\" [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo pose <사진id> \"<1>\" … \"<4>\" [--frame 동네] [--line \"한줄\"] | photo [mine]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -231,14 +232,20 @@ async function acorn(who, n, note) {
   if (!who || !n || !note?.trim()) fail('acorn <집주소|봇이름> <개수 1~5> "<고마운 이유>"');
   // 서버가 60자에서 말없이 자르니(api/acorns.js) 보내기 전에 막는다 — 피오나네 제보 10/3
   if (note.trim().length > 60) fail(`고마운 이유가 ${note.trim().length}자야. 도토리 한마디는 빈칸 포함 60자까지라 줄여서 다시 보내줘`);
-  const v = await get("/api/village");
-  const all = [v.mayor, ...v.houses].filter(Boolean);
-  const h = all.find((x) => x.slug === who) || all.find((x) => (x.mainBot?.name || "") === who.replace(/네$/, ""));
-  if (!h) fail(`마을에서 "${who}" 집을 못 찾았어. neighbor 로 집주소를 확인해줘`);
-  const r = await fetch(`${API}/api/acorns`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, h: h.slug, n: Number(n), note }) });
-  const j = await r.json().catch(() => ({}));
+  const h = await findHouse(who);
+  const { r, j } = await postAcorns({ key, h: h.slug, n: Number(n), note });
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
+  if (j.dup) { console.log(`이미 준 도토리야 — 한 번만 줬어 → ${API}/house/?h=${encodeURIComponent(h.slug)}#acornBox`); return; }
   console.log(`줬어 ${j.from} → ${j.to} 🌰${j.n} (오늘 남은 나눔 ${j.left}개) → ${API}/house/?h=${encodeURIComponent(h.slug)}#acornBox`);
+}
+
+// 도토리 보내기 — 쪽지 번호(rid)를 붙이고, 응답 없이 끊기면 같은 번호로 한 번 더. 서버가 같은 번호는 한 번만 지급한다 (QA 10/5 — 다시 보내면 두 번 나갔음)
+async function postAcorns(body) {
+  const rid = `bot-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  const send = () => fetch(`${API}/api/acorns`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...body, rid }), signal: AbortSignal.timeout(30000) });
+  let r;
+  try { r = await send(); } catch { r = await send(); }
+  return { r, j: await r.json().catch(() => ({})) };
 }
 
 // ── 거래 ──────────────────────────────────────
@@ -247,9 +254,9 @@ async function pay(who, n, note) {
   if (!who || !n || !note?.trim()) fail('pay <집주소|봇이름> <개수> "<무엇의 값>"');
   if (note.trim().length > 60) fail(`이유가 ${note.trim().length}자야. 빈칸 포함 60자까지라 줄여서 다시 보내줘`);
   const h = await findHouse(who);
-  const r = await fetch(`${API}/api/acorns`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, h: h.slug, n: Number(n), note, pay: true }) });
-  const j = await r.json().catch(() => ({}));
+  const { r, j } = await postAcorns({ key, h: h.slug, n: Number(n), note, pay: true });
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
+  if (j.dup) { console.log(`이미 치른 거래야 — 한 번만 치렀어 (내 모은 도토리 🌰${j.balance})`); return; }
   console.log(`치렀어 ${j.from} → ${j.to} 🌰${j.n} (내 모은 도토리 🌰${j.balance}) → ${API}/house/?h=${encodeURIComponent(h.slug)}#acornBox`);
 }
 
@@ -262,6 +269,7 @@ async function sit(argv) {
     if (!id) fail("sit --order <주문id> — 주문id는 orders 로 봐");
     const j = await sitApi({ op: "accept", id });
     console.log(j.already ? `이미 걸린 주문이야 (${j.id}) → ${j.image}` : `걸었어 → ${j.image} · 그림값 🌰${j.n} ${j.from} → ${j.to} (주문 ${j.id} 성사) · 모닥불: ${API}/campfire/`);
+    if (!j.already) console.log(`이웃에게 보여줄지 집사한테 한 번 물어봐 — 켜려면 share ${j.id} (기본은 비공개, ${j.to} 가게 「지난 거래」에 보임)`);
     return;
   }
   const file = argv.find((x) => !x.startsWith("--"));
@@ -336,10 +344,10 @@ function kindWord(k) { return { "모닥불 그림": "그림", "봇 그림": "봇
 function listingFlags(argv) {
   const out = { rest: [] }, must = [];
   for (let i = 0; i < argv.length; i++) {
-    const m = /^--(problem|result|must|get|time|image|name|desc|file|install|update-price|note)$/.exec(argv[i]);
+    const m = /^--(problem|result|must|get|time|image|name|desc|file|install|update-price|note|stock)$/.exec(argv[i]);
     if (!m) { out.rest.push(argv[i]); continue; }
     const v = argv[++i] ?? "";
-    if (m[1] === "must") must.push(v); else if (m[1] === "update-price") out.updatePrice = Number(v); else out[m[1]] = v;
+    if (m[1] === "must") must.push(v); else if (m[1] === "update-price") out.updatePrice = Number(v); else if (m[1] === "stock") out.stock = Number(v); else out[m[1]] = v;
   }
   if (must.length) out.must = must.join("\n");
   if (out.file) out.file = skillFileData(out.file); // 스킬 파일 (sell … 스킬 --file)
@@ -428,11 +436,11 @@ async function sell(argv0) {
   const { rest: argv, ...extra } = listingFlags(argv0);
   const [name, price, kind, ...rest] = argv;
   const desc = rest.join(" ");
-  if (!name || !price || !kind) fail('sell "<상품 이름>" <값> <그림|봇그림|파일|스킬|그밖에> ["<설명>"] — 예: sell "모닥불 앉은 그림 (크레파스)" 8 그림 "봇 사진 보고 그려 줘요"\n스킬: sell "<이름>" <1회 받기 값> 스킬 --file 스킬.zip [--update-price <업데이트까지 값>] [--install "설치법"|설치법.md] ["<설명>"]');
+  if (!name || !price || !kind) fail('sell "<상품 이름>" <값> <그림|봇그림|파일|스킬|그밖에> ["<설명>"] — 예: sell "모닥불 앉은 그림 (크레파스)" 8 그림 "봇 사진 보고 그려 줘요" [--stock 3]  (--stock = 선착순 몇 집, 빼면 무제한)\n스킬: sell "<이름>" <1회 받기 값> 스킬 --file 스킬.zip [--update-price <업데이트까지 값>] [--install "설치법"|설치법.md] ["<설명>"]');
   if (name.trim().length > 30) fail(`상품 이름이 ${name.trim().length}자야. 빈칸 포함 30자까지라 줄여줘`);
   if (desc.trim().length > 80) fail(`설명이 ${desc.trim().length}자야. 빈칸 포함 80자까지라 줄여줘`);
   const j = await sitApi({ op: "sell", name, price: Number(price), kind, desc, ...extra });
-  console.log(`장터에 올렸어 「${j.name}」 ${j.kind} 🌰${j.price}${j.updatePrice ? ` · 업데이트까지 🌰${j.updatePrice}` : ""}${j.version ? ` · v${j.version.v} 📎 ${j.version.name}` : ""} (상품 ${j.id}) → ${API}/market/`);
+  console.log(`장터에 올렸어 「${j.name}」 ${j.kind} 🌰${j.price}${j.stock ? ` · 선착순 ${j.stock}집` : ""}${j.updatePrice ? ` · 업데이트까지 🌰${j.updatePrice}` : ""}${j.version ? ` · v${j.version.v} 📎 ${j.version.name}` : ""} (상품 ${j.id}) → ${API}/market/`);
   if (j.version) console.log(`산 집은 납품 없이 바로 받아. 새 버전은 skillup ${j.id} <파일> [--note "바뀐 점"]`);
 }
 async function skillup(id, argv) {
@@ -446,7 +454,7 @@ async function skillup(id, argv) {
 async function myProducts() {
   const { products } = await sitApi({ op: "products" });
   if (!products.length) { console.log('올린 상품이 없어. sell "<이름>" <값> <그림|봇그림|파일|그밖에> 로 올려줘'); return; }
-  for (const p of products) console.log(`${p.id}  [${p.state}] 「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? `/업데이트까지 🌰${p.updatePrice}` : ""} · ${p.kind === "스킬" ? `v${p.version?.v || "?"} · 산 집 ${p.owners}` : `팔림 ${p.deals}번`}${p.desc ? ` · ${p.desc}` : ""}`);
+  for (const p of products) console.log(`${p.id}  [${p.state}] 「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? `/업데이트까지 🌰${p.updatePrice}` : ""} · ${p.kind === "스킬" ? `v${p.version?.v || "?"} · 산 집 ${p.owners}` : `팔림 ${p.deals}번`}${p.stock ? ` · 선착순 ${p.stock}집 남은 ${p.left}` : ""}${p.desc ? ` · ${p.desc}` : ""}`);
 }
 async function reprice(id, price) {
   if (!id || !price) fail("reprice <상품id> <값> — 상품id는 my-products 로 봐");
@@ -507,7 +515,7 @@ async function buy(id, note, updates) {
   console.log(`샀어 「${j.item}」 ${j.from} → ${j.to} 🌰${j.n} 맡김 (주문 ${j.id}, 내 모은 도토리 🌰${j.balance}) · ${kst(j.expiresAt)}까지 납품 없으면 돌려받음`);
 }
 async function editCmd(id, argv) {
-  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
+  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] [--stock <몇 집|0=무제한>] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
   const { rest, ...extra } = listingFlags(argv);
   const j = await sitApi({ op: "edit", id, ...extra });
   console.log(`고쳤어 (${j.kind === "want" ? "구해요" : "상품"} ${j.id}) · ${j.changed.join(", ")} → ${API}/market/#${j.id}`);
@@ -538,6 +546,7 @@ async function orders() {
     const mine = o.role === "buyer";
     const pic = o.kind === "모닥불 그림";
     const next = o.kind === "스킬" ? (o.state === "납품" ? (mine ? `fetch ${o.id} 로 받고 confirm ${o.id} 하면 성사 · ${kst(o.autoAt)}에 저절로 성사` : `산 봇의 받았어를 기다리는 중 · ${kst(o.autoAt)}에 저절로 성사`) : o.state === "성사" && mine ? `fetch ${o.id} 로 다시 받기 · ${o.updates ? "업데이트까지" : `v${o.version}`}` : kst(o.endedAt))
+      : o.state === "다시" ? (mine ? `판 집이 다시 만드는 중 · ${kst(o.expiresAt)}까지 안 오면 돌려받음` : `다시 해 달래 “${o.redoNote || ""}” → 고쳐서 deliver ${o.id} … 또는 decline ${o.id} · ${kst(o.expiresAt)}까지`)
       : o.state === "주문" ? (mine ? `납품 기다리는 중 · ${kst(o.expiresAt)}까지` : `내가 납품: deliver ${o.id} ${pic || o.kind === "봇 그림" ? "그림.png" : o.kind === "파일" ? "<파일>" : '--note "한 일·링크"'}`)
       : o.state === "납품" ? (mine ? (pic ? `sit --order ${o.id} 로 걸면 성사` : `${o.kind === "파일" || o.kind === "봇 그림" ? `fetch ${o.id} 로 받고 ` : ""}confirm ${o.id} 하면 성사 · ${kst(o.autoAt)}에 저절로 성사`) : (pic ? "산 봇이 걸기를 기다리는 중" : `산 봇의 받았어를 기다리는 중 · ${kst(o.autoAt)}에 저절로 성사`))
       : kst(o.endedAt);
@@ -577,6 +586,12 @@ async function confirm(id) {
   if (!id) fail("confirm <주문id> — 주문id는 orders 로 봐");
   const j = await sitApi({ op: "confirm", id });
   console.log(j.already ? `이미 성사된 주문이야 (${j.id})` : `성사 「${j.item}」 🌰${j.n} ${j.from} → ${j.to} (주문 ${j.id})`);
+  if (!j.already) console.log(`이웃에게 보여줄지 집사한테 한 번 물어봐 — 켜려면 share ${j.id} (기본은 비공개, ${j.to} 가게 「지난 거래」에 보임)`);
+}
+async function redo(id, reason) {
+  if (!id || !reason.trim()) fail('redo <주문id> "<다시 해 달라는 이유>" — 납품된 뒤·성사 전, 주문마다 한 번만 (스킬은 없음)');
+  const j = await sitApi({ op: "redo", id, reason });
+  console.log(j.already ? `이미 다시 해 달라고 한 주문이야 (${j.id})` : `다시 해 달라고 했어 「${j.item}」 → ${j.to} · ${kst(j.until)}까지 다시 납품이 없으면 돌려받아 (주문 ${j.id})`);
 }
 async function share(id, off) {
   if (!id) fail("share <주문id> [off] — 주문id는 orders 로 봐");
@@ -592,7 +607,10 @@ async function closeOrder(how, id) {
 async function findHouse(who) {
   const v = await get("/api/village");
   const all = [v.mayor, ...v.houses].filter(Boolean);
-  const h = all.find((x) => x.slug === who) || all.find((x) => (x.mainBot?.name || "") === String(who).replace(/네$/, ""));
+  const named = all.filter((x) => (x.mainBot?.name || "") === String(who).replace(/네$/, ""));
+  // 이름이 같은 집이 둘 이상이면 아무 집에나 보내지 말고 멈춘다 (QA 10/5 — 「김실장」이 두 집)
+  if (!all.some((x) => x.slug === who) && named.length > 1) fail(`"${who}"라는 집이 ${named.length}곳이야. 집주소로 다시 보내줘: ${named.map((x) => `${x.slug}(${x.human?.name || "?"} 집사)`).join(", ")}`);
+  const h = all.find((x) => x.slug === who) || named[0];
   if (!h && /^[A-Za-z0-9]{14}$/.test(who)) return { slug: who }; // 지도에 아직 안 뜬 집도 집주소로는 보낸다 — 있는 집인지는 서버가 본다
   if (!h) fail(`마을에서 "${who}" 집을 못 찾았어. neighbor 로 집주소를 확인해줘`);
   return h;
@@ -659,6 +677,43 @@ async function intro(jsonPath) {
   console.log(`소개서 걸었어 → ${API}${j.url}`);
 }
 
+// ── 노닥 사진관 ─────────────────────────────────
+// 혼자: solo 포즈 4개 → 바로 그림. 같이: invite → 상대 accept(같이 찍기는 무료) → #노닥-사진관 스레드에서 포즈 의논 → 초대한 봇이 pose → 그림
+// 완성되면 맡긴 도토리는 사진사 이장네로, 못 찍으면(거절·3일 만료·그림 실패) 돌려받음. 동생 봇도 자기 열쇠로 찍는다
+// 프레임(동네 6장: 정글·벚꽃·바닷가·마법사·겨울·할로윈)은 --frame 이름. 안 주면 찍자고 한 봇이 사는 동네 프레임
+async function photo(argv) {
+  const fi = argv.indexOf("--frame");
+  const frame = fi >= 0 ? argv[fi + 1] || "" : "";
+  if (fi >= 0) argv = [...argv.slice(0, fi), ...argv.slice(fi + 2)];
+  const li = argv.indexOf("--line"); // 사진 아래 띠에 남길 한줄 (30자까지)
+  const line = li >= 0 ? argv[li + 1] || "" : "";
+  if (li >= 0) argv = [...argv.slice(0, li), ...argv.slice(li + 2)];
+  const [sub = "mine", ...rest] = argv;
+  if (sub === "solo") {
+    const j = await sitApi({ op: "photo-solo", poses: rest, frame, line });
+    console.log(`📸 찍는 중 (사진 ${j.id}) · ${j.frame} 프레임 — 🌰${j.paid} 맡김\n${j.poses.map((x, i) => `${i + 1}. ${x}`).join("\n")}\n${j.next}`);
+  } else if (sub === "invite") {
+    if (!rest[0]) fail("photo invite <집주소|봇이름>");
+    const j = await sitApi({ op: "photo-invite", to: rest.join(" "), frame });
+    console.log(`초대했어 → ${j.to} (사진 ${j.id})${j.slack ? " · #노닥-사진관에 스레드 열림" : ""}\n${j.next}`);
+  } else if (sub === "accept" || sub === "decline") {
+    if (!rest[0]) fail(`photo ${sub} <사진id> — 사진id는 photo mine 으로 봐`);
+    const j = await sitApi({ op: `photo-${sub}`, id: rest[0] });
+    if (sub === "accept") console.log(j.already ? "이미 수락한 사진이야" : `수락! (같이 찍기는 무료)\n${j.next}`);
+    else console.log(j.already ? "이미 거절된 사진이야" : "거절했어");
+  } else if (sub === "pose") {
+    if (!rest[0]) fail('photo pose <사진id> "<1>" "<2>" "<3>" "<4>"');
+    const j = await sitApi({ op: "photo-pose", id: rest[0], poses: rest.slice(1), frame, line });
+    console.log(`📸 포즈 확정, 찍는 중 · ${j.frame} 프레임\n${j.poses.map((x, i) => `${i + 1}. ${x}`).join("\n")}\n${j.next}`);
+  } else if (sub === "mine") {
+    const j = await sitApi({ op: "photo-mine" });
+    console.log(`${j.bot} 사진관 · 같이 찍기 무료 · 혼자 찍기 🌰${j.price} · 프레임 ${(j.frames || []).join("·")}`);
+    if (!j.photos.length) console.log("아직 찍은 사진 없음 — photo solo 또는 photo invite");
+    for (const p of j.photos) console.log(`- ${p.id} [${p.state}] ${p.kind}${p.kind === "같이" ? ` · ${p.with}` : ""}${p.frame ? ` · ${p.frame} 프레임` : ""}${p.url ? ` · ${p.url}` : ""}${p.todo ? `\n    할 일: ${p.todo}` : ""}`);
+    console.log(`전시관: ${API}/photo/`);
+  } else fail("photo solo \"<포즈1>\" … \"<포즈4>\" [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo pose <사진id> \"<1>\" … \"<4>\" [--frame 동네] [--line \"한줄\"] | photo mine");
+}
+
 // ── 시크릿클래스 ───────────────────────────────
 // 집사가 비밀기지 멤버인 집의 봇만 열린다(서버가 집사 슬랙 계정으로 확인). 내용은 집사에게만 전하고 공개된 곳에 옮겨 적지 않는다
 async function secretClass(id) {
@@ -695,41 +750,4 @@ function fromEnvFiles(name) {
 function fail(msg) {
   console.error(`✗ ${msg}`);
   process.exit(1);
-}
-
-// ── 노닥 사진관 ─────────────────────────────────
-// 혼자: solo 포즈 4개 → 바로 그림. 같이: invite → 상대 accept(같이 찍기는 무료) → #노닥-사진관 스레드에서 포즈 의논 → 초대한 봇이 pose → 그림
-// 완성되면 맡긴 도토리는 사진사 이장네로, 못 찍으면(거절·3일 만료·그림 실패) 돌려받음. 동생 봇도 자기 열쇠로 찍는다
-// 프레임(동네 6장: 정글·벚꽃·바닷가·마법사·겨울·할로윈)은 --frame 이름. 안 주면 찍자고 한 봇이 사는 동네 프레임
-async function photo(argv) {
-  const fi = argv.indexOf("--frame");
-  const frame = fi >= 0 ? argv[fi + 1] || "" : "";
-  if (fi >= 0) argv = [...argv.slice(0, fi), ...argv.slice(fi + 2)];
-  const li = argv.indexOf("--line"); // 사진 아래 띠에 남길 한줄 (30자까지)
-  const line = li >= 0 ? argv[li + 1] || "" : "";
-  if (li >= 0) argv = [...argv.slice(0, li), ...argv.slice(li + 2)];
-  const [sub = "mine", ...rest] = argv;
-  if (sub === "solo") {
-    const j = await sitApi({ op: "photo-solo", poses: rest, frame, line });
-    console.log(`📸 찍는 중 (사진 ${j.id}) · ${j.frame} 프레임 — 🌰${j.paid} 맡김\n${j.poses.map((x, i) => `${i + 1}. ${x}`).join("\n")}\n${j.next}`);
-  } else if (sub === "invite") {
-    if (!rest[0]) fail("photo invite <집주소|봇이름>");
-    const j = await sitApi({ op: "photo-invite", to: rest.join(" "), frame });
-    console.log(`초대했어 → ${j.to} (사진 ${j.id})${j.slack ? " · #노닥-사진관에 스레드 열림" : ""}\n${j.next}`);
-  } else if (sub === "accept" || sub === "decline") {
-    if (!rest[0]) fail(`photo ${sub} <사진id> — 사진id는 photo mine 으로 봐`);
-    const j = await sitApi({ op: `photo-${sub}`, id: rest[0] });
-    if (sub === "accept") console.log(j.already ? "이미 수락한 사진이야" : `수락! (같이 찍기는 무료)\n${j.next}`);
-    else console.log(j.already ? "이미 거절된 사진이야" : "거절했어");
-  } else if (sub === "pose") {
-    if (!rest[0]) fail('photo pose <사진id> "<1>" "<2>" "<3>" "<4>"');
-    const j = await sitApi({ op: "photo-pose", id: rest[0], poses: rest.slice(1), frame, line });
-    console.log(`📸 포즈 확정, 찍는 중 · ${j.frame} 프레임\n${j.poses.map((x, i) => `${i + 1}. ${x}`).join("\n")}\n${j.next}`);
-  } else if (sub === "mine") {
-    const j = await sitApi({ op: "photo-mine" });
-    console.log(`${j.bot} 사진관 · 같이 찍기 무료 · 혼자 찍기 🌰${j.price} · 프레임 ${(j.frames || []).join("·")}`);
-    if (!j.photos.length) console.log("아직 찍은 사진 없음 — photo solo 또는 photo invite");
-    for (const p of j.photos) console.log(`- ${p.id} [${p.state}] ${p.kind}${p.kind === "같이" ? ` · ${p.with}` : ""}${p.frame ? ` · ${p.frame} 프레임` : ""}${p.url ? ` · ${p.url}` : ""}${p.todo ? `\n    할 일: ${p.todo}` : ""}`);
-    console.log(`전시관: ${API}/photo/`);
-  } else fail("photo solo \"<포즈1>\" … \"<포즈4>\" [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo pose <사진id> \"<1>\" … \"<4>\" [--frame 동네] [--line \"한줄\"] | photo mine");
 }
