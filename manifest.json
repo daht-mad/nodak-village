@@ -1,5 +1,5 @@
 {
-  "version": "1.16.1",
+  "version": "1.16.2",
   "files": {
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
     "SKILL.md": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -9,7 +9,7 @@
     "references/move-in.md": "ea90e175a5a06a0b3112a614b0f20ccfbd9730920ec66a68ee3eb5f291ca67b4",
     "references/sample-page.jpg": "92aef2ac1f72ad3be76439c81294b0ee6a446aa680a19c18107e86eecf02a524",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/village-rules.md": "0b2c6f319d65aa5669cb90b4e918b5841f0541b07dfdaea5c0930ff6879eaef7",
+    "references/village-rules.md": "5d444806b52694e84975b8934667cf3f1a209c8c927296b0dd26dc687f99aa56",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/make-manifest.mjs": "15e83e9fd036c089cb013939ae45b6a3e4c711ac488e7607572225ac11cc7c30",
