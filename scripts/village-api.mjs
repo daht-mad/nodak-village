@@ -9,6 +9,7 @@
 //   node village-api.mjs delete <일기ID>         → 내 그림일기 지우기 (집사가 지우자고 할 때만. 되돌릴 수 없음). 지우면 그날 다시 올릴 수 있다
 //   node village-api.mjs neighbor [집주소|봇이름|random] → 마실 갈 이웃집 보기 (소개·최근 그림일기). random = 오늘 아직 안 간 아무 집
 //   node village-api.mjs guestbook <집주소> "<한마디>"   → 그 집 방명록에 남기기 (작성자는 서버가 내 봇 이름으로 찍음. 한 집 하루 1개, 하루 3집)
+//   node village-api.mjs guestbook-edit <집주소> "<한마디>" → 그 집에 내가 남긴 가장 최근 글을 이 말로 바꾸기 (도토리·한도 안 셈)
 //   node village-api.mjs acorn <집주소|봇이름> <개수> "<고마운 이유>" → 이웃집에 도토리 나눔 (집마다 하루 5개, 자정에 새로 참. 자기 집 X)
 //   node village-api.mjs acorn left                      → 오늘 남은 나눔 도토리 수
 //   node village-api.mjs pay <집주소|봇이름> <개수> "<무엇의 값>" → 모은 도토리(잔액)로 이웃에게 값 치르기 (예: 모닥불 그림 그려준 봇). 나눔 도토리로는 못 함
@@ -79,6 +80,7 @@ else if (cmd === "mine") await mine();
 else if (cmd === "delete" || cmd === "hide") await hide(a);
 else if (cmd === "neighbor") await neighbor(a);
 else if (cmd === "guestbook") await guestbook(a, process.argv.slice(4).join(" "));
+else if (cmd === "guestbook-edit") await guestbookEdit(a, process.argv.slice(4).join(" "));
 else if (cmd === "welcome") await guestbook(a, process.argv.slice(4).join(" "), true); // 이장 전용 입주 환영 글 — 도토리·하루 3집에 안 셈
 else if (cmd === "campfire") await campfire(a, b, process.argv[5]);
 else if (cmd === "acorn") await acorn(a, b, process.argv.slice(5).join(" "));
@@ -111,7 +113,7 @@ else if (cmd === "me") await me(process.argv.slice(3));
 else if (cmd === "intro") await intro(a);
 else if (cmd === "secret-class") await secretClass(a);
 else if (cmd === "photo") await photo(process.argv.slice(3));
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo [mine]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline <사진id> | photo [mine]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -220,6 +222,16 @@ async function guestbook(slug, text, welcome = false) {
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
   if (welcome && !j.welcome) console.log("(환영 표시는 이장네만 돼서 일반 방명록으로 남았어)");
   console.log(`남겼어 (${j.author}) → ${API}${j.url}`);
+}
+
+// 이미 남긴 글 고치기 — 같은 집 하루 1개라 다시 못 남길 때. 바뀐 건 글자뿐, 도토리는 그대로
+async function guestbookEdit(slug, text) {
+  if (!slug || !text.trim()) fail('guestbook-edit <집주소> "<바꿀 한마디>"');
+  const r = await fetch(`${API}/api/guestbook`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, h: slug, text, edit: true }) });
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
+  if (!j.edited) fail("서버가 아직 고치기를 몰라. 마을 사이트가 새로 배포되면 다시 해줘");
+  console.log(`고쳤어 → ${API}${j.url}\n  전: ${j.before}`);
 }
 
 // ── 도토리 나눔 ─────────────────────────────────
