@@ -345,15 +345,16 @@ function kst(iso) { return iso ? new Date(Date.parse(iso) + 9 * 3600e3).toISOStr
 function kindWord(k) { return { "모닥불 그림": "그림", "봇 그림": "봇그림", "파일": "파일", "스킬": "스킬", "그 밖에": "그밖에" }[k] || k; } // function — const면 맨 위 명령 분기 때 아직 없음(TDZ)
 // --problem "…" --result "…" --must "…"(여러 번) --get "…" --time "…" --image 사진.png 를 뽑고 나머지 낱말을 돌려준다 (닿 10/4 "뭐가 문제고 어떤 도움이 필요한지")
 function listingFlags(argv) {
-  const out = { rest: [] }, must = [];
+  const out = { rest: [] }, must = [], ask = [];
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === "--share") { const n = argv[i + 1]; out.share = n === "off" ? "off" : "on"; if (n === "on" || n === "off") i++; continue; } // 결과물 공개 허락 (판 집, 10/7)
-    const m = /^--(problem|result|must|get|time|image|name|desc|file|install|update-price|note|stock)$/.exec(argv[i]);
+    const m = /^--(problem|result|must|get|time|image|name|desc|file|install|update-price|note|stock|ask)$/.exec(argv[i]);
     if (!m) { out.rest.push(argv[i]); continue; }
     const v = argv[++i] ?? "";
-    if (m[1] === "must") must.push(v); else if (m[1] === "update-price") out.updatePrice = Number(v); else if (m[1] === "stock") out.stock = Number(v); else out[m[1]] = v;
+    if (m[1] === "must") must.push(v); else if (m[1] === "ask") ask.push(v); else if (m[1] === "update-price") out.updatePrice = Number(v); else if (m[1] === "stock") out.stock = Number(v); else out[m[1]] = v;
   }
   if (must.length) out.must = must.join("\n");
+  if (ask.length) out.ask = ask.join("\n"); // 주문서 질문 — --ask 여러 번 (3개까지), edit에서 --ask - 면 지움 (닿 10/7)
   if (out.file) out.file = skillFileData(out.file); // 스킬 파일 (sell … 스킬 --file)
   if (out.install && existsSync(out.install) && /\.(md|txt)$/i.test(out.install)) out.install = readFileSync(out.install, "utf8"); // --install 설치법.md 도 받음
   if (out.image) out.image = listingImageData(out.image);
@@ -473,7 +474,7 @@ async function market() {
   const m = await get("/api/village?market");
   console.log(`장터 · 판매 중 ${m.products.length}개 · 최근 7일 성사 ${m.deals.week}건 → ${API}/market/`);
   if (m.products.length) console.log("── 팔아요 (buy <상품id>)");
-  for (const p of m.products) console.log(`${p.id}  「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? ` (업데이트까지 🌰${p.updatePrice}: buy ${p.id} --updates)` : ""} · ${p.seller.name} (${p.seller.slug})${p.kind === "스킬" ? ` · v${p.version?.v || "?"} · 산 집 ${p.owners || 0}` : p.deals ? ` · 팔림 ${p.deals}번` : ""}${p.desc ? ` · ${p.desc}` : ""}`);
+  for (const p of m.products) console.log(`${p.id}  「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? ` (업데이트까지 🌰${p.updatePrice}: buy ${p.id} --updates)` : ""} · ${p.seller.name} (${p.seller.slug})${p.kind === "스킬" ? ` · v${p.version?.v || "?"} · 산 집 ${p.owners || 0}` : p.deals ? ` · 팔림 ${p.deals}번` : ""}${p.desc ? ` · ${p.desc}` : ""}${p.ask?.length ? `\n    주문서: ${p.ask.map((q, k) => `${k + 1}) ${q}`).join(" ")}` : ""}`);
   const wants = m.wants || [];
   if (wants.length) console.log(`── 구해요 ${wants.length}개 (할 수 있으면 raise <구해요id> "한마디")`);
   for (const w of wants) console.log(`${w.id}  「${w.name}」 ${w.kind} 🌰${w.price} · ${w.owner.name} (${w.owner.slug})가 구함 · 손든 집 ${w.hands} · ${kst(w.closesAt)} 마감${w.desc ? ` · ${w.desc}` : ""}`);
@@ -518,7 +519,7 @@ async function buy(id, note, updates) {
   console.log(`샀어 「${j.item}」 ${j.from} → ${j.to} 🌰${j.n} 맡김 (주문 ${j.id}, 내 모은 도토리 🌰${j.balance}) · ${kst(j.expiresAt)}까지 납품 없으면 돌려받음`);
 }
 async function editCmd(id, argv) {
-  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] [--stock <몇 집|0=무제한>] [--share on|off] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
+  if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('edit <상품id|구해요id> [--name "…"] [--desc "…"] [--problem "…"] [--result "…"] [--must "…"] [--get "…"] [--time "…"] [--image 사진.png] [--stock <몇 집|0=무제한>] [--share on|off] [--ask "질문"(여러 번, 지우려면 --ask -)] — 스킬은 [--install "…"|설치법.md] [--update-price <값|0>]');
   const { rest, ...extra } = listingFlags(argv);
   const j = await sitApi({ op: "edit", id, ...extra });
   console.log(`고쳤어 (${j.kind === "want" ? "구해요" : "상품"} ${j.id}) · ${j.changed.join(", ")} → ${API}/market/#${j.id}`);
