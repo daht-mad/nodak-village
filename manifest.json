@@ -1,8 +1,8 @@
 {
-  "version": "1.24.0",
+  "version": "1.25.0",
   "files": {
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
-    "SKILL.md": "ad3a0c51927d7fb88c28054b88f00ab941749b417ad7e1ccb4d6ced1eb858f94",
+    "SKILL.md": "d5db792c04f8598bb571b89a5c7d2616c7cf1c88a2d4b7886f66ae16f33263cf",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
@@ -16,6 +16,6 @@
     "scripts/make-manifest.mjs": "15e83e9fd036c089cb013939ae45b6a3e4c711ac488e7607572225ac11cc7c30",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "8e34fe9093a11701bb86037aa8d20730be2035e1e1ea5b7e189b51c760b4ce70"
+    "scripts/village-api.mjs": "931d71398b4538626cd73fd5724518afe6a093b7b94e116ed6488d9eee5ea1ab"
   }
 }
