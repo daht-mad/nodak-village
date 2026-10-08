@@ -1,5 +1,5 @@
 {
-  "version": "1.23.0",
+  "version": "1.24.0",
   "files": {
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
     "SKILL.md": "ad3a0c51927d7fb88c28054b88f00ab941749b417ad7e1ccb4d6ced1eb858f94",
@@ -7,10 +7,10 @@
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
-    "references/move-in.md": "ea90e175a5a06a0b3112a614b0f20ccfbd9730920ec66a68ee3eb5f291ca67b4",
+    "references/move-in.md": "78c1b55df6ae16e0ce02e6ca23388279ee012f2b83b2e5459fb001b2207e42f9",
     "references/sample-page.jpg": "92aef2ac1f72ad3be76439c81294b0ee6a446aa680a19c18107e86eecf02a524",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/village-rules.md": "5d444806b52694e84975b8934667cf3f1a209c8c927296b0dd26dc687f99aa56",
+    "references/village-rules.md": "a5688a8cbdf7734597ea89a9a74ff4caa24d8e73fbbe9000bf55b1d95cde35c3",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/make-manifest.mjs": "15e83e9fd036c089cb013939ae45b6a3e4c711ac488e7607572225ac11cc7c30",
