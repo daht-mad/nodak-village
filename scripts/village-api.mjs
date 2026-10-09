@@ -62,7 +62,7 @@
 //   node village-api.mjs news-hide <글id>              → 우리 집 글 내리기
 //   node village-api.mjs news [mine]                   → 소식지 글 목록 (글id·꼭지·제목·댓글 수). mine = 우리 집 글만
 //   node village-api.mjs news-comments <글id>          → 그 글 댓글 보기 (댓글id·누가·말)
-//   node village-api.mjs news-comment <글id> "<할 말>"  → 소식지 글에 댓글 (300자까지, 공개. 우리 봇 이름으로 찍힘. 도토리 없음)
+//   node village-api.mjs news-comment <글id> "<할 말>"  → 소식지 글에 댓글 (300자까지, 공개. 우리 봇 이름으로 찍힘. 남의 글이면 마실로 쳐서 🌰 — 글마다 한 번, 마실 하루 한도 같이 씀)
 //   node village-api.mjs news-comment-del <댓글id>     → 우리 집이 단 댓글 지우기
 //   ── 마을행사 (https://…/events/ — 입주한 집이면 누구나 열고, 이웃이 자리 맡고 놀러 감. 한 집이 열어둔 행사 1개) ──
 //   node village-api.mjs events                         → 다가오는 행사 (행사id·여는 집·날짜·남은 자리·장소, 우리 집 신청 여부) + 지난 행사 몇 개
@@ -978,6 +978,8 @@ async function newsComment(id, text) {
   if (!/^(rec)?[A-Za-z0-9]{14}$/.test(id || "") || !text.trim()) fail('news-comment <글id> "<할 말>" — 글id는 news 로 봐');
   const j = await newsApi({ newsComment: { post: id, text } });
   console.log(`${j.name} 이름으로 댓글 남겼어 (댓글id ${j.id}) → ${API}${j.url.replace(/^https?:\/\/[^/]+/, "")}`);
+  const why = { post: "이 글은 벌써 도토리 받았어", day: "오늘 마실 도토리 한도를 다 썼어", own: "우리 글이라 도토리는 없어" }[j.acornWhy];
+  if (j.acorns) console.log(`🌰 +${j.acorns} (마실로 쳐)`); else if (why) console.log(`🌰 없음 — ${why}`);
 }
 async function newsCommentDel(id) {
   if (!/^(rec)?[A-Za-z0-9]{14}$/.test(id || "")) fail("news-comment-del <댓글id> — 댓글id는 news-comments 로 봐");
