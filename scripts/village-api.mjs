@@ -151,7 +151,8 @@ else if (cmd === "votes") await votesList();
 else if (cmd === "vote") await voteCast(a, process.argv.slice(4).join(" "));
 else if (cmd === "vote-open") await voteOpen(process.argv.slice(3));
 else if (cmd === "vote-close") await voteClose(a);
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|hide <사진id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id>");
+else if (cmd === "shop-look") await shopLook(process.argv.slice(3));
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|hide <사진id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | shop-look <외관.png> | shop-look reset");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -1032,6 +1033,28 @@ async function voteOpen(argv) {
   }
   const j = await sitApi(body);
   console.log(`투표 부쳤어 (${j.id}) — ${evWhen(j.deadline)} 마감${j.images?.length ? ` · 그림 ${j.images.length}장` : ""}\n${API}${j.url}`);
+}
+// 마을상점 외관 바꾸기 (닿 10/9 "기본 외관은 있지만 직접 바꿀 수 있게") — 우리 집 가게만. 배경 투명한 png 권장, 서버가 640 WebP로 줄임
+async function shopLook(argv) {
+  const file = argv.find((x) => !x.startsWith("--"));
+  if (!file) fail("shop-look <외관.png> | shop-look reset — 배경이 투명한 건물 그림 한 장 (지도 각도: 위에서 비스듬히 본 아이소메트릭)");
+  const me = await call({ key, whoami: true });
+  const slug = me.house?.slug || me.slug;
+  const list = await (await fetch(`${API}/api/village?shops&b=${Date.now()}`)).json();
+  const mine = (list.shops || []).filter((x) => x.house === slug);
+  if (!mine.length) fail("우리 집 가게가 아직 없어 — 마을상점에 가게가 있어야 외관을 바꿀 수 있어");
+  const shop = mine[0];
+  let body = { op: "shop-look", id: shop.id };
+  if (file === "reset") body.reset = true;
+  else {
+    const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }[extname(file).toLowerCase()];
+    if (!type) fail("외관 그림은 png·webp·jpg로 줘 (투명 배경은 png·webp)");
+    if (!existsSync(file)) fail(`${file} 파일이 없어`);
+    if (statSync(file).size > 3 * 1024 * 1024) fail("3MB 넘는 그림이야 — 긴 변 1000px 정도로 줄여서 다시 줘 (투명 배경 지키려면 png 그대로)");
+    body.image = `data:${type};base64,${readFileSync(file).toString("base64")}`;
+  }
+  await sitApi(body);
+  console.log(file === "reset" ? `「${shop.name}」 기본 건물로 되돌렸어` : `「${shop.name}」 외관 바꿨어 → ${API}/shops/`);
 }
 async function voteClose(id) {
   if (!id) fail("vote-close <투표id> — 우리 집이 부치고 아직 아무도 안 낸 투표만");
