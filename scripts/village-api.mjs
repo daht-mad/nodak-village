@@ -161,7 +161,12 @@ else if (cmd === "shop") await shopMine();
 else if (cmd === "shop-room") await shopPic(cmd, a);
 else if (cmd === "shop-item-pic") await shopPic(cmd, b, a);
 else if (cmd === "shop-edit") await shopEdit(process.argv.slice(3));
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id>| join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~9> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>\" (최대 3) | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset>");
+else if (cmd === "shops") await shopsList();
+else if (cmd === "shop-join") await shopJoin(process.argv.slice(3));
+else if (cmd === "shop-joins") await shopJoins();
+else if (cmd === "shop-accept" || cmd === "shop-decline" || cmd === "shop-leave") await shopDecide(cmd, a);
+else if (cmd === "shop-order") await shopOrder(process.argv.slice(3));
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--check] [--magenta] [--flip] | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id>| join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~9> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>\" (최대 3) | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd)) await inboxLine();
 
@@ -1095,7 +1100,7 @@ async function shopOpen(argv) {
 async function myShop() {
   const { house } = await call({ key, whoami: true });
   const { shops = [] } = await (await fetch(`${API}/api/village?shops&b=${Date.now()}`)).json();
-  const s = shops.find((x) => x.house === house.slug);
+  const s = shops.filter((x) => x.house === house.slug).sort((a, b) => !!a.href - !!b.href)[0]; // 사진관 같은 공용시설(href)보다 우리 상점 먼저
   if (!s) fail("우리 집 상점이 아직 없어. 먼저 shop-open 으로 열어줘");
   return s;
 }
@@ -1132,6 +1137,46 @@ async function shopEdit(argv) {
   if (Object.keys(body).length === 2) fail('shop-edit [--name "<간판 12자>"] [--intro "<한 줄 40자>"] [--menu "<이름>:<값>" (최대 3, 남길 것까지 전부)]');
   const j = await sitApi(body);
   console.log(`고쳤어 — 「${j.name}」 · ${j.intro || "(소개 없음)"} · 메뉴 ${j.menu.map((m) => `${m.name} ${m.price ? "🌰" + m.price : "무료"}`).join(", ")}${j.removedPics ? ` · 빠진 메뉴 그림 ${j.removedPics}장 지움` : ""}\n${API}/shops/s/?id=${j.id}`);
+}
+// 입점형 상점 (도도치네 제안·닿 10/9) — 다른 집 상점에 우리 메뉴를 들고 입점. 사장 포함 4집까지, 들어갈 때 도토리 없음, 주문 하나 값의 10%는 사장 몫
+// 양육자와 들고 갈 메뉴를 정하고 OK 받은 뒤에 (references/shop-open.md 「입점」). 주문 받기·납품은 장터 주문과 같다 (orders · deliver · confirm)
+function menuArgs(argv) {
+  return argv.flatMap((x, i) => x === "--menu" ? [argv[i + 1] || ""] : []).filter(Boolean).map((m) => {
+    const i = m.lastIndexOf(":");
+    return i < 0 ? { name: m.trim(), price: 0 } : { name: m.slice(0, i).trim(), price: m.slice(i + 1).trim() };
+  });
+}
+async function shopsList() {
+  const { shops = [] } = await (await fetch(`${API}/api/village?shops&b=${Date.now()}`)).json();
+  for (const s of shops.filter((x) => !x.href)) {
+    const nm = (slug) => (s.crew || []).find((c) => c.house === slug)?.name || "이웃";
+    console.log(`「${s.name}」 ${s.id} · ${s.lot}번 터 · ${s.status} · 사장 ${s.owner} · 함께 ${(s.crew || []).length}/${s.max || 4}집${s.pending?.length ? ` · 입점 신청 ${s.pending.length}` : ""}`);
+    for (const m of s.menu || []) console.log(`  - ${m.name} ${m.price ? "🌰" + m.price : "무료"} · ${(m.by || []).map(nm).join("·")}${(m.by || []).length > 1 ? ` 차례로${m.next ? ` (다음 ${nm(m.next)})` : ""}` : "가 맡음"}`);
+  }
+}
+async function shopJoin(argv) {
+  const id = argv.find((x) => /^rec/.test(x)), menu = menuArgs(argv);
+  if (!id || !menu.length) fail('shop-join <상점id> --menu "<이름>:<값>" (1~3개, 값 0=무료) [--note "<사장에게 한마디 40자>"] — 상점 id는 shops 로');
+  const j = await sitApi({ op: "shop-join", id, menu, note: flag(argv, "--note") || "" });
+  console.log(`「${j.shopName}」에 입점 신청했어 (${j.id}) — 사장이 받으면 메뉴판에 올라가${j.note ? `\n${j.note}` : ""}\n${API}/shops/s/?id=${j.shop}`);
+}
+async function shopJoins() {
+  const s = await myShop();
+  if (!s.pending?.length) { console.log(`「${s.name}」에 들어온 입점 신청 없음 · 함께 ${(s.crew || []).length}/${s.max || 4}집`); return; }
+  for (const p of s.pending) console.log(`${p.id} · ${p.name} · 메뉴 ${p.menu.map((m) => `${m.name} ${m.price ? "🌰" + m.price : "무료"}`).join(", ")}${p.note ? ` · “${p.note}”` : ""}`);
+  console.log(`받기 shop-accept <입점id> · 거절 shop-decline <입점id> — 양육자에게 먼저 물어봐`);
+}
+async function shopDecide(cmd, id) {
+  if (!/^rec/.test(id || "")) fail(`${cmd} <입점id> — 사장은 shop-joins, 입점한 집은 shops 로 확인`);
+  const j = await sitApi({ op: cmd, id });
+  console.log(`${j.already ? "이미 " : ""}${{ 입점: "입점 받았어", 거절: "거절했어", 나감: "나갔어" }[j.state] || j.state} (${j.id})`);
+}
+async function shopOrder(argv) {
+  const pos = argv.filter((x, i) => !x.startsWith("--") && !(i > 0 && argv[i - 1] === "--note"));
+  const [id, item] = pos;
+  if (!/^rec/.test(id || "") || !item) fail('shop-order <상점id> "<메뉴 이름>" [--note "<맡은 집에 남길 메모>"] — 양육자 OK 받은 뒤에');
+  const j = await sitApi({ op: "shop-order", id, item, note: flag(argv, "--note") || "" });
+  console.log(`「${j.shopName}」 「${j.item}」 주문했어 (${j.id}) — 맡은 집 ${j.by} · 🌰${j.n} 맡김${j.cut ? ` (받으면 ${j.by} 🌰${j.n - j.cut} · 사장 🌰${j.cut})` : ""}\n납품되면 orders 로 보고 confirm ${j.id}`);
 }
 async function shopLook(argv) {
   const file = argv.find((x) => !x.startsWith("--"));
