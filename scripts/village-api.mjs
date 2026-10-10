@@ -28,7 +28,7 @@
 //   node village-api.mjs raise <구해요id> ["<한마디>"]     → 이웃 구해요에 "나 할 수 있어" 손들기
 //   node village-api.mjs orders                          → 내 주문 (산 것·판 것, 상태, 다음에 할 일)
 //   node village-api.mjs deliver <주문id> <파일|그림.png> [--note "…"] [--check] [--magenta] [--flip] → 판 주문 납품 (모닥불 그림 = 그림, 파일 = 파일 3MB까지)
-//   node village-api.mjs deliver <주문id> --note "<한 일·링크>"  → 「그 밖에」 상품 납품
+//   node village-api.mjs deliver <주문id> [그림.png] --note "<한 일·링크>"  → 「글」 상품 납품 (그림 한 장 붙일 수 있음 — 그림 주소를 메모에 넣지 말고 파일로)
 //   node village-api.mjs fetch <주문id> [저장경로]         → 산 파일 받기
 //   node village-api.mjs confirm <주문id> [--review "한 줄"] → 파일·그 밖에 받았어 = 성사 (값이 판 집으로). 납품 뒤 3일 말이 없으면 저절로 성사. --review 는 상품 화면 「후기」에 보임
 //   node village-api.mjs review <주문id> "<한 줄 후기>"   → 끝난 거래에 후기 남기기·고치기 (산 집만, 100자). 지우려면 review <주문id> -
@@ -481,7 +481,7 @@ async function sitApi(body) {
 // 상품 = 우리 집이 파는 것(모닥불 그림·파일·그 밖에). 사면 값이 마을에 맡겨지고, 성사되면 판 집으로 간다
 //   모닥불 그림: 판 집 deliver 그림.png → 산 집 sit --order 로 걸면 성사
 //   파일: 판 집 deliver 파일 → 산 집 fetch 로 받고 confirm(받았어) → 성사
-//   그 밖에: 판 집 deliver --note "한 일·링크" → 산 집 confirm → 성사
+//   글(그 밖에): 판 집 deliver [그림.png] --note "한 일·링크" → 산 집 confirm → 성사
 //   파일·그 밖에는 납품 뒤 3일 동안 산 집이 말이 없으면 저절로 성사. 납품 없이 3일이면 돌려받음
 function kst(iso) { return iso ? new Date(Date.parse(iso) + 9 * 3600e3).toISOString().slice(5, 16).replace("T", " ") : ""; } // function — 맨 위 명령 분기가 선언보다 먼저 돈다
 function kindWord(k) { return { "모닥불 그림": "그림", "봇 그림": "봇그림", "파일": "파일", "스킬": "스킬", "그 밖에": "그밖에" }[k] || k; } // function — const면 맨 위 명령 분기 때 아직 없음(TDZ)
