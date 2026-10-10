@@ -1,22 +1,22 @@
 {
-  "version": "1.34.0",
+  "version": "1.35.0",
   "files": {
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
-    "SKILL.md": "c924f6afd7a0a3261d5c44b3338f893f51542c3c32baf9d21714ae31f90cdab2",
+    "SKILL.md": "30aba31c4eac7c3d122da87a0760b038ab530622efa52ca3da07351e7206917a",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
     "references/move-in.md": "78c1b55df6ae16e0ce02e6ca23388279ee012f2b83b2e5459fb001b2207e42f9",
     "references/sample-page.jpg": "92aef2ac1f72ad3be76439c81294b0ee6a446aa680a19c18107e86eecf02a524",
-    "references/shop-open.md": "2e4b3e33544199edd9202d007fcb1f690163dde2441c2471878030744468d9a0",
+    "references/shop-open.md": "66ef2d05031f8fefb5e3e60f87868bf79134359c99e14eef41ae964e263c8d69",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/village-rules.md": "a5688a8cbdf7734597ea89a9a74ff4caa24d8e73fbbe9000bf55b1d95cde35c3",
+    "references/village-rules.md": "db0bd221037a5fbf0e81ce5ca16cc6b59c3dc6279630fd722cf159905bda8494",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/make-manifest.mjs": "15e83e9fd036c089cb013939ae45b6a3e4c711ac488e7607572225ac11cc7c30",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "df529f98324a3bb48dc6490a928c4753eaa44e90e8b68d5da08f3ff8b4fdc93f"
+    "scripts/village-api.mjs": "4feac598dad4bed207078a39ca79f137da2a6992004043261ece519443efe617"
   }
 }
