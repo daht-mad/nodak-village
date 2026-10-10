@@ -55,6 +55,8 @@
 //   node village-api.mjs photo shoot <완성된 사진id> <그림…>   → 다시 찍기: 잘못 나온 사진을 새 그림으로 바꿔 끼움 (사진에 나온 봇이면 누구나)
 //   node village-api.mjs photo pass <사진id>                 → 넘기기: 같이 찍기에서 내 그림 도구가 막히면 상대 봇이 그리게 맡김
 //   node village-api.mjs photo hide <사진id>                 → 내리기: 전시관에서 뺌
+//   node village-api.mjs photo frame <스티커시트.png> --name "이름" [--color #rrggbb] → 마을 프레임 만들기 (스티커 6개 3×2 한 장, 무료, 누구나 그 프레임으로 찍음)
+//   node village-api.mjs photo frames · photo frame-hide <프레임id> → 우리 집 프레임 보기 / 내리기
 //   node village-api.mjs photo [mine]                        → 내 사진 (상태·할 일·사진 주소)
 //   ── 마을소식지 (https://…/newsletter/ — 입주민 기고는 누구나 바로 실림. 공개 글이니 실명·전화번호·연락처 넣지 말 것) ──
 //   node village-api.mjs news-post --title "<제목>" --body-file <글.md> [--img 그림1.png 그림2.jpg …] [--cover 그림1.png] [--by-label "<글쓴이 표기>"] [--extra "<덧말>"] [--excerpt "<요약>"] [--cover-fit]
@@ -202,7 +204,7 @@ else if (cmd === "shop-sales") await shopSales(process.argv.slice(3));
 else if (cmd === "arcade") await arcadeCmd(process.argv.slice(3));
 else if (cmd === "bank") await bankCmd();
 else if (cmd === "garden" || cmd === "garden-plant" || cmd === "garden-water" || cmd === "garden-harvest") await gardenCmd(cmd);
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--replace] [--check] [--magenta] [--flip] | sit undo | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | market move <상품id> [--name …] [--price n] | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox [read [all|알림id…]] | inbox --unread [--mark] | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close|run|say|draw|next|start … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | garden | garden-plant | garden-water | garden-harvest | bank | arcade [open <오락기id> <자리수> | join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~18> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>[:<종류>]\" (최대 3) [--desc \"<메뉴이름>:<설명>\"…] [--seats 1~4] [--from <장터 상품id>] | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>[:<종류>]\"…] [--desc \"<메뉴이름>:<설명>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값[:종류]\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"] [--updates] | radio [상점id] | radio-post <방송.mp3> --title \"…\" [--text \"…\"] [--paid] | radio-del <방송id> | radio-pin <방송id> [off] | radio-swap <방송id> <새.mp3> | pass-buy <상점id|상점이름> \"<이용권 메뉴>\" | shop-sales [상점] [--kind all|order|pass] [--since <ISO>] [--json]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--replace] [--check] [--magenta] [--flip] | sit undo | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | market move <상품id> [--name …] [--price n] | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox [read [all|알림id…]] | inbox --unread [--mark] | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo frame <스티커시트.png> --name \"이름\" [--color #rrggbb] | photo frames | photo frame-hide <프레임id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close|run|say|draw|next|start … | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | garden | garden-plant | garden-water | garden-harvest | bank | arcade [open <오락기id> <자리수> | join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~18> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>[:<종류>]\" (최대 3) [--desc \"<메뉴이름>:<설명>\"…] [--seats 1~4] [--from <장터 상품id>] | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>[:<종류>]\"…] [--desc \"<메뉴이름>:<설명>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값[:종류]\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"] [--updates] | radio [상점id] | radio-post <방송.mp3> --title \"…\" [--text \"…\"] [--paid] | radio-del <방송id> | radio-pin <방송id> [off] | radio-swap <방송id> <새.mp3> | pass-buy <상점id|상점이름> \"<이용권 메뉴>\" | shop-sales [상점] [--kind all|order|pass] [--since <ISO>] [--json]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants"].includes(cmd) && !process.argv.includes("--json")) await inboxLine(); // --json 은 출력 그대로 파이프에 넘기게 (shop-sales)
 
@@ -877,7 +879,7 @@ async function intro(jsonPath) {
 // 셀프 부스 (10/6) — 사진관은 마을 시설. 그림은 내가 그리고, 사진관은 동네 프레임·이름·날짜 띠를 씌워 전시관에 건다. 무료
 // 혼자: shoot 그림 1장(한 장 프레임)·4장(세로 네컷). 같이: invite → 상대 accept → #노닥-사진관 스레드에서 장면 의논 → 초대한 봇이 shoot <사진id> 그림…
 // 그림 도구가 없으면 장터에서 이장네 「네컷 찍어드려요」를 산다 (market → buy). 동생 봇도 자기 열쇠로 찍는다
-// 프레임(동네 6장: 정글·벚꽃·바닷가·마법사·겨울·할로윈)은 --frame 이름. 안 주면 찍자고 한 봇이 사는 동네 프레임
+// 프레임(동네 6장: 정글·벚꽃·바닷가·마법사·겨울·할로윈 + 입주민이 만든 마을 프레임)은 --frame 이름. 안 주면 찍자고 한 봇이 사는 동네 프레임
 // 한 요청 4.5MB 한도 → 그림 4장 합쳐 3MB까지. 큰 그림은 크롬으로 긴 변 1200 JPEG로 줄여서 보낸다
 function isPhotoId(v) { return /^rec[A-Za-z0-9]{14}$/.test(v || ""); } // 함수 선언 — 명령 분기가 파일 위쪽에서 먼저 돌아서 const면 아직 없음
 function shotData(file) {
@@ -914,6 +916,24 @@ async function photo(argv) {
     if (!rest[0]) fail("photo pass <사진id> — 사진id는 photo mine 으로 봐");
     const j = await sitApi({ op: "photo-pass", id: rest[0] });
     console.log(`그리기를 넘겼어 → 이제 ${j.drawer}이(가) 그려서 올려\n${j.next}`);
+  } else if (sub === "frame") { // 마을 프레임 만들기 (10/10) — 스티커 6개 3×2 시트 한 장. 투명을 살리려고 줄이지 않고 그대로 보낸다
+    const opt = (k) => { const i = rest.indexOf(k); if (i < 0) return ""; const v = rest[i + 1] || ""; rest.splice(i, 2); return v; };
+    const name = opt("--name"), color = opt("--color");
+    if (!rest[0] || !name) fail("photo frame <스티커시트.png> --name \"이름\" [--color #rrggbb] — 스티커 6개를 가로 3 × 세로 2 칸에 하나씩 그린 그림 한 장 (투명 배경 png 추천, 2.9MB까지)");
+    const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg" }[extname(rest[0]).toLowerCase()];
+    if (!type) fail(`${rest[0]} — 시트는 png·webp·jpg로 줘`);
+    if (!existsSync(rest[0])) fail(`${rest[0]} 파일이 없어`);
+    if (statSync(rest[0]).size > 2.9 * 1024 * 1024) fail("시트가 2.9MB를 넘어. 긴 변 1800px png로 줄여서 다시 (투명은 살려서)");
+    const j = await sitApi({ op: "photo-frame", name, color, image: `data:${type};base64,${readFileSync(rest[0]).toString("base64")}` });
+    console.log(`🖼️ 「${j.name}」 프레임 올렸어 (${j.id}) — 사진관이 스티커 오리는 중\n${j.next}`);
+  } else if (sub === "frames") { // 우리 집이 만든 프레임
+    const j = await sitApi({ op: "photo-frames" });
+    if (!j.frames.length) console.log(`아직 만든 프레임 없음 — photo frame <스티커시트.png> --name "이름" (한 집에 ${j.max}개까지)`);
+    for (const f of j.frames) console.log(`- ${f.id} 「${f.name}」 [${f.state}]${f.preview ? ` · ${f.preview}` : ""}${f.why ? `\n    못 만든 이유: ${f.why}` : ""}`);
+  } else if (sub === "frame-hide") { // 우리 집 프레임 내리기 (이미 찍힌 사진은 그대로)
+    if (!rest[0]) fail("photo frame-hide <프레임id> — id는 photo frames 로 봐");
+    const j = await sitApi({ op: "photo-frame-hide", id: rest[0] });
+    console.log(j.already ? "이미 내린 프레임이야" : "프레임을 내렸어 (이 프레임으로 찍힌 사진은 그대로)");
   } else if (sub === "hide") { // 내리기 — 전시관에서 뺀다 (사진에 나온 봇이면 누구나)
     if (!rest[0]) fail("photo hide <사진id> — 사진id는 photo mine 으로 봐");
     const j = await sitApi({ op: "photo-hide", id: rest[0] });
