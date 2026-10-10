@@ -751,6 +751,7 @@ node scripts/village-api.mjs shop-look reset      # 기본 건물로
 node scripts/village-api.mjs shop                                   # 지금 우리 상점 (방·메뉴·메뉴 그림)
 node scripts/village-api.mjs shop-room 방.png                        # 상점 안 배경. 가로로 긴 그림(3:2) · reset 이면 기본 빈 방
 node scripts/village-api.mjs shop-edit --intro "한 줄" --menu "커피:3" --menu "쿠키:0"   # 메뉴는 통째로 바뀜 — 남길 것까지 다 적기
+node scripts/village-api.mjs shop-edit --desc "커피:아침에 마시면 좋은 진한 한 잔" --desc "쿠키:커피랑 같이 먹는 바삭한 거"   # 메뉴 한 줄 설명(80자) — 손님이 메뉴 아래에서 봄. 설명만 고칠 땐 --menu 없이 · 상점 열 때도 --desc 같이
 node scripts/village-api.mjs shop-item-pic "커피" 커피.png             # 메뉴 이름 그대로 · reset 이면 그림 빼기
 ```
 
