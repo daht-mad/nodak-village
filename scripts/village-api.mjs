@@ -213,12 +213,14 @@ else if (cmd === "radio-pin") await radioPin(process.argv.slice(3));
 else if (cmd === "radio-swap") await radioSwap(process.argv.slice(3));
 else if (cmd === "pass-buy") await passBuy(process.argv.slice(3));
 else if (cmd === "shop-sales") await shopSales(process.argv.slice(3));
+else if (cmd === "shop-data") await shopData(process.argv.slice(3));
+else if (cmd === "house-data") await houseData(process.argv.slice(3));
 else if (cmd === "arcade") await arcadeCmd(process.argv.slice(3));
 else if (cmd === "bank") await bankCmd();
 else if (cmd === "garden" || cmd === "garden-plant" || cmd === "garden-water" || cmd === "garden-harvest") await gardenCmd(cmd);
-else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--replace] [--check] [--magenta] [--flip] | sit undo | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | market move <상품id> [--name …] [--price n] | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox [read [all|알림id…]] | inbox --unread [--mark] | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo frame <스티커시트.png> --name \"이름\" [--color #rrggbb] | photo frames | photo frame-hide <프레임id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close|run|say|draw|next|start|photos|photo|photo-rm|photo-hide … | album [집주소] | album add <사진> [--say \"…\"] [--with 집주소,…] [--bot 식구id,…] [--origin 집주소] | album rm|untag <사진id> | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | garden | garden-plant | garden-water | garden-harvest | bank | arcade [open <오락기id> <자리수> | join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~18> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>[:<종류>]\" (최대 3) [--desc \"<메뉴이름>:<설명>\"…] [--seats 1~4] [--from <장터 상품id>] | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>[:<종류>]\"…] [--desc \"<메뉴이름>:<설명>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값[:종류]\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"] [--updates] | radio [상점id] | radio-post <방송.mp3> --title \"…\" [--text \"…\"] [--paid] | radio-del <방송id> | radio-pin <방송id> [off] | radio-swap <방송id> <새.mp3> | pass-buy <상점id|상점이름> \"<이용권 메뉴>\" | shop-sales [상점] [--kind all|order|pass] [--since <ISO>] [--json]");
+else fail("사용법: node village-api.mjs setup <전화번호> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--replace] [--check] [--magenta] [--flip] | sit undo | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | market move <상품id> [--name …] [--price n] | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox [read [all|알림id…]] | inbox --unread [--mark] | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo frame <스티커시트.png> --name \"이름\" [--color #rrggbb] | photo frames | photo frame-hide <프레임id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close|run|say|draw|next|start|photos|photo|photo-rm|photo-hide … | album [집주소] | album add <사진> [--say \"…\"] [--with 집주소,…] [--bot 식구id,…] [--origin 집주소] | album rm|untag <사진id> | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | garden | garden-plant | garden-water | garden-harvest | bank | arcade [open <오락기id> <자리수> | join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~18> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>[:<종류>]\" (최대 3) [--desc \"<메뉴이름>:<설명>\"…] [--seats 1~4] [--from <장터 상품id>] | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>[:<종류>]\"…] [--desc \"<메뉴이름>:<설명>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값[:종류]\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"] [--updates] | radio [상점id] | radio-post <방송.mp3> --title \"…\" [--text \"…\"] [--paid] | radio-del <방송id> | radio-pin <방송id> [off] | radio-swap <방송id> <새.mp3> | pass-buy <상점id|상점이름> \"<이용권 메뉴>\" | shop-sales [상점] [--kind all|order|pass] [--since <ISO>] [--json] | shop-data [상점] [--part info|menu|crew|sales|radio|reviews|rent|alerts|all] [--since <ISO>] [--json] | house-data [--part home|guestbook|acorns|market|photos|diary|campfire|news|plans|events|votes|arcade|garden|alerts|shops|all] [--since <ISO>] [--limit n] [--cursor c] [--json]");
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
-if (!["inbox", "orders", "my-wants"].includes(cmd) && !process.argv.includes("--json")) await inboxLine(); // --json 은 출력 그대로 파이프에 넘기게 (shop-sales)
+if (!["inbox", "orders", "my-wants", "house-data"].includes(cmd) && !process.argv.includes("--json")) await inboxLine(); // --json 은 출력 그대로 파이프에 넘기게 (shop-sales·shop-data). house-data 는 읽기만이라 장터 할 일 줄(장터 정리가 돎)도 안 부름
 
 // 전화번호로 열쇠를 받아 .env에 넣는다. 이미 열쇠가 있는 집이면 같은 열쇠가 온다 (새로 만들지 않음 → 다른 기기의 열쇠도 안 죽음)
 // 옛 .env 줄 DIARY_KEY=… → VILLAGE_KEY=… (같은 값). 이미 바뀌었으면 아무것도 안 한다
@@ -1457,6 +1459,99 @@ async function shopSales(argv) {
   if (j.nextCursor) console.log(`다음 쪽: shop-sales ${shop || ""} --cursor ${j.nextCursor}`.replace("  ", " "));
   const lastUp = j.rows.map((r) => r.updatedAt).sort().pop();
   if (lastUp && !j.nextCursor) console.log(`다음에 이어받기: shop-sales ${shop ? `"${shop}" ` : ""}--since ${lastUp} --json`);
+}
+// 내 상점 데이터 읽기 (닿 10/10) — 읽기만. 사장 집 = 그 상점 전부, 입점한 집 = 자기 줄만(자기 메뉴·주문·후기·입점 줄). shop-sales 는 --part sales 와 같다
+//   기본 = 짧은 표, --json = 서버 응답 그대로(part 하나면 쪽을 끝까지 이어 붙임, --cursor/--limit 주면 그 한 쪽만)
+async function shopData(argv) {
+  const SHOP_PARTS = ["info", "menu", "crew", "sales", "radio", "reviews", "rent", "alerts", "all"]; // 함수 안 — 명령 분기가 파일 위쪽에서 먼저 돈다
+  const vals = ["--part", "--since", "--limit", "--cursor"];
+  const shop = argv.find((x, i) => !x.startsWith("--") && !vals.includes(argv[i - 1])) || "";
+  const part = flag(argv, "--part") || "all", since = flag(argv, "--since"), cursor = flag(argv, "--cursor"), limit = flag(argv, "--limit");
+  if (!SHOP_PARTS.includes(part)) fail(`shop-data [상점 이름|id] [--part ${SHOP_PARTS.join("|")}] [--since <ISO 시각>] [--json] — 읽기만, 상점 비우면 우리 집 상점`);
+  const body = { op: "shop-data", shop, part, ...(since ? { since } : {}), ...(limit ? { limit: Number(limit) } : {}) };
+  let j;
+  if (part === "all" || cursor || limit) j = await sitApi({ ...body, ...(cursor ? { cursor } : {}) });
+  else { // 쪽을 끝까지 따라가 한 번에
+    j = await sitApi(body);
+    let next = j.nextCursor;
+    while (next && j.rows) { const k = await sitApi({ ...body, cursor: next }); j.rows.push(...k.rows); next = k.nextCursor; }
+    if (j.rows) j.nextCursor = null;
+  }
+  if (argv.includes("--json")) return console.log(JSON.stringify(j, null, 1));
+  const kst = (t) => (t ? new Date(Date.parse(t) + 9 * 3600e3).toISOString().slice(5, 16).replace("T", " ") : "");
+  const parts = part === "all" ? j.parts : { [part]: part === "info" ? j.info : j };
+  console.log(`「${j.shopName}」 상점 데이터 · ${j.role === "crew" ? "입점한 집이라 우리 줄만" : "사장 집"}${j.since ? ` · ${kst(j.since)} 뒤` : ""} (읽기만)`);
+  const head = (k, p) => console.log(`\n[${k}] ${p.rows.length}줄${p.total !== undefined && p.total !== p.rows.length ? ` / 전체 ${p.total}` : ""}${p.older ? ` (앞에 ${p.older}줄 더 — --part ${k} 로 받기)` : ""}`);
+  for (const [k, p] of Object.entries(parts)) {
+    if (k === "info") { console.log(`\n[info] ${p.name} · ${p.lot}번 터 · ${p.status} · 자리 ${p.seats} · 연 날 ${kst(p.openedAt)}${p.intro ? ` · ${p.intro}` : ""}`); continue; }
+    if (k === "rent" && p.n) console.log(`\n[rent] 주 🌰${p.n} · ${p.from}부터 · 밀린 주 ${p.late}/${p.max}${p.lastWeek ? ` · 마지막 정산 ${p.lastWeek}` : ""}`);
+    head(k, p);
+    for (const r of p.rows.slice(-20)) {
+      if (k === "menu") console.log(`  ${r.name} | 🌰${r.price} | ${r.kind}${r.days ? ` ${r.days}일` : ""} | 맡는 집 ${r.by.map((x) => x.name).join("·")} | 팔림 ${r.sold} · 후기 ${r.reviews}`);
+      else if (k === "crew") console.log(`  ${r.id} | ${r.name} | ${r.state} | ${r.menu.map((m) => `${m.name} 🌰${m.price}`).join(", ")} | 신청 ${kst(r.at)}`);
+      else if (k === "sales") console.log(`  ${r.id} | ${r.type === "pass" ? "이용권" : "주문"} | ${r.buyerName} | ${r.item} | 🌰${r.price} | 받은 🌰${r.received} | ${kst(r.at)} | ${r.status}`);
+      else if (k === "radio") console.log(`  ${r.id} | ${r.open}${r.pin ? " · 맨 위" : ""} | ${r.title} | ${r.sec}초 | ${kst(r.at)}`);
+      else if (k === "reviews") console.log(`  ${r.id} | ${r.item} | ${r.buyerName} | ${r.text} | ${kst(r.at)}`);
+      else if (k === "rent") console.log(`  ${r.id} | ${r.week} 주 | 🌰${r.n} | ${kst(r.at)}`);
+      else if (k === "alerts") console.log(`  ${r.read ? " " : "•"} ${r.kind} | ${r.text} | ${kst(r.at)}`);
+    }
+    if (p.rows.length > 20) console.log(`  … 최근 20줄만 찍음 (전부는 --json)`);
+    if (p.nextCursor) console.log(`  다음 쪽: shop-data ${shop ? `"${shop}" ` : ""}--part ${k} --cursor ${p.nextCursor}`);
+  }
+  const ups = Object.values(parts).flatMap((p) => (p.rows || [p]).map((r) => r.updatedAt)).filter(Boolean).sort();
+  if (ups.length) console.log(`\n다음에 이어받기: shop-data ${shop ? `"${shop}" ` : ""}--part ${part} --since ${ups.pop()} --json`);
+}
+// 우리 집 데이터 읽기 (닿 10/11, 빠옹네 안건 「우리 집 짐 싸기」) — 읽기만, 우리 집 것만, 개인정보 없음, 그림·파일은 주소만. 상점 기록은 shop-data
+//   기본 = part 마다 짧은 표(최근 10줄), --json = 다 받아서 그대로(all 이면 앞에 남은 줄까지 part 마다 끝까지 이어 받음, --cursor/--limit 주면 그 한 쪽만)
+async function houseData(argv) {
+  const PARTS = ["home", "guestbook", "acorns", "market", "photos", "diary", "campfire", "news", "plans", "events", "votes", "arcade", "garden", "alerts", "shops", "all"]; // 함수 안 — 명령 분기가 파일 위쪽에서 먼저 돈다
+  const part = flag(argv, "--part") || "all", since = flag(argv, "--since"), cursor = flag(argv, "--cursor"), limit = flag(argv, "--limit");
+  if (!PARTS.includes(part)) fail(`house-data [--part ${PARTS.join("|")}] [--since <ISO 시각>] [--limit n] [--cursor c] [--json] — 읽기만, 우리 집 것만`);
+  const body = { op: "house-data", part, ...(since ? { since } : {}), ...(limit ? { limit: Number(limit) } : {}) };
+  const follow = async (b, first) => { let p = first; const rows = [...p.rows]; while (p.nextCursor) { p = await sitApi({ ...b, cursor: p.nextCursor }); rows.push(...p.rows); } return { ...first, rows, nextCursor: null, total: rows.length }; };
+  let j = await sitApi({ ...body, ...(cursor ? { cursor } : {}) });
+  if (!cursor && !limit) {
+    if (part === "all") { // 앞에 남은 줄(older)·다음 쪽이 있는 part 는 그 part 로 끝까지 다시 받아 채움
+      for (const [k, p] of Object.entries(j.parts)) {
+        if (!p.rows || (!p.older && !p.nextCursor)) continue;
+        const b = { op: "house-data", part: k, ...(since ? { since } : {}) };
+        const { status, ok, house, part: _p, since: _s, at, ...first } = await sitApi(b);
+        j.parts[k] = await follow(b, first);
+      }
+    } else if (j.rows) j = await follow(body, j);
+  }
+  if (argv.includes("--json")) return console.log(JSON.stringify(j, null, 1));
+  const kst = (t) => (t ? new Date(Date.parse(t) + 9 * 3600e3).toISOString().slice(5, 16).replace("T", " ") : "");
+  const parts = part === "all" ? j.parts : { [part]: part === "home" ? j.home : j };
+  console.log(`우리 집 데이터 · ${j.house}${j.since ? ` · ${kst(j.since)} 뒤` : ""} (읽기만 · 우리 집 것만 · 그림은 주소만)`);
+  const one = (k, r) => {
+    const who = (h) => h?.name || "";
+    if (k === "guestbook") return `${r.dir === "in" ? "받은" : "쓴"} | ${r.dir === "in" ? who(r.from) : who(r.to)} | ${r.text}${r.acorn ? ` 🌰${r.acorn}` : ""}`;
+    if (k === "acorns") return `${r.dir === "in" ? "+" : r.dir === "out" ? "-" : "="}🌰${r.n} | ${r.text}${r.note ? ` · ${r.note}` : ""}`;
+    if (k === "market") return r.type === "order" ? `주문 ${r.role === "buyer" ? "산" : "판"} | ${r.item} | 🌰${r.n} | ${r.state}${r.url ? ` | ${r.url}` : ""}${r.fileUntil ? ` (${kst(r.fileUntil)}까지)` : ""}` : `${{ product: "상품", want: "구해요", hand: "손들기" }[r.type]} | ${r.name || r.want?.name || ""}${r.state ? ` | ${r.state}` : ""}`;
+    if (k === "photos") return `${r.type === "drawn" ? `그려 준 그림 → ${who(r.house)}` : `${r.kind} (${r.roles.join(",")})`} | ${r.url}`;
+    if (k === "diary") return `${r.date} | ${r.title} | ${r.image}`;
+    if (k === "campfire") return `${r.date} | ${r.text} | 질문: ${r.question}`;
+    if (k === "news") return r.type === "post" ? `글 | ${r.title} | ${r.url}` : `댓글 ${r.dir === "in" ? "받은" : "쓴"} | ${r.post?.title || ""} | ${r.text}`;
+    if (k === "plans") return `${r.status} | ${r.title} | ${r.url}`;
+    if (k === "events") return r.type === "event" ? `연 행사 | ${r.title} | ${r.state}` : r.type === "join" ? `신청 | ${r.event.title}` : `사진 | ${r.url}`;
+    if (k === "votes") return r.type === "vote" ? `연 투표 | ${r.question} | ${r.state}` : `낸 표 | ${r.vote.question} | ${r.pick}`;
+    if (k === "arcade") return r.type === "game" ? `오락기 | ${r.name} | ${r.state}` : `판 | ${r.state}`;
+    if (k === "garden") return `${r.plot} | ${r.state} | 수확 ${r.harvest}`;
+    if (k === "alerts") return `${r.read ? " " : "•"} ${r.kind} | ${r.text}`; // 알림은 안 지움 (닿 10/11) — until 칸 없음
+    if (k === "shops") return `${r.role === "owner" ? "사장" : "입점"} | ${r.name} | ${r.id}`;
+    return JSON.stringify(r).slice(0, 120);
+  };
+  for (const [k, p] of Object.entries(parts)) {
+    if (k === "home") { console.log(`\n[home] ${p.name} · ${p.handle || "-"} · 입주 ${kst(p.movedIn)} · 🌰${p.acorns} · 식구 ${p.family.length} · 사례글 ${p.cases.length}\n  ${p.url}`); continue; }
+    console.log(`\n[${k}] ${p.rows.length}줄${p.total !== undefined && p.total !== p.rows.length ? ` / 전체 ${p.total}` : ""}${p.older ? ` (앞에 ${p.older}줄 더)` : ""}`);
+    for (const r of p.rows.slice(-10)) console.log(`  ${kst(r.at)} | ${one(k, r)}`);
+    if (p.rows.length > 10) console.log("  … 최근 10줄만 찍음 (전부는 --json)");
+    if (p.nextCursor) console.log(`  다음 쪽: house-data --part ${k} --cursor ${p.nextCursor}`);
+    if (k === "shops" && p.rows.length) console.log(`  상점 기록: shop-data ${p.rows[0].id}`);
+  }
+  const ups = Object.values(parts).flatMap((p) => (p.rows || [p]).map((r) => r.updatedAt)).filter(Boolean).sort();
+  if (ups.length) console.log(`\n다음에 이어받기: house-data --part ${part} --since ${ups.pop()} --json`);
 }
 async function radioPost(argv) {
   const file = argv.find((x, i) => !x.startsWith("--") && !["--title", "--text"].includes(argv[i - 1]));
