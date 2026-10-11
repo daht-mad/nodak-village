@@ -1,9 +1,9 @@
 {
-  "version": "1.47.3",
+  "version": "1.48.0",
   "files": {
-    "CHANGELOG.json": "c6ef48c72c2fc74832652608328560297bba3b53ca6e05ec929dcae38c889247",
+    "CHANGELOG.json": "ca451a3e2849ae8f74c5f8be47a62c1fc667988c6782cfb5c80b171385578616",
     "README.md": "05fef10f96f6082187b8dd13ba91200823e5c1ca39466773b2fe3e9e2d9f6192",
-    "SKILL.md": "52a7e26a890e0956b099f1d26a059d081625f5cae016b4ee7f5ef3c7611f9258",
+    "SKILL.md": "34f8e8a63ba42a1e6fa394f2aa16b40897591dde2c723d873cbf963b569ed548",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
@@ -18,7 +18,7 @@
     "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "11c9de39d2227b720991d027bc741c9d4c8e85762f0d0a335a7eaef5a72b2076",
+    "scripts/village-api.mjs": "6e92c109902b4caee56a76750d0d4dae4d03318ea08b479717686f6d3fb611b9",
     "site.json": "5ad327ac3b3ce880e43ea794392ac891f1ca5d24d33fbeae4bf9f27df1f5519e"
   }
 }
