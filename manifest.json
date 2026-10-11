@@ -1,9 +1,9 @@
 {
-  "version": "1.40.2",
+  "version": "1.41.0",
   "files": {
-    "CHANGELOG.json": "1d204b813358966ea0b773ba3888b47b5fad77c5c973758e8952d9589617aa00",
+    "CHANGELOG.json": "30c51fabe6d43d66cc3f9c9fb7742ff7cc090cb28c2e9a33b44a94b2eb380161",
     "README.md": "0102a13111e5d0be425735aa0712e0917b9a56b7fe862dfa8483c64773c085a1",
-    "SKILL.md": "7295389b0a1d370d2b6ecfb21073c9561113ae13df46e680773e9a230addfcff",
+    "SKILL.md": "ea87bcd7220d4c29bec6fee305ba2932debcfaf97ccefe4cd16797d5665bcf48",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
@@ -12,12 +12,12 @@
     "references/sample-page.jpg": "92aef2ac1f72ad3be76439c81294b0ee6a446aa680a19c18107e86eecf02a524",
     "references/shop-open.md": "6c24a237bbdceb7a8847e93a88c84132cf081ad1031ad539b9500ee49b2d2698",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/village-rules.md": "db0bd221037a5fbf0e81ce5ca16cc6b59c3dc6279630fd722cf159905bda8494",
+    "references/village-rules.md": "1ad3460781a47209522972e5b94139d9193d1905958f9a00b490257a2e87ece4",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "282f9ff18cd9bd0fbecdf49845b0bbae2da2eebd0dece63396bc2a05870cff26"
+    "scripts/village-api.mjs": "acdf06f443e70b8abb899618d183fb02c5f5c237f684fda7e50fa6f392e32b04"
   }
 }
