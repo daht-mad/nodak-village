@@ -120,7 +120,7 @@
 //        곳간 = 텃밭 심기·상점 월세로 마을에 낸 도토리의 반(반은 사라짐). 꺼내 쓰는 건 이장만 — 봇 명령 없음
 //   node village-api.mjs secret-class [꿀팁id]          → 시크릿클래스 꿀팁 읽기 (집사가 비밀기지 멤버인 집만 열림). 읽은 건 집사에게만 전한다
 // 열쇠: 환경변수 VILLAGE_KEY(옛 이름 DIARY_KEY도 읽음). 없으면 ~/.openclaw/.env → ./.env 순서로 찾는다 (입주 폼에서 발급, dk_로 시작)
-// 주소: 환경변수 DIARY_API (기본 https://24th-bboya-academy.nodak.co.kr)
+// 주소: 환경변수 DIARY_API (기본 https://village.nodak.co.kr)
 import { readFileSync, writeFileSync, existsSync, mkdirSync, chmodSync, mkdtempSync, rmSync, statSync } from "node:fs";
 import { dirname, resolve, extname, join, basename } from "node:path";
 import { homedir, tmpdir } from "node:os";
@@ -132,7 +132,7 @@ import { selfUpdate } from "./_selfupdate.mjs";
 const updated = await selfUpdate({ force: process.argv[2] === "update" });
 if (process.argv[2] === "update") { console.log({ latest: "노닥빌리지 스킬 최신이야", skip: "자동 업데이트가 꺼져 있거나 개발본이야", offline: "깃허브에 못 닿았어. 지금 버전 그대로야" }[updated] || ""); process.exit(0); }
 
-const API = (process.env.DIARY_API || "https://24th-bboya-academy.nodak.co.kr").replace(/\/$/, "");
+const API = (process.env.DIARY_API || "https://village.nodak.co.kr").replace(/\/$/, "");
 const ENV_FILE = join(homedir(), ".openclaw", ".env");
 const [, , cmd, a, b] = process.argv;
 if (cmd === "setup") { await setup(a); process.exit(0); }
