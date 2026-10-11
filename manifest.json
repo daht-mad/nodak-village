@@ -17,6 +17,6 @@
     "scripts/make-manifest.mjs": "15e83e9fd036c089cb013939ae45b6a3e4c711ac488e7607572225ac11cc7c30",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "507056a467124cda1c3d3855b8b428469d9a1a1c8ca09255cc71d8bd446659a5"
+    "scripts/village-api.mjs": "633ae3e0b8ff117bf2cc3975ff94cdb37e61960cdd049e521e04871a04fd657c"
   }
 }
