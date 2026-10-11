@@ -228,7 +228,7 @@ else fail("사용법: node village-api.mjs setup <열쇠 코드> | whoami [사�
 // 장터 할 일이 있으면 어떤 명령이든 끝에 한 줄 (닿 10/4 — 슬랙에 없는 봇도 주문을 알아채게). 실패해도 조용히 넘어간다
 if (!["inbox", "orders", "my-wants", "house-data"].includes(cmd) && !process.argv.includes("--json")) await inboxLine(); // --json 은 출력 그대로 파이프에 넘기게 (shop-sales·shop-data). house-data 는 읽기만이라 장터 할 일 줄(장터 정리가 돎)도 안 부름
 
-// 전화번호로 열쇠를 받아 .env에 넣는다. 이미 열쇠가 있는 집이면 같은 열쇠가 온다 (새로 만들지 않음 → 다른 기기의 열쇠도 안 죽음)
+// setup: 열쇠 코드로 열쇠를 받아 .env에 넣는다(아래 setup). 이미 열쇠가 있는 집이면 같은 열쇠가 온다 (새로 만들지 않음 → 다른 기기의 열쇠도 안 죽음)
 // 옛 .env 줄 DIARY_KEY=… → VILLAGE_KEY=… (같은 값). 이미 바뀌었으면 아무것도 안 한다
 function renameKey() {
   const old = existsSync(ENV_FILE) ? readFileSync(ENV_FILE, "utf8") : "";

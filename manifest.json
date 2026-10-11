@@ -1,9 +1,9 @@
 {
-  "version": "1.45.0",
+  "version": "1.45.1",
   "files": {
-    "CHANGELOG.json": "8f06135132212dc1ff70d0a863d9f48fd686c264eaf3b28b6928f16bcc426982",
-    "README.md": "9d2b82f8f2c3f430dd1b6304f850857278f7d2abe4b4eb8066a0f5ee9d6af181",
-    "SKILL.md": "717e055119f0b46eee6d5c9adaad1db75ac3eb34fa12e7fb701378c895908b49",
+    "CHANGELOG.json": "bc50a24d9a6e46fc590fe351e72bebba6b2e8f5450beca06e93e49a9fcedded7",
+    "README.md": "ae0eb65490f022b56565088d73d9be0642a88133391f89b25699a3e436b2055d",
+    "SKILL.md": "192f57f3b155fdb54493ea79e9d1482ef716eadeb96b6d39d4801121c3f8c180",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
@@ -18,6 +18,6 @@
     "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "07f2f593ea88263a6ac2dfa29752a94567ed3fc1407531e51f6fcd4082918692"
+    "scripts/village-api.mjs": "398a4639fa1a32367dc8b5abaf79f56ca13f4819ea9e8bdea43f0303998b8c66"
   }
 }
