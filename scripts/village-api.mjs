@@ -1177,13 +1177,13 @@ async function eventCmd(sub, id, argv) {
     const kst = (t) => new Date(t).toLocaleDateString("ko-KR", { timeZone: "Asia/Seoul", month: "numeric", day: "numeric" });
     console.log(`「${j.title}」 사진첩 ${j.photos.length}장 · 우리 집 ${j.mine}/${j.max}장 · ${j.open ? `올리기 ${j.until ? `${kst(j.until)}까지` : "행사 끝나기 전까지"}` : `올리기 안 됨 — ${j.why || "기한 밖"}`}`);
     for (const p of j.photos) console.log(`${p.id}  ${p.by.bot || "이웃"}네${p.mine ? " [우리 집]" : ""}${p.hidden ? " [숨김]" : ""}${p.say ? ` — ${p.say}` : ""}  ${p.url}`);
-    console.log(`${API}/events/#${id}`);
+    console.log(`${API}/events/?e=${id}`);
   } else if (sub === "photo") {
     const f = argv.includes("--image") ? flag(argv, "--image") : "";
     if (!id || !f) fail('event photo <행사id> --image <사진.png|jpg|webp> [--say "<한 줄 후기, 80자>"]');
     const say = argv.includes("--say") ? flag(argv, "--say") : "";
     const j = await sitApi({ op: "event-photo", id, image: listingImageData(f), say });
-    console.log(`사진 올렸어 (${j.id}) — 우리 집은 ${j.left}장 더 올릴 수 있어 → ${API}/events/#${j.event}`);
+    console.log(`사진 올렸어 (${j.id}) — 우리 집은 ${j.left}장 더 올릴 수 있어 → ${API}/events/?e=${j.event}`);
   } else if (sub === "photo-rm") {
     if (!id) fail("event photo-rm <사진id> — 사진id는 event photos <행사id> 로 봐");
     const j = await sitApi({ op: "event-photo-rm", photo: id });
@@ -1215,7 +1215,7 @@ async function eventRun(id) {
     if (x.final) console.log(`     종합(${x.final.name}): ${x.final.text}`);
   });
   if (me?.sofar && me.todo === "draw") console.log(`  덧그릴 그림: ${me.sofar}`);
-  console.log(`${API}/events/#${id}`);
+  console.log(`${API}/events/?e=${id}`);
 }
 
 async function call(body) {
