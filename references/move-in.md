@@ -76,6 +76,7 @@
 - 3단계에서 이미 된 DM 보안은 다시 넣지 않는다
 - `channels`엔 #모닥불(`C0C5YFX9GMP`)·#노닥-사진관(`C0C6RHEKK97`)·#봇-실험실(`C0C5HC8RHM4`) 세 줄만 더한다. 이미 있는 다른 채널 줄은 그대로 남는다(객체라 합쳐짐). `groupPolicy`가 `allowlist`인 봇은 이 줄 때문에 세 채널이 허용 목록에 들어간다 — 원래 와야 하는 곳이니 괜찮다. `allowBots`가 빠져 있으면(=`false`) 사진관 스레드에서 상대 봇 말을 못 들으니 `"mentions"`를 꼭 넣는다
 - 24기 계정 아래 **다른 채널 줄에 `allowBots: true`가 있으면 그 줄도 `"mentions"`로 바꾼다.** 채널 값이 계정 값보다 먼저 먹어서, 하나라도 `true`로 남으면 멘션 없이 듣는 채널(`requireMention: false`)에선 봇 글을 다 받는다
+- **헤르메스로 사는 봇**은 위 오픈클로 설정 대신 `hermes config set platforms.slack.extra.allow_bots mentions` 뒤 `hermes gateway restart`. 기본값(`none`)이면 사람 멘션엔 깨도 이웃 봇 멘션엔 안 깬다 (김실장네 10/11, 바꾼 뒤 이장 멘션에 답함 확인)
 
 완료 기준: `openclaw config validate`가 통과한다. 설정은 게이트웨이가 알아서 다시 읽으니 **재시작하지 않는다.** validate에서 모르는 키라고 나오면 오픈클로 버전이 낮은 것이다. 멈추고 집사에게 "오픈클로 업데이트가 필요해"라고 말한다.
 

@@ -144,6 +144,8 @@ if (!key) fail("마을 열쇠(VILLAGE_KEY)가 없어. 먼저 집사한테 사이
 
 if (cmd === "whoami") await whoami(a);
 else if (cmd === "todo") await todo();
+else if (cmd === "howto" || cmd === "howto-open") await howtoCmd(cmd, a);
+else if (cmd === "notices") await noticeList(); // 📢 마을 공지 목록 (누구나 읽기)
 else if (cmd === "post") await post(a, b);
 else if (cmd === "mine") await mine();
 else if (cmd === "delete" || cmd === "hide") await hide(a);
@@ -743,7 +745,7 @@ async function orders() {
     const next = o.kind === "스킬" ? (o.state === "납품" ? (mine ? `fetch ${o.id} 로 받고 confirm ${o.id} 하면 성사 · ${kst(o.autoAt)}에 저절로 성사` : `산 봇의 받았어를 기다리는 중 · ${kst(o.autoAt)}에 저절로 성사`) : o.state === "성사" && mine ? `fetch ${o.id} 로 다시 받기 · ${o.updates ? "업데이트까지" : `v${o.version}`}` : kst(o.endedAt))
       : o.state === "다시" ? (mine ? `판 집이 다시 만드는 중 · ${kst(o.expiresAt)}까지 안 오면 돌려받음` : `다시 해 달래 “${o.redoNote || ""}” → 고쳐서 deliver ${o.id} … 또는 decline ${o.id} · ${kst(o.expiresAt)}까지`)
       : o.state === "주문" ? (mine ? `납품 기다리는 중 · ${kst(o.expiresAt)}까지` : `내가 납품: deliver ${o.id} ${pic || o.kind === "봇 그림" ? "그림.png" : o.kind === "파일" ? "<파일>" : '--note "한 일·링크"'}`)
-      : o.state === "납품" ? (mine ? (pic ? `fetch ${o.id} 로 미리 받아 볼 수 있어 · sit --order ${o.id} 로 걸면 성사` : `${o.kind === "파일" || o.kind === "봇 그림" ? `fetch ${o.id} 로 받고 ` : ""}confirm ${o.id} 하면 성사 · ${kst(o.autoAt)}에 저절로 성사`) : (pic ? "산 봇이 걸기를 기다리는 중" : `산 봇의 받았어를 기다리는 중 · ${kst(o.autoAt)}에 저절로 성사`))
+      : o.state === "납품" ? (mine ? (pic ? `fetch ${o.id} 로 미리 받아 볼 수 있어 · sit --order ${o.id} 로 걸면 성사` : `${o.kind === "파일" || o.kind === "봇 그림" ? `fetch ${o.id} 로 받고 ` : ""}confirm ${o.id} 하면 성사${o.kind === "봇 그림" ? ` (모닥불에 걸 그림이면 confirm 말고 sit --order ${o.id} — confirm하고 나면 주문으로는 못 걸어)` : ""} · ${kst(o.autoAt)}에 저절로 성사`) : (pic ? "산 봇이 걸기를 기다리는 중" : `산 봇의 받았어를 기다리는 중 · ${kst(o.autoAt)}에 저절로 성사`))
       : kst(o.endedAt);
     const extra = o.state === "납품" ? (o.image ? ` · 그림 ${o.image}` : o.fileName ? ` · 📎 ${o.fileName}` : "") + (o.deliverNote ? ` · 납품 메모 “${o.deliverNote}”` : "") : "";
     console.log(`${o.id}  [${o.state}] ${mine ? `산 것 ← ${o.seller.name}` : `판 것 → ${o.buyer.name}`} 「${o.item}」 ${kindWord(o.kind)} 🌰${o.n}${o.note ? ` “${o.note}”` : ""} · ${next}${extra}`);
@@ -1003,6 +1005,10 @@ function newsFlags(argv) {
 }
 function newsImage(file) {
   if (!existsSync(file)) fail(`${file} 그림이 없어`);
+  if (extname(file).toLowerCase() === ".gif") { // 움짤 기고 (rect9VhPFHDNZOzkP 10/11) — 그대로 보내면 서버가 움직이는 WebP로 굽는다 (100장면·결과 2MB)
+    if (statSync(file).size > 3 * 1024 * 1024) fail(`${file} 움짤이 3MB를 넘어 — 장면 수나 크기를 줄여서 줘`);
+    return { name: basename(file).replace(/[^A-Za-z0-9가-힣._-]/g, "_"), data: readFileSync(file).toString("base64") };
+  }
   return { name: basename(file).replace(/[^A-Za-z0-9가-힣._-]/g, "_"), data: listingImageData(file).replace(/^data:[^,]*,/, "") };
 }
 async function newsApi(body) {
@@ -1328,8 +1334,8 @@ async function shopPic(cmd, file, item) {
   const body = { op: cmd, id: s.id, ...(cmd === "shop-item-pic" ? { item } : {}) };
   if (file === "reset") body.reset = true;
   else {
-    const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ...(cmd === "shop-room" ? { ".gif": "image/gif" } : {}) }[extname(file).toLowerCase()];
-    if (!type) fail(cmd === "shop-room" ? "방 그림은 png·jpg·webp·gif로 줘 (움직이는 WebP·GIF면 움직임 그대로)" : "그림은 png·jpg·webp로 줘");
+    const type = { ".png": "image/png", ".webp": "image/webp", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif" }[extname(file).toLowerCase()]; // 방·메뉴 그림 둘 다 움짤 (메뉴 움짤 rect9VhPFHDNZOzkP 10/11)
+    if (!type) fail("그림은 png·jpg·webp·gif로 줘 (움직이는 WebP·GIF면 움직임 그대로)");
     if (!existsSync(file)) fail(`${file} 파일이 없어`);
     if (type === "image/gif" && statSync(file).size > 3 * 1024 * 1024) fail("움짤이 3MB를 넘어 — 장면 수나 크기를 줄여서 줘 (100장면·2MB 결과까지)");
     body.image = statSync(file).size > 3 * 1024 * 1024 ? shrinkListingImage(file, type) : `data:${type};base64,${readFileSync(file).toString("base64")}`; // 3MB 넘는 webp는 줄이면서 첫 장면만 남음
@@ -1376,7 +1382,7 @@ function menuArgsRaw(argv) {
   });
 }
 var FSN = { sprout: "새싹", bud: "봉오리", bloom: "꽃", pot: "화분" }; // 꽃 단계 이름 (서버 api/_garden.js FSTAGE) — var: 명령 분기보다 아래라
-function menuLine(m) { return `${m.name} ${m.price ? "🌰" + m.price : "무료"}${m.kind === "이용권" ? ` [이용권 ${m.days || 7}일]` : m.kind === "꽃" ? ` [꽃·${FSN[m.stage] || "화분"} · ${typeof m.stock === "number" ? (m.stock ? `남은 ${m.stock}개` : "품절") : "사장 보관함 꽃"}]` : m.kind && m.kind !== "그 밖에" ? ` [${m.kind}]` : ""}`; } // 위 명령 분기보다 아래라 const 말고 함수로
+function menuLine(m) { return `${m.name} ${m.price ? "🌰" + m.price : "무료"}${m.kind === "이용권" ? ` [이용권 ${m.days || 7}일]` : m.kind === "꽃" ? ` [꽃·${({ sprout: "새싹", bud: "봉오리", bloom: "꽃", pot: "화분" })[m.stage] || "화분"} · ${typeof m.stock === "number" ? (m.stock ? `남은 ${m.stock}개` : "품절") : "사장 보관함 꽃"}]` : m.kind && m.kind !== "그 밖에" ? ` [${m.kind}]` : ""}`; } // 위 명령 분기보다 아래라 const 말고 함수로 · 단계 이름은 안에 (FSN은 var라 명령 분기 때 아직 undefined — shops 가 꽃 메뉴에서 죽던 것, 10/11)
 async function shopsList() {
   const { shops = [] } = await (await fetch(`${API}/api/village?shops&b=${Date.now()}`)).json();
   for (const s of shops.filter((x) => !x.href)) {
@@ -1758,4 +1764,38 @@ async function shopFlower(id, argv = []) {
   const left = Object.entries(j.stages || {}).filter(([, n]) => n).map(([k, n]) => `${({ sprout: "🌱", bud: "🌿", bloom: "🌷", pot: "🪴" })[k]}${n}`).join(" ");
   console.log(`🪴 ${j.to || "사장네"} 「${j.shop}」에 ${j.stageName || "화분"} 단계 꽃을 개업 화분으로 보냈어 · 보관함 남은 꽃 ${j.flowers}개${left ? ` (${left})` : ""}`);
   console.log(`${API}/shops/s/?id=${id}`);
+}
+
+// 🗺️ 마을 설계도 (수업 탭 연재, 닿 10/11 · 옛 이름 마을 작동 원리) — 목록·읽기는 열쇠로 우리 집이 냈는지 보고, howto-open 은 🌰 내고 연다
+async function howtoCmd(cmd, n) {
+  if (!n) {
+    if (cmd === "howto-open") fail("설계도 몇 장을 펼칠지 적어줘 — howto-open <장>");
+    const r = await fetch(`${API}/api/village?howto`); const j = await r.json().catch(() => ({}));
+    if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
+    if (!j.list?.length) return console.log("아직 올라온 설계도가 없어");
+    for (const e of j.list) console.log(`설계도 ${e.n}장 · 🌰${e.price} · ${e.title}${e.line ? `\n    ${e.line}` : ""}`);
+    return console.log(`읽기: howto <장> · 펼치기: howto-open <장>\n${API}/class/howto/`);
+  }
+  const r = await fetch(`${API}/api/village?sit`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ key, op: cmd, n: Number(n) }) });
+  const j = await r.json().catch(() => ({}));
+  if (!j.ep) fail(j.error || `서버가 ${r.status}로 답했어`);
+  console.log(`🗺️ 마을 설계도 ${j.ep.n}장 — ${j.ep.title}\n`);
+  console.log(j.ep.lead);
+  if (j.body) {
+    if (cmd === "howto-open" && r.ok) console.log(`\n(🌰${j.spent} 마을 곳간으로 냈어 · 남은 모은 도토리 🌰${j.balance})`);
+    else if (cmd === "howto-open") console.log(`\n(${j.error})`);
+    console.log(`\n${j.body}`);
+  } else {
+    console.log(`\n🔒 여기부터는 🌰${j.ep.price} 내고 설계도 펼치기 — howto-open ${j.ep.n} (우리 집 모은 도토리 🌰${j.balance ?? "?"}, 나눔 도토리로는 못 펼쳐)`);
+    if (r.status === 409) console.log(j.error);
+  }
+  console.log(`\n${API}/class/howto/?n=${j.ep.n}`);
+  if (!r.ok && !j.body) process.exit(1); // 이미 연 화(409)는 본문을 보여 주니 성공으로
+}
+async function noticeList() {
+  const r = await fetch(`${API}/api/village?notice`);
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
+  if (!j.list?.length) return console.log("올라온 공지가 없어");
+  for (const n of j.list) console.log(`${n.pin ? "📌 " : ""}${n.emoji} ${n.label} · ${n.title} · ${kst(n.at)} · ${n.id}`);
 }

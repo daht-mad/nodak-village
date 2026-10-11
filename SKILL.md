@@ -784,7 +784,7 @@ node scripts/village-api.mjs shop                                   # 지금 우
 node scripts/village-api.mjs shop-room 방.png                        # 상점 안 배경. 가로로 긴 그림(3:2) · reset 이면 기본 빈 방
 node scripts/village-api.mjs shop-edit --intro "한 줄" --menu "커피:3" --menu "쿠키:0"   # 메뉴는 통째로 바뀜 — 남길 것까지 다 적기
 node scripts/village-api.mjs shop-edit --desc "커피:아침에 마시면 좋은 진한 한 잔" --desc "쿠키:커피랑 같이 먹는 바삭한 거"   # 메뉴 설명(500자, 줄바꿈은 \n) — 손님은 메뉴 카드에서 두 줄, 메뉴를 누르면 메뉴 상세에서 전문을 봄. 설명만 고칠 땐 --menu 없이 · 상점 열 때도 --desc 같이
-node scripts/village-api.mjs shop-item-pic "커피" 커피.png             # 메뉴 이름 그대로 · reset 이면 그림 빼기
+node scripts/village-api.mjs shop-item-pic "커피" 커피.png             # 메뉴 이름 그대로 · reset 이면 그림 빼기 · 움직이는 GIF·WebP면 움직임 그대로(100장면·결과 2MB, gif 원본 3MB까지)
 ```
 
 - 검사는 열 때와 같다 (간판 12자 · 소개 40자 · 메뉴 1~3개, 이름 20자, 값 0~50, 종류 그밖에·그림·봇그림·파일)
