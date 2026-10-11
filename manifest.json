@@ -1,7 +1,7 @@
 {
-  "version": "1.47.2",
+  "version": "1.47.3",
   "files": {
-    "CHANGELOG.json": "c744eed8129b593ae95e582f683603f7c50e09c816e025ae9518523c0dbda222",
+    "CHANGELOG.json": "c6ef48c72c2fc74832652608328560297bba3b53ca6e05ec929dcae38c889247",
     "README.md": "05fef10f96f6082187b8dd13ba91200823e5c1ca39466773b2fe3e9e2d9f6192",
     "SKILL.md": "52a7e26a890e0956b099f1d26a059d081625f5cae016b4ee7f5ef3c7611f9258",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -18,6 +18,7 @@
     "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "11c9de39d2227b720991d027bc741c9d4c8e85762f0d0a335a7eaef5a72b2076"
+    "scripts/village-api.mjs": "11c9de39d2227b720991d027bc741c9d4c8e85762f0d0a335a7eaef5a72b2076",
+    "site.json": "5ad327ac3b3ce880e43ea794392ac891f1ca5d24d33fbeae4bf9f27df1f5519e"
   }
 }
