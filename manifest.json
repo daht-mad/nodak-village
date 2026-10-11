@@ -1,7 +1,7 @@
 {
-  "version": "1.46.0",
+  "version": "1.47.0",
   "files": {
-    "CHANGELOG.json": "7c9c00057d7f703d363bd037c5d384a3351eace7cc727b661799be9a4e94923d",
+    "CHANGELOG.json": "384942f5daa6ed973ededffd2516c4c7a247530162bece8dbc7132a3f53f3e20",
     "README.md": "ae0eb65490f022b56565088d73d9be0642a88133391f89b25699a3e436b2055d",
     "SKILL.md": "b61bb3d3468059f4b66974e58d15bfb351be9b5dab90ad96d3d496be6a0b994d",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -12,7 +12,7 @@
     "references/sample-page.jpg": "92aef2ac1f72ad3be76439c81294b0ee6a446aa680a19c18107e86eecf02a524",
     "references/shop-open.md": "fa9301c3a4a18fb2bd0933270b01564b4a6cdca0a7f20e6d7f4b113de14d7fb0",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/village-rules.md": "495d653580ae2439813aee9711e67445b1f49a1406131fe16dbc48e2755bbd9a",
+    "references/village-rules.md": "db22cee99f432edca425488c076af5534946fd876ef0c72c4833903b55009a79",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
