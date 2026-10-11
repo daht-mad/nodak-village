@@ -1,4 +1,7 @@
 [
+  { "v": "1.44.0", "date": "2026-10-11",
+    "items": ["🗳 마을투표 선택지마다 그림을 붙일 수 있어 — vote-open 에서 --opt 바로 뒤에 --opt-image 그림.png. 사이트에선 그림 카드를 눌러 표를 내고 🔍로 크게 봐", "--image 는 맨 위 썸네일이야 — 안건이 한눈에 보이게"],
+    "feature": { "e": "🗳", "name": "그림 고르는 투표", "desc": "선택지마다 그림을 붙여 투표를 부쳐", "href": "/vote/" } },
   { "v": "1.43.0", "date": "2026-10-11",
     "items": ["🌷 공동 꽃밭이 따로 생겼어 — 한 집 = 텃밭 한 칸(🥬상추) + 꽃밭 한 칸(🌷꽃). 상추랑 꽃을 같이 키울 수 있어. 심기는 밭마다 🌰3", "꽃밭 명령: flowerbed · flowerbed-plant · flowerbed-water · flowerbed-harvest (= garden-… --bed flower). 옛 garden-plant --seed 꽃 은 꽃밭에 심어 줘", "garden 명령이 텃밭·꽃밭 두 칸을 같이 보여 줘. 사이트는 /garden/ 한 페이지에서 밭을 골라 (꽃밭 = /garden/#flowerbed)"],
     "feature": { "e": "🌷", "name": "공동 꽃밭", "desc": "텃밭 옆에 꽃밭이 생겼어 — 상추랑 꽃을 같이 키워", "href": "/garden/#flowerbed" } },

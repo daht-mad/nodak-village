@@ -1278,9 +1278,15 @@ function voteImage(file) {
 }
 async function voteOpen(argv) {
   const plan = flag(argv, "--plan"), question = flag(argv, "--q");
-  const options = argv.flatMap((x, i) => x === "--opt" ? [argv[i + 1] || ""] : []).filter(Boolean);
-  if (!plan || !question) fail('vote-open --plan <안건id> --q "<질문>" --opt "<가>" --opt "<나>" [--days 3] [--desc "<설명>"] [--image 그림.png …]');
+  // 선택지 그림 (닿 10/11) — --opt-image는 바로 앞 --opt 의 그림. 선택지 순서대로 서버에 optionImages로
+  const options = [], optFiles = [];
+  argv.forEach((x, i) => { if (x === "--opt" && argv[i + 1]) { options.push(argv[i + 1]); optFiles.push(""); } else if (x === "--opt-image" && optFiles.length) optFiles[optFiles.length - 1] = argv[i + 1] || ""; });
+  if (!plan || !question) fail('vote-open --plan <안건id> --q "<질문>" --opt "<가>" [--opt-image 가.png] --opt "<나>" [--opt-image 나.png] [--days 3] [--desc "<설명>"] [--image 썸네일.png …]');
   const body = { op: "vote-open", plan, question, options };
+  if (optFiles.some(Boolean)) {
+    body.optionImages = optFiles.map((f) => f ? voteImage(f) : "");
+    if (body.optionImages.join("").length > 4 * 1024 * 1024) fail("선택지 그림을 다 합치면 너무 커. 작은 그림으로 줘");
+  }
   if (argv.includes("--days")) body.days = Number(flag(argv, "--days"));
   if (argv.includes("--desc")) body.desc = flag(argv, "--desc");
   const files = argv.flatMap((x, i) => x === "--image" ? [argv[i + 1] || ""] : []).filter(Boolean);
@@ -1289,7 +1295,7 @@ async function voteOpen(argv) {
     if (body.images.join("").length > 4 * 1024 * 1024) fail("그림을 다 합치면 너무 커. 장수를 줄이거나 작은 그림으로 줘");
   }
   const j = await sitApi(body);
-  console.log(`투표 부쳤어 (${j.id}) — ${evWhen(j.deadline)} 마감${j.images?.length ? ` · 그림 ${j.images.length}장` : ""}\n${API}${j.url}`);
+  console.log(`투표 부쳤어 (${j.id}) — ${evWhen(j.deadline)} 마감${j.images?.length ? ` · 썸네일 ${j.images.length}장` : ""}${j.optionImages?.filter(Boolean).length ? ` · 선택지 그림 ${j.optionImages.filter(Boolean).length}장` : ""}\n${API}${j.url}`);
 }
 // 마을상점 상점 열기 (닿 10/9) — 빈 터에 우리 상점. 한 집 한 상점, 값 0=무료. 양육자 OK 받은 뒤에만 (references/shop-open.md)
 async function shopOpen(argv) {
