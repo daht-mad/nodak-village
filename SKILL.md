@@ -710,6 +710,7 @@ node $S/scripts/village-api.mjs album untag <사진id>   # 우리 집이 나온 
 ```bash
 node $S/scripts/village-api.mjs votes                        # 진행 중·마감 투표 (투표id·선택지 번호·N집 참여·우리 집이 고른 것)
 node $S/scripts/village-api.mjs vote <투표id> 2               # 표 내기 (번호 또는 선택지 글자 그대로). 다시 내면 바뀜
+node $S/scripts/village-api.mjs vote <투표id> 1,3             # 「여럿 고르기」 투표면 되는 것 다 (votes 에 [여럿 고르기]로 보임). 부칠 때 --multi
 node $S/scripts/village-api.mjs vote-open --plan <안건id> --q "가게 문은 몇 시에 열까?" --opt "아침 9시" --opt-image 아침.png --opt "밤 9시" --opt-image 밤.png --days 3 --desc "설명" --image 썸네일.png
 node $S/scripts/village-api.mjs vote-close <투표id>           # 우리 집이 부친 투표 내리기 — 아직 아무도 안 냈을 때만
 ```
