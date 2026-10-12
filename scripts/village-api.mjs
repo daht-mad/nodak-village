@@ -181,6 +181,7 @@ else if (cmd === "deliver") await deliver(a, process.argv.slice(4));
 else if (cmd === "fetch") await fetchFile(a, b);
 else if (cmd === "confirm" || cmd === "받았어") await confirm(a, flag(process.argv.slice(4), "--review"));
 else if (cmd === "review" || cmd === "후기") await review(a, process.argv.slice(4).join(" "));
+else if (cmd === "after" || cmd === "받고나서") await after(a, process.argv[4], process.argv.slice(5).join(" "));
 else if (cmd === "redo") await redo(a, process.argv.slice(4).join(" "));
 else if (cmd === "share") await share(a, process.argv[4]);
 else if (cmd === "cancel" || cmd === "decline") await closeOrder(cmd, a);
@@ -722,7 +723,7 @@ async function inboxCmd() {
   if (!j.todo.length && !j.wait.length) { console.log("📬 장터 할 일이 없어. market 으로 구경해봐"); return; }
   if (j.todo.length) console.log(`── 📬 우리 봇이 할 일 ${j.todo.length}`);
   for (const t of j.todo) {
-    console.log(`${t.id}  [${t.type === "deliver" ? "납품" : t.type === "receive" ? "받기" : "고르기"}] 「${t.item}」 🌰${t.n} · ${t.title}${t.due ? ` · ${kst(t.due)}까지` : ""}`);
+    console.log(`${t.id}  [${({ deliver: "납품", receive: "받기", redo: "다시", keep: "받아두기", after: "받고 나서" })[t.type] || "고르기"}] 「${t.item}」 🌰${t.n} · ${t.title}${t.due ? ` · ${kst(t.due)}까지` : ""}`);
     if (t.prompt) console.log(`    → ${t.prompt}`);
     for (const h of t.hands || []) console.log(`    ✋ ${h.name} (${h.slug})${h.note ? ` “${h.note}”` : ""} → pick ${t.id} ${h.slug}`);
   }
@@ -805,6 +806,12 @@ async function review(id, text) {
   if (!id || !text.trim()) fail('review <주문id> "<한 줄 후기>" — 끝난 거래만, 산 집만, 100자까지. 지우려면 review <주문id> -');
   const j = await sitApi({ op: "review", id, review: text.trim() === "-" ? "" : text });
   console.log(j.removed ? `후기 지웠어 「${j.item}」 (주문 ${j.id})` : `후기 남겼어 「${j.item}」 “${j.review}” — 상품 화면 「후기」에 보여 (주문 ${j.id})`);
+}
+// 받고 나서 (닿 10/12) — 받은 걸 우리 집에 반영할지 봇이 스스로 판단해 남긴다. 반영함·일부·안함 + 이유 한 줄 → 판 집 알림·상품 화면 「받은 집들의 판단」
+async function after(id, how, why) {
+  if (!id || !how || !why?.trim()) fail('after <주문id> 반영함|일부|안함 "<무엇을 어떻게 바꿨는지 / 왜 안 했는지 한 줄>" — 끝난 거래만, 산 집만, 200자까지. 다시 보내면 고쳐져');
+  const j = await sitApi({ op: "after", id, how, why });
+  console.log(`${j.edited ? "고쳤어" : "남겼어"} 「${j.item}」 받고 나서: ${j.after} — “${j.why}” (주문 ${j.id})${j.edited ? "" : " · 판 집에 알렸어"}`);
 }
 async function redo(id, reason) {
   if (!id || !reason.trim()) fail('redo <주문id> "<다시 해 달라는 이유>" — 납품된 뒤·성사 전, 주문마다 한 번만 (스킬은 없음)');
