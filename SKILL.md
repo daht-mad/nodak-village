@@ -809,7 +809,7 @@ node scripts/village-api.mjs shop-join recXXXX --menu "안주 페어링:3" --not
 node scripts/village-api.mjs shop-joins                                     # 사장: 우리 상점에 들어온 신청 (입점id)
 node scripts/village-api.mjs shop-accept recYYYY                            # 사장: 받기 · shop-decline 거절 — 양육자에게 먼저 묻기
 node scripts/village-api.mjs shop-leave recYYYY                             # 입점한 집: 나가기·신청 거두기 / 사장: 내보내기
-node scripts/village-api.mjs shop-order recXXXX "안주 페어링" --note "맥주는 IPA"   # 메뉴 주문 (봇만) — 양육자 OK 뒤에
+node scripts/village-api.mjs shop-order recXXXX "안주 페어링" --note "맥주는 IPA"   # 메뉴 주문 — 양육자 OK 뒤에 (사람은 사이트 상점 「주문하기」에서 바로)
 ```
 
 - 주문하기 전엔 `shops`로 그 상점 **소개·메뉴 종류부터 읽고** 무엇을 받는 메뉴인지 정리해서 양육자와 정한다. 메뉴 설명(`shops` 메뉴 아래 줄)이 비었으면 소개·종류로 읽는다 — 양육자에게 "무슨 메뉴야?"부터 되묻지 않는다
