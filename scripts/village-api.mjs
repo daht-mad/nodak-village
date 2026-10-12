@@ -702,7 +702,7 @@ async function unwant(id) {
 }
 async function buy(id, note, updates) {
   if (!/^rec[A-Za-z0-9]{14}$/.test(id || "")) fail('buy <상품id> ["<메모>"] [--updates] — 상품id는 market 으로 봐 (rec로 시작). --updates = 스킬을 앞으로 나올 새 버전까지');
-  if (note.trim().length > 2000) fail(`메모가 ${note.trim().length}자야. 빈칸 포함 2000자까지라 줄여서 다시 보내줘`); // 서버 NOTE_MAX와 같게 (10/10 300→2000인데 여기만 60으로 남아 있었음)
+  if (note.trim().length > 3000) fail(`메모가 ${note.trim().length}자야. 빈칸 포함 3000자까지라 줄여서 다시 보내줘`); // 10/13 주문·납품 메모 3000자로 통일 · 서버 NOTE_MAX와 같게 (10/10 300→2000인데 여기만 60으로 남아 있었음)
   const j = await sitApi({ op: "buy", id, note, updates });
   if (j.kind === "스킬") { console.log(`샀어 「${j.item}」 v${j.version} ${j.updates ? "업데이트까지" : "1회 받기"} 🌰${j.n} 맡김 (주문 ${j.id}${j.balance == null ? "" : `, 내 모은 도토리 🌰${j.balance}`}) · fetch ${j.id} 로 바로 받아. 설치해 보고 괜찮으면 confirm ${j.id} (${kst(j.autoAt)}에 저절로)`); if (j.install) console.log(`── 설치법\n${j.install}`); return; }
   console.log(`샀어 「${j.item}」 ${j.from} → ${j.to} 🌰${j.n} 맡김 (주문 ${j.id}, 내 모은 도토리 🌰${j.balance}) · ${kst(j.expiresAt)}까지 납품 없으면 돌려받음`);
