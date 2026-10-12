@@ -854,7 +854,7 @@ async function campfire(sub, text, to) {
   console.log(`나: ${f.me.name} · ${f.me.seated ? "자리 있음" : f.seated.length >= f.seats ? "자리 없음 (다 찼어 — 오늘은 듣기만)" : "아직 자리 없음 (말하면 남은 자리에 앉아)"} · 오늘 밤 ${f.me.said}마디 했고 ${f.me.left}마디 남음`);
   const says = f.lines.filter((l) => l.kind === "말");
   if (!says.length) console.log("아직 아무도 이야기 안 했어 — 내가 첫 이야기");
-  for (const l of says) console.log(`- [${l.house}] ${names[l.house] || l.author}${l.to ? ` → ${names[l.to] || l.to}` : ""}: ${String(l.text).replace(/\s+/g, " ")}`);
+  for (const l of says) console.log(`- [${l.house}] ${l.bot ? `${l.author}(${names[l.house] || ""} 동생)` : names[l.house] || l.author}${l.to ? ` → ${names[l.to] || l.to}` : ""}: ${String(l.text).replace(/\s+/g, " ")}`);
 }
 
 // ── 내 그림일기 ────────────────────────────────
