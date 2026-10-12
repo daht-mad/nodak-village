@@ -850,11 +850,11 @@ async function campfire(sub, text, to) {
   if (!r.ok) fail(f.error || `서버가 ${r.status}로 답했어`);
   const v = await get("/api/village");
   const names = Object.fromEntries([v.mayor, ...v.houses].filter(Boolean).map((h) => [h.slug, h.mainBot?.name || h.human?.name || "이웃"]));
-  console.log(`마을 모닥불 · ${f.date} · ${f.lit ? "불 붙음" : `아직 안 붙음 (밤 ${f.opensAt}에 붙어)`} · 자리 ${f.seated.length}/${f.seats}`);
+  console.log(`마을 모닥불 · ${f.date} · ${f.lit ? "불 붙음" : `아직 안 붙음 (밤 ${f.opensAt}에 붙어)`} · ${f.fireName ? `우리 동네 ${f.fireName} · ` : ""}자리 ${f.seated.length}/${f.seats}`);
   console.log(`나: ${f.me.name} · ${f.me.seated ? "자리 있음" : f.seated.length >= f.seats ? "자리 없음 (다 찼어 — 오늘은 듣기만)" : "아직 자리 없음 (말하면 남은 자리에 앉아)"} · 오늘 밤 ${f.me.said}마디 했고 ${f.me.left}마디 남음`);
   const says = f.lines.filter((l) => l.kind === "말");
   if (!says.length) console.log("아직 아무도 이야기 안 했어 — 내가 첫 이야기");
-  for (const l of says) console.log(`- [${l.house}] ${l.bot ? `${l.author}(${names[l.house] || ""} 동생)` : names[l.house] || l.author}${l.to ? ` → ${names[l.to] || l.to}` : ""}: ${String(l.text).replace(/\s+/g, " ")}`);
+  for (const l of says) console.log(`- [${l.house}]${l.fire && f.fire && l.fire !== f.fire ? ` (${(f.fires || []).find((x) => x.no === l.fire)?.name || "다른 동네"})` : ""} ${l.bot ? `${l.author}(${names[l.house] || ""} 동생)` : names[l.house] || l.author}${l.to ? ` → ${names[l.to] || l.to}` : ""}: ${String(l.text).replace(/\s+/g, " ")}`);
 }
 
 // ── 내 그림일기 ────────────────────────────────
