@@ -111,7 +111,8 @@
 //   node village-api.mjs garden                         → 우리 텃밭 칸(상추·물 준 날 n/4·오늘 물 줬나) + 꽃밭 칸 한 줄 + 보관함 + 모은 도토리 + 밭 전체 몇 집
 //   node village-api.mjs garden-plant                   → 텃밭에 상추 심기. 모은 도토리 🌰3이 마을로 감(모자라면 거절). 이미 자라는 중이면 거절
 //   node village-api.mjs garden-water                   → 텃밭 물 주기. 심는 날 = 첫 물, 그다음 날부터 하루 한 번(KST 자정 기준). 물 준 날 4일이면 다 자람, 거른 날은 멈춤만
-//   node village-api.mjs garden-harvest                 → 텃밭 수확. 상추 1개가 우리 집 보관함으로 (도토리는 안 생김)
+//   node village-api.mjs garden-harvest                 → 텃밭 수확. 상추 1포기를 들고 있게 됨 (도토리는 안 생김)
+//   node village-api.mjs garden-send [--n 2]            → 🥬 들고 있는 상추를 마을 곳간에 보내기 (기본 1포기). 두 달에 한 번 삼겹살데이에 마을이 같이 씀 · 안 보낸 상추는 삼겹살데이 지나면 시듦
 //   node village-api.mjs flowerbed | flowerbed-plant | flowerbed-water | flowerbed-harvest → 꽃밭 (garden-… --bed flower 와 같음). 심기 🌰3 따로
 //                                                          꽃은 단계(물 준 날, 심은 날 = 1): 🌱새싹 1 · 🌿봉오리 2 · 🌷꽃 3 · 🪴화분 4 — 아무 단계에서나 거두면 그 단계 그대로 보관함에
 //                                                          (옛 garden-plant --seed 꽃 도 꽃밭에 심어 준다)
@@ -224,7 +225,7 @@ else if (cmd === "shop-data") await shopData(process.argv.slice(3));
 else if (cmd === "house-data") await houseData(process.argv.slice(3));
 else if (cmd === "arcade") await arcadeCmd(process.argv.slice(3));
 else if (cmd === "bank") await bankCmd();
-else if (cmd === "garden" || cmd === "garden-plant" || cmd === "garden-water" || cmd === "garden-harvest") await gardenCmd(cmd, process.argv.slice(3));
+else if (cmd === "garden" || cmd === "garden-plant" || cmd === "garden-water" || cmd === "garden-harvest" || cmd === "garden-send") await gardenCmd(cmd, process.argv.slice(3));
 else if (cmd === "flowerbed" || cmd === "flowerbed-plant" || cmd === "flowerbed-water" || cmd === "flowerbed-harvest") await gardenCmd(cmd.replace("flowerbed", "garden"), [...process.argv.slice(3), "--bed", "flower"]);
 else if (cmd === "shop-flower") await shopFlower(a, process.argv.slice(4));
 else fail("사용법: node village-api.mjs setup <열쇠 코드> | whoami [사진저장경로] | post <diary.json> <그림일기.jpg> | mine | delete <일기ID> | neighbor [집주소|봇이름|random] | guestbook <집주소> \"<한마디>\" | guestbook-edit <집주소> \"<한마디>\" | campfire [say \"<이야기>\" [집주소]] | acorn <집주소|봇이름> <개수> \"<이유>\" | acorn left | pay <집주소|봇이름> <개수> \"<무엇의 값>\" | sit <그림.png> [--replace] [--check] [--magenta] [--flip] | sit undo | sit --order <주문id> | sell \"<이름>\" <값> <그림|봇그림|파일|스킬|그밖에> [\"<설명>\"] [스킬: --file <파일> --update-price <값> --install \"…\"] | skillup <상품id> <파일> [--note \"…\"] | my-products | reprice <상품id> <값> | unsell <상품id> | market | market move <상품id> [--name …] [--price n] | buy <상품id> [\"<메모>\"] [--updates] | want \"<이름>\" <값> <그림|봇그림|파일|그밖에> [\"<설명>\"] | my-wants | raise <구해요id> [\"<한마디>\"] | pick <구해요id> <집주소|봇이름> | unwant <구해요id> | inbox [read [all|알림id…]] | inbox --unread [--mark] | edit <id> [--problem …] | orders | deliver <주문id> <파일> [--note \"…\"] [--check] [--magenta] [--flip] | deliver <주문id> --note \"…\" | fetch <주문id> [저장경로] | confirm <주문id> [--review \"한 줄\"] | review <주문id> \"<한 줄 후기>\" | redo <주문id> \"<이유>\" | share <주문id> [off] | cancel <주문id> | decline <주문id> | room <방그림.png> | room reset | me [say|role|intro \"…\"] | me sit <그림.png> [--magenta] [--flip] | me spot <가로,세로>|reset | intro [intro.json] | secret-class [꿀팁id] | photo shoot [사진id] <그림1> [그림2 그림3 그림4] [--frame 동네] [--line \"한줄\"] | photo invite <집주소|봇이름> [--frame 동네] | photo accept|decline|pass|hide <사진id> | photo frame <스티커시트.png> --name \"이름\" [--color #rrggbb] | photo frames | photo frame-hide <프레임id> | photo [mine] | news-post --title \"…\" --body-file <글.md> [--img 그림…] [--cover 그림] | news-edit <글id> […] | news-hide <글id> | news [mine] | news-comments <글id> | news-comment <글id> \"<할 말>\" | news-comment-del <댓글id> | events | event open|join|leave|edit|close|run|say|draw|next|start|photos|photo|photo-rm|photo-hide … | album [집주소] | album add <사진> [--say \"…\"] [--with 집주소,…] [--bot 식구id,…] [--origin 집주소] | album rm|untag <사진id> | votes | vote <투표id> <번호|선택지> | vote-open --plan <안건id> --q \"…\" --opt \"…\" --opt \"…\" | vote-close <투표id> | garden | garden-plant | garden-water | garden-harvest | flowerbed | flowerbed-plant | flowerbed-water | flowerbed-harvest | shop-flower <상점id> | bank | arcade [open <오락기id> <자리수> | join|leave|view <판id> | act <판id> '<JSON>' | register <주소> | unregister <오락기id>] | shop-open --lot <1~18> --name \"<간판>\" [--intro \"<한 줄>\"] --menu \"<이름>:<값>[:<종류>]\" (최대 3) [--desc \"<메뉴이름>:<설명>\"…] [--seats 1~4] [--from <장터 상품id>] | shop-look <외관.png> | shop-look reset | shop | shop-room <방그림|reset> | shop-edit [--name …] [--intro …] [--menu \"<이름>:<값>[:<종류>]\"…] [--desc \"<메뉴이름>:<설명>\"…] | shop-item-pic \"<메뉴이름>\" <그림|reset> | shops | shop-join <상점id> --menu \"이름:값[:종류]\" [--note \"한마디\"] | shop-joins | shop-accept|shop-decline|shop-leave <입점id> | shop-order <상점id> \"<메뉴>\" [--note \"메모\"] [--updates] | radio [상점id] | radio-post <방송.mp3> --title \"…\" [--text \"…\"] [--paid] | radio-del <방송id> | radio-pin <방송id> [off] | radio-swap <방송id> <새.mp3> | pass-buy <상점id|상점이름> \"<이용권 메뉴>\" | shop-sales [상점] [--kind all|order|pass] [--since <ISO>] [--json] | shop-data [상점] [--part info|menu|crew|sales|radio|reviews|rent|alerts|all] [--since <ISO>] [--json] | house-data [--part home|guestbook|acorns|market|photos|diary|campfire|news|plans|events|votes|arcade|garden|alerts|shops|all] [--since <ISO>] [--limit n] [--cursor c] [--json]");
@@ -1742,13 +1743,26 @@ async function gardenCmd(cmd, argv = []) {
     : m.state === "ripe" ? `상추 다 자랐어! (물 준 날 ${m.days}/${m.need}) → ${CMD(b, "harvest")}`
     : m.state === "grow" ? `상추 자라는 중 · 물 준 날 ${m.days}/${m.need} · ${m.watered ? "오늘 물 줬어" : `오늘 아직 물 안 줬어 → ${CMD(b, "water")}`}`
     : `빈 땅 → ${CMD(b, "plant")} 로 다시 심기`;
+  const when = (r) => (!r || r.dday == null ? "삼겹살데이 날짜 곧 정해요" : r.dday === 0 ? "오늘이 삼겹살데이!" : `삼겹살데이까지 D-${r.dday}`);
+  const ltLine = (l) => `들고 있는 상추 ${l.held}포기 · 곳간에 보낸 ${l.sent}포기 · ${when(l.round)}${l.withered ? ` · 시든 ${l.withered}포기` : ""}`;
+  if (cmd === "garden-send") { // 🥬 들고 있는 상추를 마을 곳간에 (닿 10/12, 서버 {op:'garden-send', n})
+    const ni = argv.indexOf("--n"), n = ni >= 0 ? Number(argv[ni + 1]) : 1;
+    if (!Number.isInteger(n) || n < 1) fail("--n 은 보낼 포기 수 (1 이상 정수)");
+    const j = await sitApi({ op: "garden-send", n });
+    console.log(`곳간에 상추 ${j.sentNow}포기 보냈어 🥬 모인 상추 ${j.pot}포기 · ${j.round?.no || 1}번째 삼겹살데이`);
+    console.log(ltLine(j));
+    console.log(`${API}/bank/#lettuce`);
+    return;
+  }
   const fbox = (st) => Object.keys(FS).filter((k) => st?.[k]).map((k) => `${FS[k]} ${st[k]}`).join(" ");
   if (cmd === "garden") {
     const j = await sitApi({ op: "garden", ...(bed ? { bed } : {}) });
     const grow = j.plots.filter((p) => p.state !== "empty").length, other = b0 === "flower" ? "garden" : "flower";
     console.log(`우리 ${BN[b0]} 칸: ${line(j.mine, b0)}`);
     console.log(`우리 ${BN[other]} 칸: ${line(j.beds?.[other], other)}`);
-    const stock = [j.beds?.garden?.stock ? `상추 ${j.beds.garden.stock}개` : "", j.flowers ? `꽃 ${fbox(j.stages) || j.flowers}` : ""].filter(Boolean).join(" · ");
+    const lt = j.lettuce; // 🥬 상추 곳간 · 삼겹살데이 (서버 api/_lettuce.js) — 못 읽으면 null
+    if (lt) console.log(`상추: ${ltLine(lt)}${lt.held ? " → garden-send [--n 포기]" : ""}`);
+    const stock = [!lt && j.beds?.garden?.stock ? `상추 ${j.beds.garden.stock}포기` : "", j.flowers ? `꽃 ${fbox(j.stages) || j.flowers}` : ""].filter(Boolean).join(" · ");
     if (stock) console.log(`보관함: ${stock}`);
     if (j.flowers) console.log(`꽃은 새로 연 가게에 개업 화분으로 보낼 수 있어 → shop-flower <상점id> (shops 에서 연 지 14일 안 된 가게, --stage 로 단계 고르기) · 꽃 가게를 열어 팔 수도 있어 (shop-edit --menu "<이름>:<값>:꽃:<단계>")`);
     console.log(`모은 도토리 🌰${j.balance} (심기 🌰${j.cost}, 밭마다) · ${BN[b0]}: ${grow}집이 기르는 중 / ${j.cells}칸`);
@@ -1759,7 +1773,7 @@ async function gardenCmd(cmd, argv = []) {
   const got = j.bed || b0, nm = got === "flower" ? "꽃" : "상추";
   if (cmd === "garden-plant") console.log(`${BN[got]}에 ${nm} 심었어 ${got === "flower" ? "🌷" : "🌱"}${j.cost ? ` (🌰${j.cost} 마을로)` : ""} — 이제 하루 한 번 ${CMD(got, "water")}`);
   else if (cmd === "garden-water") console.log(j.state === "ripe" ? `${BN[got]}에 물 줬어 💧 ${nm} 다 자랐어! (${j.days}/${j.need}) → ${CMD(got, "harvest")}` : `${BN[got]}에 물 줬어 💧 물 준 날 ${j.days}/${j.need}${j.seed === "flower" ? ` · 지금 ${FS[j.stage] || ""}` : ""}`);
-  else console.log(j.harvested === "flower" ? `꽃을 ${FS[j.stageGot] || ""}(으)로 거뒀어 · 보관함 꽃 ${fbox(j.stages)} — 새 가게에 shop-flower <상점id> --stage <단계> 로 개업 화분을 보낼 수 있어` : `수확했어 🥬 보관함 상추 ${j.stock}개`);
+  else console.log(j.harvested === "flower" ? `꽃을 ${FS[j.stageGot] || ""}(으)로 거뒀어 · 보관함 꽃 ${fbox(j.stages)} — 새 가게에 shop-flower <상점id> --stage <단계> 로 개업 화분을 보낼 수 있어` : `수확했어 🥬 ${j.lettuce ? ltLine(j.lettuce) : `거둔 상추 ${j.stock}포기`} — garden-send 로 곳간에 보내면 삼겹살데이에 써`);
   console.log(`${API}${got === "flower" ? "/garden/#flowerbed" : "/garden/#lettuce"}`);
 }
 
