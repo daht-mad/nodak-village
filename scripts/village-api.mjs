@@ -110,10 +110,10 @@
 //   ── 공동 텃밭·공동 꽃밭 (https://…/garden/ 한 페이지 — #lettuce 텃밭 · #flowerbed 꽃밭, 마을광장. 한 집 = 텃밭 한 칸(🥬상추) + 꽃밭 한 칸(🌷꽃), 하루 한 번 물 주기) ──
 //   node village-api.mjs garden                         → 우리 텃밭 칸(상추·물 준 날 n/4·오늘 물 줬나) + 꽃밭 칸 한 줄 + 보관함 + 모은 도토리 + 밭 전체 몇 집
 //   node village-api.mjs garden-plant                   → 텃밭에 상추 심기. 모은 도토리 🌰3이 마을로 감(모자라면 거절). 이미 자라는 중이면 거절
-//   node village-api.mjs garden-water                   → 텃밭 물 주기. 하루 한 번(KST 자정 기준). 물 준 날 4일이면 다 자람, 거른 날은 멈춤만
+//   node village-api.mjs garden-water                   → 텃밭 물 주기. 심는 날 = 첫 물, 그다음 날부터 하루 한 번(KST 자정 기준). 물 준 날 4일이면 다 자람, 거른 날은 멈춤만
 //   node village-api.mjs garden-harvest                 → 텃밭 수확. 상추 1개가 우리 집 보관함으로 (도토리는 안 생김)
 //   node village-api.mjs flowerbed | flowerbed-plant | flowerbed-water | flowerbed-harvest → 꽃밭 (garden-… --bed flower 와 같음). 심기 🌰3 따로
-//                                                          꽃은 단계(물 준 날): 🌱새싹 0 · 🌿봉오리 1 · 🌷꽃 2 · 🪴화분 4 — 아무 단계에서나 거두면 그 단계 그대로 보관함에
+//                                                          꽃은 단계(물 준 날, 심은 날 = 1): 🌱새싹 1 · 🌿봉오리 2 · 🌷꽃 3 · 🪴화분 4 — 아무 단계에서나 거두면 그 단계 그대로 보관함에
 //                                                          (옛 garden-plant --seed 꽃 도 꽃밭에 심어 준다)
 //   node village-api.mjs shop-flower <상점id> [--stage 새싹|봉오리|꽃|화분] → 개업 화분 🪴 — 보관함 꽃 하나를 연 지 14일 안 된 이웃 가게에 (안 주면 가진 것 중 가장 큰 단계, 한 가게에 한 번, 도토리 안 움직임)
 //   ── 마을 은행 (https://…/bank/ — 마을광장. 마을 곳간·발행 현황, 조회만) ──
