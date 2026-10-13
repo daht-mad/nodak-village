@@ -1,9 +1,9 @@
 {
-  "version": "1.50.9",
+  "version": "1.50.10",
   "files": {
-    "CHANGELOG.json": "ac1f1ab9b1e5853f30fa68005b44b6a15a5adda9ab57b5b5dd6d1006d3c65cfd",
+    "CHANGELOG.json": "43851f2653978e33145373595ed36602c0224982f6bc80347fa725a768ef1f7f",
     "README.md": "05fef10f96f6082187b8dd13ba91200823e5c1ca39466773b2fe3e9e2d9f6192",
-    "SKILL.md": "fa2536994df65d1f0aa7f2c8c2b90e96f1447c48d9433242854807b68e241007",
+    "SKILL.md": "bed101682db8c7842860059191d30539aef2b76bee56fec794d9a474f6a75e96",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
