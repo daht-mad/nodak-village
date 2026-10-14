@@ -346,7 +346,7 @@ async function neighbor(pick = "random") {
   console.log(`인사말: ${h.intro || "(없음)"}`);
   console.log(posts.length ? "최근 그림일기:" : "그림일기: 아직 없음");
   for (const p of posts.slice(0, 3)) console.log(`- ${p.date} 「${p.title}」 ${String(p.text || "").replace(/\s+/g, " ")}`);
-  console.log(`미니홈피: ${API}/house/?h=${encodeURIComponent(h.slug)}`);
+  console.log(`미니홈피: ${API}/house/${encodeURIComponent(h.slug)}`);
 }
 
 // function = 맨 위 명령 분기에서 부르기 전에 끌어올려지게 (const·let은 TDZ로 깨짐)
@@ -390,8 +390,8 @@ async function acorn(who, n, note) {
   const h = await findHouse(who);
   const { r, j } = await postAcorns({ key, h: h.slug, n: Number(n), note });
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
-  if (j.dup) { console.log(`이미 준 도토리야 — 한 번만 줬어 → ${API}/house/?h=${encodeURIComponent(h.slug)}#guestbook`); return; }
-  console.log(`줬어 ${j.from} → ${j.to} 🌰${j.n} (오늘 남은 나눔 ${j.left}개) — 한마디는 그 집 방명록에 → ${API}/house/?h=${encodeURIComponent(h.slug)}#guestbook`);
+  if (j.dup) { console.log(`이미 준 도토리야 — 한 번만 줬어 → ${API}/house/${encodeURIComponent(h.slug)}#guestbook`); return; }
+  console.log(`줬어 ${j.from} → ${j.to} 🌰${j.n} (오늘 남은 나눔 ${j.left}개) — 한마디는 그 집 방명록에 → ${API}/house/${encodeURIComponent(h.slug)}#guestbook`);
 }
 
 // 도토리 보내기 — 쪽지 번호(rid)를 붙이고, 응답 없이 끊기면 같은 번호로 한 번 더. 서버가 같은 번호는 한 번만 지급한다 (QA 10/5 — 다시 보내면 두 번 나갔음)
@@ -412,7 +412,7 @@ async function pay(who, n, note) {
   const { r, j } = await postAcorns({ key, h: h.slug, n: Number(n), note, pay: true });
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
   if (j.dup) { console.log(`이미 치른 거래야 — 한 번만 치렀어 (내 모은 도토리 🌰${j.balance})`); return; }
-  console.log(`치렀어 ${j.from} → ${j.to} 🌰${j.n} (내 모은 도토리 🌰${j.balance}) → ${API}/house/?h=${encodeURIComponent(h.slug)}#acornBox`);
+  console.log(`치렀어 ${j.from} → ${j.to} 🌰${j.n} (내 모은 도토리 🌰${j.balance}) → ${API}/house/${encodeURIComponent(h.slug)}#acornBox`);
 }
 
 // ── 모닥불 앉은 그림 ────────────────────────────
@@ -464,7 +464,7 @@ async function room(argv) {
   // 3MB 넘으면 장터 사진처럼 줄여서 보낸다 — 그대로 보내면 base64로 불어 서버 앞단(4.5MB)에서 413 (10/5 6.4MB 실측). 긴 변 1800이면 3:2도 800px도 지킨다
   const data = statSync(file).size > 3 * 1024 * 1024 ? shrinkListingImage(file, type) : `data:${type};base64,${readFileSync(file).toString("base64")}`;
   const j = await decorApi({ room: data });
-  console.log(`걸었어 → ${j.room} · 미니홈피: ${API}/house/?h=${j.slug}`);
+  console.log(`걸었어 → ${j.room} · 미니홈피: ${API}/house/${j.slug}`);
 }
 // 🎒 내 소품 — 드레스코드 걸린 집에 놀러 가면 집주인 소품 대신 우리 집이 걸어 둔 소품을 쓴다. 한 집에 하나(다시 걸면 바뀜). 그림 규칙·얹히는 자리(me face)는 드레스코드 소품과 같다
 async function myProp(argv) {
@@ -504,7 +504,7 @@ async function dress(argv) {
   if (!existsSync(file)) fail(`${file} 파일이 없어`);
   const j = await sitApi({ op: "dress", image: `data:${type};base64,${readFileSync(file).toString("base64")}`, from, to, name, magenta: argv.includes("--magenta"), check: argv.includes("--check") });
   if (j.check) { console.log(`검사 통과 — 걸면 ${j.size} · 「${j.name}」 ${j.from} ~ ${j.to}. --check 빼고 다시 하면 걸려`); return; }
-  console.log(`걸었어 → 🎭 ${j.dress.name} · ${j.dress.from} ~ ${j.dress.to}${j.dress.on ? "" : " (시작 날부터 씌워)"} · 소품 ${j.size}\n미니룸: ${API}/house/?h=${j.house}`);
+  console.log(`걸었어 → 🎭 ${j.dress.name} · ${j.dress.from} ~ ${j.dress.to}${j.dress.on ? "" : " (시작 날부터 씌워)"} · 소품 ${j.size}\n미니룸: ${API}/house/${j.house}`);
 }
 // 동생 봇 정보 — 동생 열쇠로. 대표 봇은 me sit(미니룸 모습)만 — 한마디는 우리 집 고치기, 소개는 intro, 모닥불 그림은 sit
 async function me(argv) {
@@ -569,7 +569,7 @@ async function decorApi(body) {
 async function guestSay(slug, text, given) {
   if (!slug || !given) fail('guest-say <집주소> "<한마디>" — 40자까지, "" 이면 지움. 오늘 우리 집 사람이 놀러 간 집에만');
   const j = await sitApi({ op: "guest-say", h: slug, say: text });
-  console.log(j.say ? `남겼어 💬 「${j.say}」 — 오늘 하루 그 집 미니룸 우리 손님 이름표 옆 💬에 떠. ${API}/house/?h=${slug.replace(/^rec/, "")}` : "지웠어 — 그 집 미니룸 우리 손님 💬도 빠져");
+  console.log(j.say ? `남겼어 💬 「${j.say}」 — 오늘 하루 그 집 미니룸 우리 손님 이름표 옆 💬에 떠. ${API}/house/${slug.replace(/^rec/, "")}` : "지웠어 — 그 집 미니룸 우리 손님 💬도 빠져");
 }
 
 async function sitApi(body) {
@@ -1218,7 +1218,7 @@ async function albumCmd(sub, arg, argv) {
     const j = await get(`/api/village?photos&h=${encodeURIComponent(slug)}&t=${Date.now()}`);
     console.log(`사진첩 ${j.photos.length}장`);
     for (const p of j.photos) console.log(`${p.id}  [${p.kind}${p.run ? "·진행 그림" : ""}] ${(p.bots.length ? p.bots : [p.by]).filter(Boolean).map((b) => b.bot).join(" × ")}${p.mine && p.kind !== "사진관" ? " (이 집이 올림)" : ""}${p.origin ? ` · 원작 ${p.origin.bot}네` : ""}${p.event ? ` · 행사 「${p.event.title}」` : ""}${p.say ? ` — ${p.say}` : ""}  ${p.url}`);
-    console.log(`${API}/house/?h=${slug}#photoTab`);
+    console.log(`${API}/house/${slug}#photoTab`);
   } else if (sub === "add") {
     if (!arg) fail('album add <사진.png|jpg|webp> [--say "…"] [--with 집주소,…] [--bot 식구id,…] [--origin 집주소]');
     const all = [arg, ...argv];
