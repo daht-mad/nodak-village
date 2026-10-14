@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* 키링 자랑판 1080×1080 — keyring-board.mjs가 window.KR = { name, imgs:[상추수확, 모닥불, 그림일기] } 를 넣고 찍는다 */
+@font-face{font-family:PB;src:url(Pretendard-Black.woff2);font-weight:900}
+*{margin:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:PB,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#1A1916;overflow:hidden;position:relative;background:#FFC233}
+.rays{position:absolute;inset:-300px;background:repeating-conic-gradient(from 0deg at 50% 58%,rgba(255,255,255,.18) 0 8deg,rgba(255,255,255,0) 8deg 20deg)}
+.glow{position:absolute;left:140px;top:300px;width:800px;height:620px;border-radius:50%;background:radial-gradient(rgba(255,255,255,.85),rgba(255,255,255,0) 68%)}
+.top{position:absolute;top:70px;left:0;right:0;text-align:center}
+.tag{display:inline-block;background:#1A1916;color:#FFC233;font-weight:900;font-size:24px;letter-spacing:.2em;padding:10px 24px;border-radius:999px}
+h1{font-weight:900;font-size:100px;letter-spacing:-.04em;margin:20px 40px 0;line-height:1.05;text-shadow:0 5px 0 #fff;white-space:nowrap}
+.row{position:absolute;left:40px;right:40px;top:330px;height:520px;display:flex;justify-content:space-evenly;align-items:center}
+.k{filter:drop-shadow(0 22px 22px rgba(90,55,0,.3))}
+.k img{display:block;height:420px;max-width:320px;object-fit:contain}
+.k:nth-child(1){transform:rotate(-5deg)} .k:nth-child(2){transform:translateY(-18px)} .k:nth-child(3){transform:rotate(5deg)}
+.k:nth-child(2) img{height:465px}
+.sp{position:absolute;color:#fff;font-size:44px;font-weight:900}
+.foot{position:absolute;bottom:46px;left:0;right:0;text-align:center}
+</style></head><body><div class="rays"></div><div class="glow"></div>
+<div class="top"><span class="tag">NODAK VILLAGE</span><h1 id="t"></h1></div>
+<div class="row"><div class="k"><img id="i0"></div><div class="k"><img id="i1"></div><div class="k"><img id="i2"></div></div>
+<div class="sp" style="left:90px;top:300px">✦</div><div class="sp" style="left:960px;top:290px;font-size:30px">✦</div><div class="sp" style="left:330px;top:860px;font-size:28px">✦</div><div class="sp" style="left:720px;top:880px">✦</div>
+<div class="foot"><svg xmlns="http://www.w3.org/2000/svg" viewBox="7.20 -168.80 865.47 187.80" height="36" role="img" aria-label="노닥빌리지">
+  <path fill="#1A1916" d="M25.20-65L25.20-90.40L159.80-90.40L159.80-65L25.20-65M7.20-0.40L7.20-26.20L177-26.20L177-0.40L7.20-0.40M76-19.20L76-75.40L108.20-75.40L108.20-19.20L76-19.20M25.20-79.40L25.20-155.40L57.60-155.40L57.60-79.40 M301.60-59.40L301.60-168.80L333.80-168.80L333.80-59.40L301.60-59.40M325-100.60L325-127L357.20-127L357.20-100.60L325-100.60M206.80-25.20L206.80-50.60L333.80-50.60L333.80 19L301.60 19L301.60-25.20L206.80-25.20M191.20-66.80L191.20-92.40L207.40-92.40Q228.40-92.40 242.90-92.80Q257.40-93.20 268.40-94.50Q279.40-95.80 289.80-98L292.80-72.60Q282.20-70.20 270.70-68.90Q259.20-67.60 244.10-67.20Q229-66.80 207.40-66.80L191.20-66.80M191.20-77.40L191.20-155.80L275.80-155.80L275.80-130.20L223.40-130.20L223.40-77.40 M564.02-58.22L564.02-135.63L577.63-135.63L577.63-58.22L564.02-58.22M481.69-39.85L481.69-50.51L577.63-50.51L577.63-15.42L495.30-15.42L495.30 5.58L482.18 5.58L482.18-25.42L564.18-25.42L564.18-39.85L481.69-39.85M482.18 11.15L482.18 0.33L582.72 0.33L582.72 11.15L482.18 11.15M463.82-64.62L463.82-129.56L477.26-129.56L477.26-108.24L519.74-108.24L519.74-129.56L533.19-129.56L533.19-64.62L463.82-64.62M519.74-97.58L477.26-97.58L477.26-75.60L519.74-75.60 M711.78 12.96L711.78-135.63L725.23-135.63L725.23 12.96L711.78 12.96M612.24-22.96L612.24-34.28L624.54-34.28Q637.16-34.28 648.89-34.69Q660.62-35.10 672.67-36.24Q684.72-37.39 697.84-39.52L699.16-28.37Q679.15-25.09 661.44-24.03Q643.72-22.96 624.54-22.96L612.24-22.96M611.91-110.70L611.91-121.85L680.46-121.85L680.46-68.88L626.01-68.88L626.01-30.01L612.24-30.01L612.24-79.87L666.68-79.87L666.68-110.70 M790.50-90.36L790.50-114.31L801.66-114.31L801.66-90.36Q801.66-78.56 798.38-67.16Q795.10-55.76 789.27-45.67Q783.45-35.59 775.74-27.88Q768.04-20.17 759.18-15.74L751.31-26.57Q759.34-30.50 766.48-37.23Q773.61-43.95 779.02-52.64Q784.44-61.34 787.47-71.01Q790.50-80.69 790.50-90.36M793.29-90.36L793.29-114.31L804.28-114.31L804.28-90.36Q804.28-81.02 807.31-71.75Q810.35-62.48 815.84-54.37Q821.34-46.25 828.47-40.02Q835.60-33.78 843.80-30.18L836.26-19.35Q827.24-23.62 819.37-30.83Q811.50-38.05 805.67-47.48Q799.85-56.91 796.57-67.81Q793.29-78.72 793.29-90.36M756.06-109.06L756.06-120.38L838.88-120.38L838.88-109.06L756.06-109.06M859.06 12.79L859.06-135.63L872.67-135.63L872.67 12.79"/>
+  <circle cx="391.76" cy="-21.60" r="21.60" fill="#FFC233"/>
+</svg>
+</div>
+<script>
+// 흰 바탕 걷기: 가장자리에서 이어진 거의 흰 칸 + 위쪽 35% 안의 큰 흰 섬(열쇠고리 구멍)을 투명하게, 남은 것만 잘라 낸다
+function cut(src){return new Promise(ok=>{const im=new Image();im.onload=()=>{
+  const s=Math.min(1,900/im.height),W=Math.round(im.width*s),H=Math.round(im.height*s);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(im,0,0,W,H);
+  const d=x.getImageData(0,0,W,H),p=d.data,N=W*H,bg=new Uint8Array(N);
+  const light=i=>{const r=p[i*4],g=p[i*4+1],b=p[i*4+2],mn=Math.min(r,g,b),mx=Math.max(r,g,b);return p[i*4+3]<20||(mn>228&&mx-mn<12)};
+  const near=(i,j)=>Math.abs(p[i*4]-p[j*4])<=6&&Math.abs(p[i*4+1]-p[j*4+1])<=6&&Math.abs(p[i*4+2]-p[j*4+2])<=6;
+  const q=new Int32Array(N);let h=0,t=0;
+  for(let i=0;i<W;i++){for(const k of[i,(H-1)*W+i])if(!bg[k]&&light(k)){bg[k]=1;q[t++]=k}}
+  for(let y=0;y<H;y++){for(const k of[y*W,y*W+W-1])if(!bg[k]&&light(k)){bg[k]=1;q[t++]=k}}
+  const step=(i,f)=>{const y=(i/W)|0,xx=i%W;if(xx>0)f(i-1);if(xx<W-1)f(i+1);if(y>0)f(i-W);if(y<H-1)f(i+W)};
+  while(h<t){const i=q[h++];step(i,j=>{if(!bg[j]&&light(j)&&near(i,j)){bg[j]=1;q[t++]=j}})}
+  const seen=new Uint8Array(N),lim=Math.floor(H*0.35);
+  for(let y0=0;y0<lim;y0++)for(let x0=0;x0<W;x0++){const s0=y0*W+x0;if(bg[s0]||seen[s0]||!light(s0))continue;
+    h=0;t=0;q[t++]=s0;seen[s0]=1;let maxy=0;
+    while(h<t){const i=q[h++];maxy=Math.max(maxy,(i/W)|0);step(i,j=>{if(!bg[j]&&!seen[j]&&light(j)){seen[j]=1;q[t++]=j}})}
+    if(t>N*0.004&&maxy<lim)for(let k=0;k<t;k++)bg[q[k]]=1}
+  let x1=W,y1=H,x2=0,y2=0;
+  for(let i=0;i<N;i++){if(bg[i]){p[i*4+3]=0;continue}const y=(i/W)|0,xx=i%W;if(xx<x1)x1=xx;if(xx>x2)x2=xx;if(y<y1)y1=y;if(y>y2)y2=y}
+  x.putImageData(d,0,0);const o=document.createElement('canvas');o.width=x2-x1+1;o.height=y2-y1+1;
+  o.getContext('2d').drawImage(c,x1,y1,o.width,o.height,0,0,o.width,o.height);ok(o.toDataURL('image/png'))};im.src=src})}
+(async()=>{const K=window.KR;const t=document.getElementById('t');t.textContent=K.name+' 키링';
+  let f=100;while(t.scrollWidth>1000&&f>48){f-=4;t.style.fontSize=f+'px'}
+  for(let i=0;i<3;i++)document.getElementById('i'+i).src=await cut(K.imgs[i]);
+  await document.fonts.ready;document.title='ready'})();
+</script></body></html>
