@@ -27,8 +27,8 @@ h1{font-weight:900;font-size:100px;letter-spacing:-.04em;margin:20px 40px 0;line
 <script>
 // 흰 바탕 걷기: 가장자리에서 이어진 거의 흰 칸 + 위쪽 35% 안의 큰 흰 섬(열쇠고리 구멍)을 투명하게, 남은 것만 잘라 낸다
 function cut(src){return new Promise(ok=>{const im=new Image();im.onload=()=>{
-  const s=Math.min(1,900/im.height),W=Math.round(im.width*s),H=Math.round(im.height*s);
-  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.drawImage(im,0,0,W,H);
+  const s=Math.min(1,1800/im.height),W=Math.round(im.width*s),H=Math.round(im.height*s);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);x.drawImage(im,0,0,W,H); /* 투명 그림은 흰 바탕에 먼저 얹는다 — 반투명 아크릴이 노란 판에 비치지 않게 */
   const d=x.getImageData(0,0,W,H),p=d.data,N=W*H,bg=new Uint8Array(N);
   const light=i=>{const r=p[i*4],g=p[i*4+1],b=p[i*4+2],mn=Math.min(r,g,b),mx=Math.max(r,g,b);return p[i*4+3]<20||(mn>228&&mx-mn<12)};
   const near=(i,j)=>Math.abs(p[i*4]-p[j*4])<=6&&Math.abs(p[i*4+1]-p[j*4+1])<=6&&Math.abs(p[i*4+2]-p[j*4+2])<=6;
