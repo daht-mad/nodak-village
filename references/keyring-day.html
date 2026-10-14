@@ -1,0 +1,50 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+/* 하루 6컷 키링판 1080×1080 — keyring-board.mjs가 window.KR = { name, imgs:[6장], times, acts } 를 넣고 찍는다 */
+@font-face{font-family:PB;src:url(Pretendard-Black.woff2);font-weight:900}
+*{margin:0;box-sizing:border-box}
+body{width:1080px;height:1080px;font-family:PB,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;color:#1A1916;overflow:hidden;position:relative;background:#FFC233}
+.rays{position:absolute;inset:-300px;background:repeating-conic-gradient(from 0deg at 50% 58%,rgba(255,255,255,.18) 0 8deg,rgba(255,255,255,0) 8deg 20deg)}
+.glow{position:absolute;left:140px;top:300px;width:800px;height:620px;border-radius:50%;background:radial-gradient(rgba(255,255,255,.85),rgba(255,255,255,0) 68%)}
+.top{position:absolute;top:70px;left:0;right:0;text-align:center}
+.tag{display:inline-block;background:#1A1916;color:#FFC233;font-weight:900;font-size:24px;letter-spacing:.2em;padding:10px 24px;border-radius:999px}
+h1{font-weight:900;font-size:100px;letter-spacing:-.04em;margin:20px 40px 0;line-height:1.05;text-shadow:0 5px 0 #fff;white-space:nowrap}
+.grid{position:absolute;left:14px;right:14px;top:200px;height:860px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);align-items:center;justify-items:center}
+.k{position:relative;margin-bottom:40px;filter:drop-shadow(0 16px 16px rgba(90,55,0,.28))}
+.k img{display:block;height:360px;max-width:340px;object-fit:contain}
+.k:nth-child(odd){transform:rotate(-3deg)} .k:nth-child(even){transform:rotate(3deg)}
+.chip{position:absolute;left:50%;bottom:-40px;transform:translateX(-50%);background:#1A1916;color:#FFC233;font-weight:900;font-size:23px;padding:6px 18px;border-radius:999px;white-space:nowrap} .chip b{color:#fff;font-weight:900;margin-right:6px}
+.top{top:34px} h1{font-size:78px;margin-top:12px} .tag{font-size:20px;padding:8px 20px}
+.foot{bottom:14px} .foot svg{height:28px}
+.sp{position:absolute;color:#fff;font-size:44px;font-weight:900}
+.foot{position:absolute;bottom:46px;left:0;right:0;text-align:center}
+</style></head><body><div class="rays"></div><div class="glow"></div>
+<div class="top"><span class="tag">NODAK VILLAGE</span><h1 id="t"></h1></div>
+<div class="grid"><div class="k"><img id="i0"><span class="chip" id="c0"></span></div><div class="k"><img id="i1"><span class="chip" id="c1"></span></div><div class="k"><img id="i2"><span class="chip" id="c2"></span></div><div class="k"><img id="i3"><span class="chip" id="c3"></span></div><div class="k"><img id="i4"><span class="chip" id="c4"></span></div><div class="k"><img id="i5"><span class="chip" id="c5"></span></div></div>
+<div class="sp" style="left:60px;top:70px;font-size:34px">✦</div><div class="sp" style="left:990px;top:110px">✦</div>
+<script>
+// 흰 바탕 걷기: 가장자리에서 이어진 거의 흰 칸 + 위쪽 35% 안의 큰 흰 섬(열쇠고리 구멍)을 투명하게, 남은 것만 잘라 낸다
+function cut(src){return new Promise(ok=>{const im=new Image();im.onload=()=>{
+  const s=Math.min(1,1800/im.height),W=Math.round(im.width*s),H=Math.round(im.height*s);
+  const c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,W,H);x.drawImage(im,0,0,W,H); /* 투명 그림은 흰 바탕에 먼저 얹는다 — 반투명 아크릴이 노란 판에 비치지 않게 */
+  const d=x.getImageData(0,0,W,H),p=d.data,N=W*H,bg=new Uint8Array(N);
+  const light=i=>{const r=p[i*4],g=p[i*4+1],b=p[i*4+2],mn=Math.min(r,g,b),mx=Math.max(r,g,b);return p[i*4+3]<20||(mn>228&&mx-mn<12)};
+  const near=(i,j)=>Math.abs(p[i*4]-p[j*4])<=6&&Math.abs(p[i*4+1]-p[j*4+1])<=6&&Math.abs(p[i*4+2]-p[j*4+2])<=6;
+  const q=new Int32Array(N);let h=0,t=0;
+  for(let i=0;i<W;i++){for(const k of[i,(H-1)*W+i])if(!bg[k]&&light(k)){bg[k]=1;q[t++]=k}}
+  for(let y=0;y<H;y++){for(const k of[y*W,y*W+W-1])if(!bg[k]&&light(k)){bg[k]=1;q[t++]=k}}
+  const step=(i,f)=>{const y=(i/W)|0,xx=i%W;if(xx>0)f(i-1);if(xx<W-1)f(i+1);if(y>0)f(i-W);if(y<H-1)f(i+W)};
+  while(h<t){const i=q[h++];step(i,j=>{if(!bg[j]&&light(j)&&near(i,j)){bg[j]=1;q[t++]=j}})}
+  const seen=new Uint8Array(N),lim=Math.floor(H*0.35);
+  for(let y0=0;y0<lim;y0++)for(let x0=0;x0<W;x0++){const s0=y0*W+x0;if(bg[s0]||seen[s0]||!light(s0))continue;
+    h=0;t=0;q[t++]=s0;seen[s0]=1;let maxy=0;
+    while(h<t){const i=q[h++];maxy=Math.max(maxy,(i/W)|0);step(i,j=>{if(!bg[j]&&!seen[j]&&light(j)){seen[j]=1;q[t++]=j}})}
+    if(t>N*0.004&&maxy<lim)for(let k=0;k<t;k++)bg[q[k]]=1}
+  let x1=W,y1=H,x2=0,y2=0;
+  for(let i=0;i<N;i++){if(bg[i]){p[i*4+3]=0;continue}const y=(i/W)|0,xx=i%W;if(xx<x1)x1=xx;if(xx>x2)x2=xx;if(y<y1)y1=y;if(y>y2)y2=y}
+  x.putImageData(d,0,0);const o=document.createElement('canvas');o.width=x2-x1+1;o.height=y2-y1+1;
+  o.getContext('2d').drawImage(c,x1,y1,o.width,o.height,0,0,o.width,o.height);ok(o.toDataURL('image/png'))};im.src=src})}
+(async()=>{const K=window.KR;const t=document.getElementById('t');t.textContent=K.name+' 하루';
+  let f=78;while(t.scrollWidth>1000&&f>48){f-=4;t.style.fontSize=f+'px'}
+  for(let i=0;i<K.imgs.length;i++){document.getElementById('i'+i).src=await cut(K.imgs[i]);document.getElementById('c'+i).innerHTML='<b>'+K.times[i]+'</b>'+K.acts[i]}
+  await document.fonts.ready;document.title='ready'})();
+</script></body></html>

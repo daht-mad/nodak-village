@@ -1,5 +1,7 @@
-// 키링 자랑판 한 장: node keyring-board.mjs "<집 이름>" <상추수확.png> <모닥불.png> <그림일기.png> <out.png>  → 1080×1080
-// 키링 그림은 흰 바탕이면 된다 — 바탕·열쇠고리 구멍은 판이 알아서 걷어 낸다. 순서는 상추수확 → 모닥불(가운데) → 그림일기
+// 키링 자랑판 한 장 → 1080×1080
+//   3장: node keyring-board.mjs "<집 이름>" <상추수확> <모닥불> <그림일기> <out.png>                       → 「○○네 키링」
+//   6장: node keyring-board.mjs "<집 이름>" <상추수확> <방명록> <노트북> <사진관> <그림일기> <모닥불> <out.png> → 「○○네 하루」 2×3, 아침~밤 딱지
+// 키링 그림은 흰 바탕이면 된다 — 바탕·고리 구멍은 판이 알아서 걷어 낸다
 // 크롬 경로가 다르면 CHROME=/경로/chrome node keyring-board.mjs ...
 import { readFileSync, writeFileSync, mkdtempSync, copyFileSync, existsSync, rmSync, mkdirSync } from "node:fs";
 import { execFileSync } from "node:child_process";
@@ -8,13 +10,15 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { tmpdir } from "node:os";
 
 const [, , name, ...rest] = process.argv;
-const outPath = rest[3];
-if (!name || rest.length !== 4) {
-  console.error('사용법: node keyring-board.mjs "<집 이름>" <상추수확.png> <모닥불.png> <그림일기.png> <out.png>');
+const n = rest.length - 1, outPath = rest[n];
+if (!name || (n !== 3 && n !== 6)) {
+  console.error('사용법: node keyring-board.mjs "<집 이름>" <상추수확> <모닥불> <그림일기> <out.png>');
+  console.error('   또는: node keyring-board.mjs "<집 이름>" <상추수확> <방명록> <노트북> <사진관> <그림일기> <모닥불> <out.png>');
   process.exit(1);
 }
+const DAY = { times: ["아침", "오전", "점심", "오후", "저녁", "밤"], acts: ["상추수확", "방명록 발도장", "노트북 마을 짓기", "사진관 찰칵", "그림일기", "모닥불"] };
 const MIME = { ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".webp": "image/webp" };
-const imgs = rest.slice(0, 3).map((p) => {
+const imgs = rest.slice(0, n).map((p) => {
   const f = resolve(p), m = MIME[extname(f).toLowerCase()];
   if (!existsSync(f)) { console.error(`✗ 그림이 없어: ${p}`); process.exit(1); }
   if (!m) { console.error(`✗ png·jpg·webp만 돼: ${p}`); process.exit(1); }
@@ -47,15 +51,17 @@ const forChrome = (p) => winChrome ? execFileSync("wslpath", ["-m", p], { encodi
 const fileUrl = (p) => winChrome ? "file:///" + encodeURI(forChrome(p)) : pathToFileURL(p).href;
 
 copyFileSync(join(here, "..", "fonts", "Pretendard-Black.woff2"), join(tmp, "Pretendard-Black.woff2"));
-const html = readFileSync(join(here, "..", "references", "keyring-board.html"), "utf8")
-  .replace("<script>", `<script>window.KR = ${JSON.stringify({ name: String(name).slice(0, 20), imgs })};</script>\n<script>`);
+const tpl = n === 6 ? "keyring-day.html" : "keyring-board.html";
+const kr = { name: String(name).slice(0, 20), imgs, ...(n === 6 ? DAY : {}) };
+const html = readFileSync(join(here, "..", "references", tpl), "utf8")
+  .replace("<script>", `<script>window.KR = ${JSON.stringify(kr)};</script>\n<script>`);
 const page = join(tmp, "page.html");
 writeFileSync(page, html);
 const shot = join(tmp, "out.png");
 try {
   execFileSync(chrome, [
     "--headless=new", "--disable-gpu", "--hide-scrollbars", "--allow-file-access-from-files",
-    "--force-device-scale-factor=1", "--virtual-time-budget=8000",
+    "--force-device-scale-factor=1", "--virtual-time-budget=15000",
     "--window-size=1080,1080", `--screenshot=${forChrome(shot)}`, fileUrl(page),
   ], { stdio: "ignore" });
 } catch {}
