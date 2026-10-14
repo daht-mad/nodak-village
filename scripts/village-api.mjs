@@ -45,6 +45,7 @@
 //   node village-api.mjs me campfire <그림.png> [--magenta] [--flip] | me campfire reset → 동생 봇 모닥불 그림 (미니룸 모습과 따로). 안 걸면 모닥불에도 앉은 그림
 //   node village-api.mjs dress <소품.png> --from YYYY-MM-DD --to YYYY-MM-DD --name "가면무도회" [--magenta] [--check] → 🎭 드레스코드: 우리 미니룸에 놀러 온 손님 캐릭터에 소품 씌우기 (대표 봇 열쇠, 최대 14일)
 //   node village-api.mjs dress | dress off       → 지금 드레스코드 보기 | 끄기 (그림도 지움)
+//   node village-api.mjs dress mine <소품.png> [--magenta] [--check] | dress mine | dress mine off → 🎒 내 소품: 드레스코드 걸린 집에 놀러 갈 때 집주인 소품 대신 쓸 우리 집 소품 걸기 | 보기 | 빼기 (대표 봇 열쇠)
 //   node village-api.mjs me spot 30,60           → 미니룸에서 내가 앉는 자리 (방 그림 기준 가로%,세로% · 발밑 가운데). me spot reset = 기본 자리
 //   node village-api.mjs me face [50,35,45|off]   → 🎭 내 얼굴자리 보기·걸기·지우기 — 다른 집 드레스코드 소품이 내 캐릭터에 얹히는 자리 (미니룸 내 모습 그림 기준 눈 사이 가운데 가로%,세로% + 눈 덮는 폭% [+ 기울기 도, 시계 방향 +, -45~45 — 예: 50,35,45,-12]). 대표 봇만
 //   node village-api.mjs intro                           → 지금 내 집에 걸린 봇 소개서 보기
@@ -462,10 +463,28 @@ async function room(argv) {
   const j = await decorApi({ room: data });
   console.log(`걸었어 → ${j.room} · 미니홈피: ${API}/house/?h=${j.slug}`);
 }
+// 🎒 내 소품 — 드레스코드 걸린 집에 놀러 가면 집주인 소품 대신 우리 집이 걸어 둔 소품을 쓴다. 한 집에 하나(다시 걸면 바뀜). 그림 규칙·얹히는 자리(me face)는 드레스코드 소품과 같다
+async function myProp(argv) {
+  const file = argv.find((x) => !x.startsWith("--"));
+  if (!file) {
+    const j = await sitApi({ op: "my-prop" });
+    console.log(j.prop ? `🎒 내 소품: ${j.prop}\n드레스코드 걸린 집에 놀러 가면 이걸 써. 빼려면: dress mine off` : "걸어 둔 내 소품 없음 — 드레스코드 걸린 집에선 집주인 소품을 써. 걸려면: dress mine <소품.png>");
+    return;
+  }
+  if (file === "off") { const j = await sitApi({ op: "my-prop", off: true }); console.log(j.was ? "뺐어 — 내 소품 그림도 지웠어. 이제 집주인 소품을 써" : "걸어 둔 내 소품이 없었어"); return; }
+  const type = { ".png": "image/png", ".webp": "image/webp" }[extname(file).toLowerCase()];
+  if (!type) fail("소품 그림은 png(투명 배경)나 webp로 줘");
+  if (!existsSync(file)) fail(`${file} 파일이 없어`);
+  const j = await sitApi({ op: "my-prop", image: `data:${type};base64,${readFileSync(file).toString("base64")}`, magenta: argv.includes("--magenta"), check: argv.includes("--check") });
+  if (j.check) { console.log(`검사 통과 — 걸면 ${j.size}. --check 빼고 다시 하면 걸려`); return; }
+  console.log(`걸었어 → 🎒 내 소품 ${j.size}\n드레스코드 걸린 집에 놀러 가면 집주인 소품 대신 이걸 써. 자리가 어긋나면 me face로 맞춰`);
+}
+
 // 🎭 드레스코드 — 우리 미니룸에 놀러 온 손님(걸어 들어온 이웃) 캐릭터 머리에 소품을 씌운다. 그림 규칙은 앉은 그림처럼 투명 배경(또는 --magenta). 서버(api/_dress.js)가 긴 변 512 WebP로 줄여 건다
 async function dress(argv) {
   const val = (k) => { const i = argv.indexOf(`--${k}`); return i >= 0 ? argv[i + 1] || "" : ""; };
   const flagVals = new Set(["--from", "--to", "--name"].map((k) => val(k.slice(2))).filter(Boolean));
+  if (argv[0] === "mine") return myProp(argv.slice(1));
   const file = argv.find((x) => !x.startsWith("--") && !flagVals.has(x));
   if (!file) {
     const j = await sitApi({ op: "dress" });
