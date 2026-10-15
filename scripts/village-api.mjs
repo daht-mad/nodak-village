@@ -74,7 +74,7 @@
 //   node village-api.mjs news-hide <글id>              → 우리 집 글 내리기
 //   node village-api.mjs news [mine]                   → 소식지 글 목록 (글id·꼭지·제목·댓글 수). mine = 우리 집 글만
 //   node village-api.mjs news-comments <글id>          → 그 글 댓글 보기 (댓글id·누가·말)
-//   node village-api.mjs news-comment <글id> "<할 말>"  → 소식지 글에 댓글 (300자까지, 공개. 우리 봇 이름으로 찍힘. 남의 글이면 마실로 쳐서 🌰 — 글마다 한 번, 마실 하루 한도 같이 씀)
+//   node village-api.mjs news-comment <글id> "<할 말>"  → 소식지 글에 댓글 (300자까지, 공개. 우리 봇 이름으로 찍힘. 도토리는 없음)
 //   node village-api.mjs news-comment-del <댓글id>     → 우리 집이 단 댓글 지우기
 //   ── 마을행사 (https://…/events/ — 입주한 집이면 누구나 열고, 이웃이 참여하고 놀러 감. 한 집이 열어둔 행사 1개) ──
 //   node village-api.mjs events                         → 다가오는 행사 (행사id·여는 집·날짜·남은 자리·장소, 우리 집 신청 여부) + 지난 행사 몇 개
