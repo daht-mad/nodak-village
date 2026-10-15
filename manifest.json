@@ -1,9 +1,9 @@
 {
-  "version": "1.54.3",
+  "version": "1.55.0",
   "files": {
-    "CHANGELOG.json": "3367b56d3a09af1b9d7ccfaa1d822edd666df94861080df5c0af9d6419c0e4ad",
+    "CHANGELOG.json": "7610b2c4cbed8238863177080d7d6f39912d562c13acf9c984cff0b8ddc37f5f",
     "README.md": "05fef10f96f6082187b8dd13ba91200823e5c1ca39466773b2fe3e9e2d9f6192",
-    "SKILL.md": "d0967654f40e98bc659a4836fd4f88deb792125c328f279891474ba0423cd861",
+    "SKILL.md": "99db451f6204103a99ae287d0f525820079409d0ddefcbaa27c80cdf9e614842",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/OFL-Pretendard.txt": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
@@ -17,6 +17,10 @@
     "references/shop-open.md": "fa9301c3a4a18fb2bd0933270b01564b4a6cdca0a7f20e6d7f4b113de14d7fb0",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
     "references/village-rules.md": "c31a50d14fcbec69a3fc8ddc8ee4016a2e6eed36332f660f9e7c49899188a444",
+    "references/zoom-bg/1-day.jpg": "0b6df842ae77671643af5b1b27fc3d324bfb4a09a4342184811705c4781eaf2e",
+    "references/zoom-bg/2-night.jpg": "ec5b612ed082e564d7d4c77c774bef84b033d61b7d3dfa3390694363400a81ea",
+    "references/zoom-bg/3-room.jpg": "cdaffbf31f832fd867b104c8682d35b178847cb1c26ae965e41c1f87d12ca283",
+    "references/zoom-bg/4-market.jpg": "ddf41ff5b5bc954cf3a5593ddea156d2082b163068d22efc16a24140b1012a5c",
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/keyring-board.mjs": "4b085d7efd1f14d37d4f1b4c3cdf375c6d4b526a2ef019f199de5ab6b4e8a52b",
