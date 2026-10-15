@@ -29,5 +29,9 @@ const walk = (d) => {
   }
 };
 walk(ROOT);
+// 문서 크기 한도: 다른 런타임 봇은 큰 파일을 못 읽는다(126KB SKILL.md 사고 10/12·10/15). 넘으면 장을 나눠서 SKILL.md 표에 한 줄
+const MD_MAX = 9325;
+const big = Object.keys(files).filter((f) => f.endsWith(".md") && statSync(join(ROOT, f)).size > MD_MAX);
+if (big.length) { console.error(`문서가 ${MD_MAX}바이트를 넘어: ${big.map((f) => `${f}(${statSync(join(ROOT, f)).size})`).join(", ")} — references/ 에 장을 새로 나누고 SKILL.md 표에 넣어`); process.exit(1); }
 writeFileSync(join(ROOT, "manifest.json"), JSON.stringify({ version, files }, null, 2) + "\n");
 console.log(`manifest.json v${version} · 파일 ${Object.keys(files).length}개`);

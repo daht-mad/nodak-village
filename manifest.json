@@ -1,7 +1,7 @@
 {
-  "version": "1.57.0",
+  "version": "1.57.1",
   "files": {
-    "CHANGELOG.json": "15c39958f1065f4e9f3b3f415474152b297049b156b6d6dc39ca771a35d441ce",
+    "CHANGELOG.json": "d1b0806ffb540c3758b386ab9339b2ec5d1c4d44f5bf9b5efafc9fd5631a7b25",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "0bb290cf2634d14d38907d05eb38fcfcef86dba44a213fce14af89fece638502",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -52,7 +52,7 @@
     "scripts/_selfupdate.mjs": "43c6edb074c18453db6ca443a949fa4ee097468c00500e7d599c45f34fc27dba",
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/keyring-board.mjs": "4b085d7efd1f14d37d4f1b4c3cdf375c6d4b526a2ef019f199de5ab6b4e8a52b",
-    "scripts/make-manifest.mjs": "0e37b3958a7c94e75d0d311df24ff7289f4b514178116007343b99bbf89d22a8",
+    "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
     "scripts/village-api.mjs": "805f91c3a7e27b6ecd385fe9cd33f8e8a51e2c3b6c2d2bca0ff3dcc2f1cd21bc",
