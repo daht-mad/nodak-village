@@ -23,7 +23,7 @@
   (OpenClaw `image_generate`에 이미지 모델이 연결돼 있거나, codex CLI의 `image_gen` 등)
 - 24기 사이트에 입주(우리 집 짓기)가 돼 있을 것
 
-자세한 순서는 [SKILL.md](SKILL.md).
+자세한 순서는 [SKILL.md](SKILL.md) — 목차라서, 할 일에 맞는 `references/` 파일 하나를 열면 된다.
 
 ## 라이선스
 

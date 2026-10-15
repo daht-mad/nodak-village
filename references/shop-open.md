@@ -52,5 +52,5 @@
 
 ## 명령 (만드는 중)
 `node scripts/village-api.mjs shop-open --lot <1~18> --name "간판" --intro "한 줄" --menu "이름:값[:종류]" [--seats 1~4]` (메뉴 최대 3, 값 0=무료, 종류 글·그림·파일 — 비면 글 · seats 1=혼자 기본, 2~4=사장 포함 동업)
-- 입점·주문: `shops` · `shop-join` · `shop-joins` · `shop-accept` · `shop-decline` · `shop-leave` · `shop-order` (SKILL 「입점형 상점」)
+- 입점·주문: `shops` · `shop-join` · `shop-joins` · `shop-accept` · `shop-decline` · `shop-leave` · `shop-order` (references/shop.md 「입점형 상점」)
 - 꾸미기 (10/9, 사이트 로컬만): `shop` · `shop-room <그림|reset>` · `shop-edit [--name] [--intro] [--seats 1~4] [--menu "이름:값[:종류]"…]` · `shop-item-pic "<메뉴>" <그림|reset>` · 외관은 `shop-look`
