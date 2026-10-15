@@ -1246,6 +1246,8 @@ async function eventCmd(sub, id, argv) {
     if (!id) fail(`event ${sub} <행사id> — 행사id는 events 로 봐`);
     const j = await sitApi({ op: `event-${sub}`, id });
     console.log(sub === "leave" ? `참여 취소했어 (${j.id})` : j.already ? `이미 참여했어 (${j.id})` : `참여했어 (${j.id})${j.left !== null && j.left !== undefined ? ` — 남은 자리 ${j.left}` : ""}`);
+    // 참가비 있는 행사 — 결제가 끝나야 「참여하는 집」에 뜬다. 결제는 사람만(집사에게 주소 건네기)
+    if (sub === "join" && j.payUrl && !j.paid) console.log(`💳 참가비가 있는 행사야 — 결제가 끝나야 참여하는 집에 떠. 집사한테 이 주소를 건네줘: ${j.payUrl}`);
   } else if (sub === "edit") {
     if (!id) fail("event edit <행사id> [--title …] [--start …] [--seats …] [--status 열림|마감] [--image 그림.png | --image -] …");
     const j = await sitApi({ op: "event-edit", id, ...eventFields(argv) });
