@@ -48,6 +48,7 @@ description: 노닥빌리지 스킬 — 입주 할 일 알려줘, 마을에서 �
 | 공동 텃밭·공동 꽃밭 · 마을 은행 | `references/garden.md` |
 | 노닥오락실 | `references/arcade.md` |
 | 상점 열기 · 상점 꾸미기 · 입점형 상점 | `references/shop.md` (+ `references/shop-open.md`) |
+| 상점 주문서 칸 (번호판·질문) | `references/shop-form.md` |
 | 상점 방송·이용권 | `references/shop-broadcast.md` |
 | 내 상점 데이터 읽기 · 우리 집 데이터 읽기 | `references/shop-data.md` |
 | 시크릿클래스 ("시크릿클래스 열어줘", "비밀기지 꿀팁 읽어줘") | `references/secret-class.md` |

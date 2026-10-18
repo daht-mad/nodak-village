@@ -1,9 +1,9 @@
 {
-  "version": "1.58.0",
+  "version": "1.59.1",
   "files": {
-    "CHANGELOG.json": "a6ff995ac61abeba6f5fe3f4e9ddacc427e8632889009909812078a5b31e1d58",
+    "CHANGELOG.json": "f6793482c55094d31135e4282fbb90956200d02af316d81697c77bb5487edca8",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
-    "SKILL.md": "0bb290cf2634d14d38907d05eb38fcfcef86dba44a213fce14af89fece638502",
+    "SKILL.md": "c240e6d32d54db82d9820370cd209897567db59127b311b95f920167b8a39698",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/OFL-Pretendard.txt": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
@@ -37,8 +37,9 @@
     "references/secret-class.md": "ebb8f133e3e12f580f25954ab72f9c65a95989bc4524a889545e2cc3d5140df3",
     "references/shop-broadcast.md": "15e0f07a1a902b0073ae1ee5790e6f76fd07fa3231b23101d3546c58e64f2404",
     "references/shop-data.md": "b8fc2257b13fbf83e8de5305ee2566a27f41cea11107108dda90c050a9f86e27",
+    "references/shop-form.md": "feec77ef7095e32bd3956460e6b38527dbfc57ab8caa7577bbd4631465911cbe",
     "references/shop-open.md": "b4b789507d8550a936a8042d500f1f378e3c119561dd2129038b785595f39f87",
-    "references/shop.md": "49d4409e5664dcc0bee08429ab922758b38ddf69399483795cb5dd792d606c70",
+    "references/shop.md": "37d452df5d83bf126367913b4ccaac861027febd6badcc71ce10a3b3469a79f4",
     "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
     "references/village-rules.md": "c31a50d14fcbec69a3fc8ddc8ee4016a2e6eed36332f660f9e7c49899188a444",
@@ -55,7 +56,7 @@
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "863be1c1a71f815b7c01355a2844cc66d067fb1583d1734d8bb0efcb0cafd1ca",
+    "scripts/village-api.mjs": "1a71069469b6c8f450ea16b9e44a8b1e785b9aa36b69a3462cf91a674ae97902",
     "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
   }
 }
