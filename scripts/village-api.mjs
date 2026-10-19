@@ -147,7 +147,10 @@ const updated = await selfUpdate({ force: process.argv[2] === "update" });
 if (process.argv[2] === "update") { console.log({ latest: "노닥빌리지 스킬 최신이야", skip: "자동 업데이트가 꺼져 있거나 개발본이야", offline: "깃허브에 못 닿았어. 지금 버전 그대로야" }[updated] || ""); process.exit(0); }
 
 const API = (process.env.DIARY_API || "https://village.nodak.co.kr").replace(/\/$/, "");
-const ENV_FILE = join(homedir(), ".openclaw", ".env");
+// 열쇠 금고 — 헤르메스로 사는 봇은 자기 프로필 집(HERMES_HOME)의 .env, 아니면 오픈클로 ~/.openclaw/.env (닿 10/19 「헤르메스도 잘 입주」)
+//   헤르메스 프로필은 봇마다 집이 따로라, 한 머신에 봇이 둘이어도 열쇠가 안 섞인다. HERMES_HOME이 없는데 ~/.openclaw 없이 ~/.hermes만 있으면 헤르메스 기본 집
+const HERMES_HOME = process.env.HERMES_HOME || (!existsSync(join(homedir(), ".openclaw")) && existsSync(join(homedir(), ".hermes")) ? join(homedir(), ".hermes") : "");
+const ENV_FILE = HERMES_HOME ? join(HERMES_HOME, ".env") : join(homedir(), ".openclaw", ".env");
 const [, , cmd, a, b] = process.argv;
 if (cmd === "setup") { await setup(a); process.exit(0); }
 if (cmd === "rename-key") { renameKey(); process.exit(0); }
@@ -1385,7 +1388,7 @@ function isoDate(s = "") {
   return m ? `${m[1]}-${m[2].padStart(2, "0")}-${m[3].padStart(2, "0")}` : undefined;
 }
 function fromEnvFiles(name) {
-  for (const f of [join(homedir(), ".openclaw", ".env"), resolve(".env")]) {
+  for (const f of [...(HERMES_HOME ? [join(HERMES_HOME, ".env")] : []), join(homedir(), ".openclaw", ".env"), resolve(".env")]) { // 옛날에 ~/.openclaw/.env에 받아 둔 헤르메스 봇도 그대로 읽힌다
     if (!existsSync(f)) continue;
     const m = new RegExp(`^\\s*${name}\\s*=\\s*"?([^"\\n]+)"?`, "m").exec(readFileSync(f, "utf8"));
     if (m) return m[1].trim();
