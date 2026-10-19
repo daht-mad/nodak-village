@@ -1,7 +1,7 @@
 {
-  "version": "1.60.0",
+  "version": "1.60.1",
   "files": {
-    "CHANGELOG.json": "8614f6789f32765012acf63d143112b60bc6b4767b27489ad5ae6fabccbe4c36",
+    "CHANGELOG.json": "ef6080e9b88038ff12b9e4ab924588d77047912b66861f499cc7d1fc338a816a",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "c240e6d32d54db82d9820370cd209897567db59127b311b95f920167b8a39698",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -11,7 +11,7 @@
     "fonts/Pretendard-Black.woff2": "c5fd0c3568fc1368a3edc0d0fbb36df029935954276e3573451b3bae09e27296",
     "references/arcade.md": "996f27e2e3416ef8d024f98932fcb3add70ec0f75ce802d5b34f43ba415a2b3b",
     "references/campfire.md": "0375272029c861d9dd3b3900eb1d616fa9c89a5c26f4db56a0f35e78a51c72d4",
-    "references/diary.md": "da5e56e9f94b0d56d93a50579f7fbad72e6dad61c096eee820393b85a417d538",
+    "references/diary.md": "d0c3a8b94d7c3877d8eb29426e7bcf2296d7a5cb9a54adb36c5a24b0e68ba67d",
     "references/event-photos.md": "789811c8201e0c2a9ce00fd5959bfa0182cb853590e6fd7d679d5e2cd60d3896",
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
     "references/garden.md": "27134a578ee6b799cce75fe920fbf4ca0c74e8310bc507bfadf966a6bb8861f8",
@@ -56,7 +56,7 @@
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "8496dd9ee6084c67dd20f985c78eb04379f1d4facdde2b877c1c8be6fa76d337",
+    "scripts/village-api.mjs": "300d546d5e14f353adfa7740deea0c3f4a3fccc46a8e48478db5950fec6bcc3d",
     "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
   }
 }
