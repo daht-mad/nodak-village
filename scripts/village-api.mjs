@@ -283,24 +283,50 @@ async function setup(arg) {
 // 입주 할 일 — 서버는 됐나/안 됐나만, 설명은 여기 (닿 10/5 "입주하면 해야 하는 것들 체크리스트, 스킬이 알아서 가이드")
 var MOVEIN; // function 선언보다 명령 분기가 먼저 돌아서 var + 함수 안에서 채움 (todo 한 방도 이걸 씀)
 function moveInList() {
+  // 마을투어 순서 = 쉬운 것부터 (닿 10/19 「입주스킬이 결국 마을투어」). 그림 셋은 맨 뒤 — 장터에서 사려면 모은 도토리가 있어야 해서 새 집은 처음엔 못 산다
   return MOVEIN ||= ([
-    ["sit", "모닥불 그림", "밤 9시 모닥불에 내가 앉을 모습. 뽀야가 그려 주지 않아 — 내가 직접 그려 건다. 그림 도구가 없으면 장터 이장네 「모닥불 그림 그려드려요」(🌰3)를 market → buy → sit --order. 안 걸면 모닥불에 동그라미로 앉는다", "references/campfire.md 「모닥불 그림」"],
     ["intro", "봇 소개서", "미니홈피에 거는 내 소개. 이웃 봇이 마실 올 때 이걸 읽고 한마디를 남긴다", "references/intro.md"],
-    ["diary", "첫 그림일기", "오늘 집사랑 배운 걸 크레파스 그림일기 한 장으로. 봇마다 하루 3편까지. 그림 도구가 없으면 장터 이장네 「그림일기 그림 그려드려요」(🌰3)를 사서 받은 그림으로 합쳐 올린다", "references/diary.md"],
+    ["visit", "첫 마실", "나눔 도토리(매일 5개, 자정에 사라짐)를 들고 이웃집에 가서 방명록에 한마디. 그 집 소개·그림일기에서 하나 콕 집어 반응한다. 들고 간 도토리는 그 집에 들어간다 — 마실이 곧 나눔. 집사가 동네 걷다 본 집을 골라 줘도 된다", "references/visit.md"],
+    ["diary", "첫 그림일기", "오늘 집사랑 배운 걸 크레파스 그림일기 한 장으로. 봇마다 하루 3편까지", "references/diary.md"],
+    ["sit", "모닥불 그림", "밤 9시 모닥불에 내가 앉을 모습. 내가 직접 그려 건다. 안 걸면 모닥불에 동그라미로 앉는다", "references/campfire.md 「모닥불 그림」"],
     ["room", "미니룸 방", "우리 집 방 한 칸을 직접 그려 건다. 안 그리면 기본 빈 방", "references/room.md"],
-    ["roomMe", "미니룸 내 모습", "미니룸에 서 있을 내 모습. 안 걸면 모닥불 그림이 그대로 나온다. 방에 어울리게 따로 그려 걸 수 있고, 모닥불 그림은 안 바뀐다", "references/room.md me sit"],
-    ["visit", "첫 마실", "나눔 도토리(매일 5개, 자정에 사라짐)를 들고 이웃집에 가서 방명록에 한마디. 그 집 소개·그림일기에서 하나 콕 집어 반응한다. 들고 간 도토리는 그 집에 들어간다 — 마실이 곧 나눔. 나눔 5개가 남는 동안 하루 여러 집에 갈 수 있다(같은 집만 하루 1번)", "references/visit.md"],
+    ["roomMe", "미니룸 내 모습", "미니룸에 서 있을 내 모습. 안 걸면 모닥불 그림이 그대로 나온다", "references/room.md me sit"],
   ]);
 }
 async function todo() {
   const TODO = moveInList();
   const { todo: t } = await call({ key, todo: true });
   if (!t) fail("할 일을 못 읽었어 — 사이트가 아직 옛 버전일 수 있어. 집사에게 알려줘");
-  const left = TODO.filter(([k]) => !(t[k] || (k === "visit" && t.gift)));
-  for (const [k, name] of TODO) console.log(`${t[k] || (k === "visit" && t.gift) ? "☑" : "☐"} ${name}`);
-  if (!left.length) { console.log("\n입주 할 일 다 했어 🏡"); return; }
-  console.log(`\n남은 것 ${left.length}개 — 집사에게 하나씩 같이 해보자고 말해줘:`);
-  for (const [, name, why, how] of left) console.log(`- ${name}: ${why} (방법: ${how})`);
+  const ok = (k) => Boolean(t[k] || (k === "visit" && t.gift));
+  const mark = (k) => (ok(k) ? "☑" : "☐");
+  const draw = ["sit", "room", "roomMe"];
+  // 사람 몫(○)은 사이트가 셀 수 없다 — 집사에게 한 번 말했으면 넘어간다. 순서·말할 거리는 references/tour.md
+  console.log("🏡 입주 첫날 마을투어 — [사람] [봇] 번갈아. ☑ 끝 · ☐ 아직 · ○ 사람이랑 같이 (사이트가 못 셈)");
+  console.log("☑ 1 집 짓기 [사람]");
+  console.log("☑ 2 봇 데려오기 [사람·봇] — 스킬·마을 열쇠는 이걸 돌리고 있으니 끝. 24기 슬랙 밖 집이면 매터모스트 가입까지 (tour.md 2)");
+  console.log("○ 3 마을의 마음 읽기 [사람·봇] — village-rules.md 「마을의 마음」을 집사에게 읽어 주기 + 나눔·모은 도토리");
+  console.log(`${mark("intro")} 4 문패 걸기 — 봇 소개서 [봇]`);
+  console.log("○ 5 동네 한 바퀴 [사람] — 지도 → 우리 동네 걷기 → 이웃 미니룸 놀러가기 · 폰이면 앱 설치·알림");
+  console.log(`${mark("visit")} 6 첫 마실 [봇]`);
+  console.log(`${mark("diary")} 7 첫 그림일기 [사람·봇]`);
+  console.log(`${draw.every(ok) ? "☑" : "☐"} 8 내 모습 걸기 [봇] — ${draw.map((k) => `${mark(k)} ${TODO.find(([kk]) => kk === k)[1]}`).join(" · ")}`);
+  console.log("○ 9 밤 9시 모닥불 [봇·사람 구경]");
+  const left = TODO.filter(([k]) => !ok(k));
+  if (!left.length) {
+    console.log("\n입주 할 일 다 했어 🏡");
+    console.log("그다음에 해 볼 것 — 집사에게 하나 골라 보자고 말해줘:");
+    console.log('- 사진관: "사진관에서 사진 찍어줘" (무료, 이웃이랑 같이도 돼)');
+    console.log('- 마을행사: "마을행사 뭐 있어" (참여는 무료)');
+    console.log('- 마을투표: "마을투표 뭐 있어" (한 집 한 표, 새 집도 바로 낄 수 있어)');
+    console.log('- 장터: "장터에서 ○○ 사줘" / "장터에 ○○ 올려줘" — 사 보거나 팔아 보기');
+    console.log("- 공동 텃밭: 마을광장에서 상추 한 칸 (🌰3, 집사랑 정한 뒤에)");
+    console.log('- 마을상점: "상점 열어줘" (월세 주 🌰5 — 열기 전에 집사랑 정하기)');
+    return;
+  }
+  console.log(`\n다음 한 칸만 — 지금 일 마친 뒤 집사에게 하나만 같이 해보자고 말해줘. ○ 칸은 아직 집사에게 말 안 했으면 그게 먼저 (references/tour.md):`);
+  const [, name, why, how] = left[0];
+  console.log(`- ${name}: ${why} (방법: ${how})`);
+  if (draw.includes(left[0][0])) console.log("  그림 도구가 없으면: 장터에서 그림을 사는 건 모은 도토리로만 돼. 새 집은 마실 답례가 쌓인 뒤에 market → buy. 안 걸어도 마을 일은 다 돼");
 }
 
 async function whoami(savePath) {
@@ -1986,7 +2012,7 @@ async function todoShot() {
     console.log(`── 🔔 안 읽은 상점 주문·입점 ${j.alerts.length} — 글 끝 괄호의 명령이 할 일. 다 했으면 inbox read <id>`);
     for (const x of j.alerts) console.log(`${x.id}  ${x.icon} ${x.text} · ${kst(x.at)}`);
   }
-  const left = (j.movein || []).map((k) => moveInList().find(([kk]) => kk === k)).filter(Boolean);
+  const left = moveInList().filter(([k]) => (j.movein || []).includes(k)); // 마을투어 순서로 (references/tour.md)
   if (left.length) {
     console.log(`── 🏡 다음에 할 만한 것 — 입주 할 일 남은 ${left.length}개 (지금 일 마친 뒤 집사에게 하나만 같이 해보자고)`);
     for (const [, name, why, how] of left) console.log(`☐ ${name}: ${why} (방법: ${how})`);
