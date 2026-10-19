@@ -1,9 +1,9 @@
 {
-  "version": "1.61.0",
+  "version": "1.61.2",
   "files": {
-    "CHANGELOG.json": "5f927b701144a00e7eb671d149876ed3e67cfd28ecc522f34a92c0058f18208c",
+    "CHANGELOG.json": "97fb62f9c6d800cdb8b0a14803eafcacffe3cbe998a244269719b9a553b24226",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
-    "SKILL.md": "be46eaedb972a31b8f3f861854b2e093cfc31d5f343cae12a36dc67ee86859c5",
+    "SKILL.md": "0a8b04b6f5e8be0805bacd4a861a3f9d2ccdf55ccb90e41e7278e3b7ec137a57",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/OFL-Pretendard.txt": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
@@ -16,7 +16,7 @@
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
     "references/garden.md": "27134a578ee6b799cce75fe920fbf4ca0c74e8310bc507bfadf966a6bb8861f8",
     "references/intro.md": "16ebbba157bab3d65fb4f97e19da21d7438e8fca5cc3beefc902c3eef4409eaf",
-    "references/key.md": "1b24013e5afc03788218ea7bfa4b9efaad593c4473ee9b0c4b2d5c3cac2e2b41",
+    "references/key.md": "8ea7c0b3a12053b53876444b5d70a8101149a9ebfa8ef544e52c9917b7b43e59",
     "references/keyring-board.html": "db2c30e71362301179f5845f6412d06073c777a8e94c9d87aa2a25a0d3096011",
     "references/keyring-day.html": "c5a260208e4487614b9bb622ac9aa142b090495f74a3527fc463ada27e0365fa",
     "references/keyring.md": "be11638dc0b19e73776cc688f9b7712d26318f88a2d73a4ade2acabb1f427e0f",
@@ -25,7 +25,8 @@
     "references/market-sell.md": "c4e4a744f4f97669a6b15cbb460c93ae8096c7a61c03b583074ec67e4393d15d",
     "references/market-want.md": "f616c37f6c3a1185f40264db97ab93983e4df7108c59e85f9188b7657c64111f",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
-    "references/move-in.md": "672a1157178b046221511dd6622e8eb0c7e367fa4f50873dcefced227a357aca",
+    "references/move-in-hermes.md": "28fd087bfaaf58b6b89f560114a746878f74f6ed58e6908ce46c7f815d63c98c",
+    "references/move-in.md": "d3d66fd8c669185bd38649716a4e5ece56428ca0ccfa2010380711e20dc87fae",
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
     "references/notes.md": "51f2e1f82655f1ab2ab98d77f184211d82ed3053eddc077e5e3abb442f341e71",
     "references/photo-group.md": "2597123c788c6fe44da53666ae5ff771d4996f99b209a2c8ec72834feae92330",
@@ -42,7 +43,7 @@
     "references/shop.md": "37d452df5d83bf126367913b4ccaac861027febd6badcc71ce10a3b3469a79f4",
     "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/tour.md": "19e9c7721f3d8a428aeed1b94b01d2cbda76e697aee649cb10b4b3768aec0eae",
+    "references/tour.md": "3ebf0d5c11d7b9025d484e5bfcc3128f6570eb6cdc047f8c917e2b5c2de62d29",
     "references/village-rules.md": "c31a50d14fcbec69a3fc8ddc8ee4016a2e6eed36332f660f9e7c49899188a444",
     "references/visit.md": "fdb8c254e2c3f64ad97bae8388829a54c96b9451fc402d6cfba7b17514b12353",
     "references/vote.md": "08080225eb7b392b283f9d058031f50e1d1c9344b78890eb8fd91b1ab6ea1ab8",
@@ -57,7 +58,7 @@
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "971e326e61501ffe6f07db5df804e2b900bd4209969e6766584d3f56c3f522e4",
+    "scripts/village-api.mjs": "816fae0efd91c2f12c76ce665b543eb0f46b34aadf1c579abac51b8a2a83177a",
     "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
   }
 }
