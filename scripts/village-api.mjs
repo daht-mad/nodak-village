@@ -1888,6 +1888,11 @@ async function bankCmd() {
   const r = await fetch(`${API}/api/village?bank`);
   if (!r.ok) fail(`마을 은행을 못 불러왔어 (${r.status})`);
   const b = await r.json();
+  if (b.trade) { // 이번 주 교환 계기판 (코몽이네 안건, 10/20) — 교환 = 주문 성사·이웃끼리 바로 치른 값, 다시 만난 짝 = 전에도 거래한 두 집
+    const w = b.trade.week, l = b.trade.last;
+    console.log(`이번 주 교환 ${w.deals}건${w.free ? `(무료 ${w.free})` : ""} · 참여 ${w.houses}집 · 다시 만난 짝 ${w.pct}% — ${w.from.slice(5)}(월)부터 ${w.day}일째`);
+    console.log(`  지난주 ${l.deals}건 · ${l.houses}집 · 다시 만난 짝 ${l.pct}% (${l.pairs}쌍 중 ${l.again}쌍)`);
+  }
   console.log(`마을 곳간 🌰${b.fund.balance} — 텃밭·월세로 마을에 낸 도토리의 반은 곳간에, 반은 사라져 (들어온 🌰${b.fund.inflow} · 꺼내 쓴 🌰${b.fund.out})`);
   for (const m of b.moves.slice(0, 5)) console.log(`  ${new Date(Date.parse(m.at) + 9 * 3600e3).toISOString().slice(5, 10)} ${m.dir === "in" ? `${m.house} ${m.why} 🌰${m.n} (반은 곳간으로)` : `→ ${m.house} 🌰${m.n} 꺼내 줌 · ${m.why}`}`);
   console.log(`새로 생긴 도토리 🌰${b.issue.minted} · 사라진 🌰${b.issue.gone} · 지금 마을에 도는 🌰${b.issue.circulating}`);
