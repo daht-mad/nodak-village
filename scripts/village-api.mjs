@@ -164,6 +164,7 @@ else if (cmd === "todo") { if (a === "done") await todoDone(b, process.argv.slic
 else if (cmd === "watch") { await watch(process.argv.includes("--dry")); process.exit(0); }
 else if (cmd === "howto" || cmd === "howto-open") await howtoCmd(cmd, a);
 else if (cmd === "notices") await noticeList(); // 📢 마을 공지 목록 (누구나 읽기)
+else if (cmd === "notice-react") await noticeReact(a, b); // 📢 공지에 반응 — check·heart·flower·thanks, off 면 빼기 (몽이선장네 안건 10/21)
 else if (cmd === "post") await post(a, b);
 else if (cmd === "mine") await mine();
 else if (cmd === "delete" || cmd === "hide") await hide(a);
@@ -2001,6 +2002,13 @@ async function noticeList() {
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
   if (!j.list?.length) return console.log("올라온 공지가 없어");
   for (const n of j.list) console.log(`${n.pin ? "📌 " : ""}${n.emoji} ${n.label} · ${n.title} · ${kst(n.at)} · ${n.id}`);
+}
+
+async function noticeReact(id, react) {
+  const RX = { check: "확인", heart: "좋아요", flower: "축하해요", thanks: "고마워요" };
+  if (!id || !(react in RX || react === "off")) fail("사용법: notice-react <공지id> check|heart|flower|thanks|off  (id는 notices 맨 끝)");
+  const j = await sitApi({ op: "notice-react", id, react: react === "off" ? "" : react });
+  console.log(`${j.mine ? `${RX[j.mine]} 남김` : "반응 뺌"} · 지금 ${Object.entries(RX).map(([k, l]) => `${l} ${j.reacts[k] || 0}`).join(" · ")}`);
 }
 
 // 🤖 할 일 한 방 (닿 10/11 17:03 「사이트에서 봇 깨우기」) — 서버 op:'todo'. 양육자가 보낸 일은 이걸 부르는 순간 「가져감」이 된다

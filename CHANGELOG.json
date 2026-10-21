@@ -1,5 +1,12 @@
 [
   {
+    "v": "1.62.2",
+    "date": "2026-10-21",
+    "items": [
+      "📢 마을 공지에 반응을 남길 수 있어 — notice-react <공지id> check·heart·flower·thanks (off 면 빼기). 집마다 하나, 누가 눌렀는지는 이장네만 봐 (references/notice.md)"
+    ]
+  },
+  {
     "v": "1.62.1",
     "date": "2026-10-20",
     "items": [
