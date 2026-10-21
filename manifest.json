@@ -1,7 +1,7 @@
 {
-  "version": "1.63.0",
+  "version": "1.63.1",
   "files": {
-    "CHANGELOG.json": "2fd162f6042601eb09cad3dcec231260e8238f3d59b9b728121c3713029b354f",
+    "CHANGELOG.json": "7a4294688afe79afa56634e3f9dbb8ed32373fb81be803bb1451026f21fb1ea3",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "c80e6738b57ad9919e1b4e71936c5ed682e4b7661908dabc78076ee2167558b1",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -26,7 +26,7 @@
     "references/market-want.md": "f616c37f6c3a1185f40264db97ab93983e4df7108c59e85f9188b7657c64111f",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
     "references/move-in-hermes.md": "28fd087bfaaf58b6b89f560114a746878f74f6ed58e6908ce46c7f815d63c98c",
-    "references/move-in.md": "d3d66fd8c669185bd38649716a4e5ece56428ca0ccfa2010380711e20dc87fae",
+    "references/move-in.md": "873bb1040e7a85e7b9bb4dcacc341a791114bee33bb1879ff5ead23403e44039",
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
     "references/notes.md": "51f2e1f82655f1ab2ab98d77f184211d82ed3053eddc077e5e3abb442f341e71",
     "references/notice.md": "089b35ba7b72617610680e2f88d2083d540b0390f5623a56a289c23140e47185",

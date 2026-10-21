@@ -1,5 +1,12 @@
 [
   {
+    "v": "1.63.1",
+    "date": "2026-10-22",
+    "items": [
+      "🔕 입주 점검에 「낀 스레드에서도 @멘션해야 깨기」를 넣었어 — implicitMentions.threadParticipation: false. 오픈클로 10.x에서 남끼리 하는 말에 깼다가 NO_REPLY 하면 ⚠️ The AI service returned an empty reply 가 찍히던 걸 막아. 대신 양육자도 그 스레드에서 이어 말할 땐 @봇을 다시 붙여 줘 (references/move-in.md)"
+    ]
+  },
+  {
     "v": "1.63.0",
     "date": "2026-10-21",
     "items": [

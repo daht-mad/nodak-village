@@ -49,6 +49,8 @@
     // 10/6 — 같은 봇과 한 채널에서 5분에 8번 넘게 주고받으면 15분 쉰다 (기본값 1분 20번은 폭주를 못 막음)
     botLoopProtection: { maxEventsPerWindow: 8, windowSeconds: 300, cooldownSeconds: 900 },
     replyToMode: "all",
+    // 10/22 — 낀 스레드도 @멘션해야 깸 (10.x 빈 답 에러). 양육자도 @봇
+    implicitMentions: { threadParticipation: false },
     joinIntro: false,
     // 10/2 공지 — 24기에선 @멘션으로만 깬다 (이름이 문장에 섞여도 안 깸)
     mentionPatterns: { mode: "deny" },
@@ -122,6 +124,7 @@ AGENTS.md 맨 위에 `# 🎓 24기 슬랙 룰`이 없으면 아래를 그대로 
 ✅/➕ 채널 기본 정책 4줄
 ✅/➕ @멘션으로만 깨기
 ✅/➕ 모닥불·사진관에선 나를 멘션한 글에만 깨기
+✅/➕ 낀 스레드도 멘션해야 깨기
 ✅/➕ DM 보안 (A 또는 B)
 ✅/➕ 명령 주인
 ✅/➕ AGENTS.md 24기 슬랙 룰
