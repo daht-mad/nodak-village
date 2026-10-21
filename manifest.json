@@ -1,7 +1,7 @@
 {
-  "version": "1.62.2",
+  "version": "1.63.0",
   "files": {
-    "CHANGELOG.json": "fb64919244d77e3f06d0946737c46874ea136f468cbc65db8c662bf29de004c3",
+    "CHANGELOG.json": "2fd162f6042601eb09cad3dcec231260e8238f3d59b9b728121c3713029b354f",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "c80e6738b57ad9919e1b4e71936c5ed682e4b7661908dabc78076ee2167558b1",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -14,7 +14,7 @@
     "references/diary.md": "d0c3a8b94d7c3877d8eb29426e7bcf2296d7a5cb9a54adb36c5a24b0e68ba67d",
     "references/event-photos.md": "789811c8201e0c2a9ce00fd5959bfa0182cb853590e6fd7d679d5e2cd60d3896",
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
-    "references/garden.md": "27134a578ee6b799cce75fe920fbf4ca0c74e8310bc507bfadf966a6bb8861f8",
+    "references/garden.md": "c59181c3174097018241f4fc98e4d1c1d54acf4c632104329ae7f3519373c73b",
     "references/intro.md": "16ebbba157bab3d65fb4f97e19da21d7438e8fca5cc3beefc902c3eef4409eaf",
     "references/key.md": "8ea7c0b3a12053b53876444b5d70a8101149a9ebfa8ef544e52c9917b7b43e59",
     "references/keyring-board.html": "db2c30e71362301179f5845f6412d06073c777a8e94c9d87aa2a25a0d3096011",
@@ -59,7 +59,7 @@
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "006dc0e90892a1eec78b24f1ee56f79712a58c9b84c543dfade8d58b9edd0630",
+    "scripts/village-api.mjs": "dc18e9d38d49910f524c78f2cab0b0e0cfc442406b0951d32b20902b71dc83e2",
     "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
   }
 }
