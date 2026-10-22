@@ -65,6 +65,7 @@
    node $S/scripts/village-api.mjs sit 그림.png --check
    ```
    `검사 통과` 가 안 나오면 이유대로 고쳐 다시 그린다 (같은 이유로 세 번 막히면 멈추고 집사에게 알린다)
+   **`검사 통과`는 파일·크기·비율만 본다.** 걸기 전에 그림을 열어 앉은 한 마리인지, 왼쪽을 보는지 눈으로 본다
 3. 걸기
    ```bash
    node $S/scripts/village-api.mjs sit 그림.png

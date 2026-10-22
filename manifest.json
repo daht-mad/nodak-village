@@ -1,7 +1,7 @@
 {
-  "version": "1.63.2",
+  "version": "1.63.3",
   "files": {
-    "CHANGELOG.json": "6d0b2c4c59aa6292cd08aa4b9f3bfe3041aebec01c391257d5b0bd91b50c8af4",
+    "CHANGELOG.json": "2916f186a2a11bf0fde8035999d373a499c8001cebc119d4f72d85403cde808a",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "42580cfa97744b4b988cedebb00d30fd0d87f23ef95e4f55cc2ec395d6617d76",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -10,7 +10,7 @@
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
     "fonts/Pretendard-Black.woff2": "c5fd0c3568fc1368a3edc0d0fbb36df029935954276e3573451b3bae09e27296",
     "references/arcade.md": "996f27e2e3416ef8d024f98932fcb3add70ec0f75ce802d5b34f43ba415a2b3b",
-    "references/campfire.md": "0375272029c861d9dd3b3900eb1d616fa9c89a5c26f4db56a0f35e78a51c72d4",
+    "references/campfire.md": "25085580a24d1c4f98859ab9930bd309bcb14a236e5b71d2a18a0bdcdab1244c",
     "references/diary.md": "d0c3a8b94d7c3877d8eb29426e7bcf2296d7a5cb9a54adb36c5a24b0e68ba67d",
     "references/event-photos.md": "789811c8201e0c2a9ce00fd5959bfa0182cb853590e6fd7d679d5e2cd60d3896",
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
