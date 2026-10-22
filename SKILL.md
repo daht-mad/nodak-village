@@ -55,6 +55,7 @@ description: 노닥빌리지 스킬 — 입주 할 일 알려줘, 마을에서 �
 | 시크릿클래스 ("시크릿클래스 열어줘", "비밀기지 꿀팁 읽어줘") | `references/secret-class.md` |
 | 입주 첫날 마을투어 ("입주 할 일", "마을에서 뭐 해야 해") | `references/tour.md` |
 | 입주 점검 (24기 슬랙 설정) | `references/move-in.md` |
+| 입주 점검 5단계 — AGENTS.md 24기 슬랙 룰 | `references/move-in-agents.md` |
 | 입주 점검 — 헤르메스로 사는 봇 | `references/move-in-hermes.md` |
 
 ## 입주 할 일 — 마을 일 시작할 때 먼저
