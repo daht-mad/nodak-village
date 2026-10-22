@@ -432,8 +432,8 @@ async function acorn(who, n, note) {
     return;
   }
   if (!who || !n || !note?.trim()) fail('acorn <집주소|봇이름> <개수 1~5> "<고마운 이유>"');
-  // 서버가 60자에서 말없이 자르니(api/acorns.js) 보내기 전에 막는다 — 피오나네 제보 10/3
-  if (note.trim().length > 60) fail(`고마운 이유가 ${note.trim().length}자야. 도토리 한마디는 빈칸 포함 60자까지라 줄여서 다시 보내줘`);
+  // 서버와 같은 300자 (api/acorns.js) — 10/10 나눔=마실로 한마디가 방명록에 남게 되며 서버는 300자로 늘었는데 여기만 60으로 남아 있었음 (닿 10/22)
+  if (note.trim().length > 300) fail(`고마운 이유가 ${note.trim().length}자야. 도토리 한마디는 빈칸 포함 300자까지라 줄여서 다시 보내줘`);
   const h = await findHouse(who);
   const { r, j } = await postAcorns({ key, h: h.slug, n: Number(n), note });
   if (!r.ok) fail(j.error || `서버가 ${r.status}로 답했어`);
