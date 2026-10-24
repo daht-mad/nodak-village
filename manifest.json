@@ -1,16 +1,17 @@
 {
-  "version": "1.63.4",
+  "version": "1.64.1",
   "files": {
-    "CHANGELOG.json": "385c2d7316fb9db0daa6ffa380f273e53f8c022699fa3ed3e0c0f6375bec4177",
+    "CHANGELOG.json": "32a2f3be97524334decb2416b6c147111038cee0e991f0c6c3a4cae49da290c8",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
-    "SKILL.md": "42580cfa97744b4b988cedebb00d30fd0d87f23ef95e4f55cc2ec395d6617d76",
+    "SKILL.md": "d1eb7a325b03dce0d368101560fdc921c524bb7afbecafcd6821c5010528f8dd",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/OFL-Pretendard.txt": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
     "fonts/PoorStory-Regular.ttf": "831ab87f7b5463f9cd83ac249bf386816f3a478f1d226427c88cac907adb7ee2",
     "fonts/Pretendard-Black.woff2": "c5fd0c3568fc1368a3edc0d0fbb36df029935954276e3573451b3bae09e27296",
     "references/arcade.md": "996f27e2e3416ef8d024f98932fcb3add70ec0f75ce802d5b34f43ba415a2b3b",
-    "references/campfire.md": "25085580a24d1c4f98859ab9930bd309bcb14a236e5b71d2a18a0bdcdab1244c",
+    "references/campfire-art.md": "8538cb40fddf0e8390ce49c8b1f72a431f4e5f4c74b9cec5a7d584094039a1ba",
+    "references/campfire.md": "9f148c668f339d4b768f5a7bb9c4dd159b067de42eb033788a86b1c9d7596113",
     "references/diary.md": "d0c3a8b94d7c3877d8eb29426e7bcf2296d7a5cb9a54adb36c5a24b0e68ba67d",
     "references/event-photos.md": "789811c8201e0c2a9ce00fd5959bfa0182cb853590e6fd7d679d5e2cd60d3896",
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
@@ -45,8 +46,8 @@
     "references/shop.md": "37d452df5d83bf126367913b4ccaac861027febd6badcc71ce10a3b3469a79f4",
     "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
-    "references/tour.md": "7c8401491fede91003b80cb077ddbc989af2e0bea7a4cea9777e755f55a30e5d",
-    "references/village-rules.md": "c31a50d14fcbec69a3fc8ddc8ee4016a2e6eed36332f660f9e7c49899188a444",
+    "references/tour.md": "8494c1ce3431c7aec28dd2883f952cc7b960402c84a3540e845bc9e7acf53a74",
+    "references/village-rules.md": "322f6c6b51a34f95577e64cf51bc6287de1418331839e7cb6fc01ca1f6f9dd68",
     "references/visit.md": "fdb8c254e2c3f64ad97bae8388829a54c96b9451fc402d6cfba7b17514b12353",
     "references/vote.md": "08080225eb7b392b283f9d058031f50e1d1c9344b78890eb8fd91b1ab6ea1ab8",
     "references/zoom-bg/1-day.jpg": "0b6df842ae77671643af5b1b27fc3d324bfb4a09a4342184811705c4781eaf2e",
@@ -60,7 +61,7 @@
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "9478fb463734246a543d71b7b72f4da34b8ac8d95e4eb93303c7161e0d295894",
+    "scripts/village-api.mjs": "26d6a12c0deb70732808472b70c75538361895cf6b41b64cd2ed188578895762",
     "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
   }
 }
