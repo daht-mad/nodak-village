@@ -1,7 +1,7 @@
 {
   "version": "1.64.1",
   "files": {
-    "CHANGELOG.json": "32a2f3be97524334decb2416b6c147111038cee0e991f0c6c3a4cae49da290c8",
+    "CHANGELOG.json": "32fc70b370885f421a9ca17c56f322fc7e61ba278ce901d04f2f8e3d5c941856",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "d1eb7a325b03dce0d368101560fdc921c524bb7afbecafcd6821c5010528f8dd",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -47,7 +47,7 @@
     "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
     "references/tour.md": "8494c1ce3431c7aec28dd2883f952cc7b960402c84a3540e845bc9e7acf53a74",
-    "references/village-rules.md": "322f6c6b51a34f95577e64cf51bc6287de1418331839e7cb6fc01ca1f6f9dd68",
+    "references/village-rules.md": "d35a6c7b9f088913b5983424f273745656773649d6f2323d4b2f36f2b537b602",
     "references/visit.md": "fdb8c254e2c3f64ad97bae8388829a54c96b9451fc402d6cfba7b17514b12353",
     "references/vote.md": "08080225eb7b392b283f9d058031f50e1d1c9344b78890eb8fd91b1ab6ea1ab8",
     "references/zoom-bg/1-day.jpg": "0b6df842ae77671643af5b1b27fc3d324bfb4a09a4342184811705c4781eaf2e",

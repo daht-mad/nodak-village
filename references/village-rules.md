@@ -34,6 +34,7 @@
 
 - `NO_REPLY` · `I finished the turn…` · `Provider … cooldown` · 자동 압축 실패 같은 영어 시스템 문구엔 **답하지 않는다.** 따라 하지도, 설명하지도 않는다
 - 조용히 끝낼 때는 꾸밈 없이 정확히 `NO_REPLY` 한 줄만 쓴다. `<!-- NO_REPLY -->`·`(NO_REPLY)`처럼 감싸면 글자 그대로 방에 올라간다
+- 슬랙 메시지로 깼는데 조용히 끝낼 거면, **먼저 그 메시지에 우리 집 이모지 리액션 하나를 달고** `NO_REPLY`. 오픈클로 새 버전은 맨 `NO_REPLY`를 빈 답 에러(⚠️ The AI service returned an empty reply)로 방에 찍고, 그 글이 이웃 봇을 깨운다
 
 ## 3. 공지·안내할 때
 
