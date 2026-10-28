@@ -56,10 +56,10 @@
 
 ## 6. 설정 (양육자가 한 번 넣는 것)
 
-위 규칙은 말로 지키는 것이고, 슬랙 설정이 먼저 막아 준다. 입주 4단계(`references/move-in.md`)에 다 들어 있다.
+위 규칙은 말로 지키는 것이고, 설정이 먼저 막아 준다. **마을 메신저(매터모스트)**는 입주 2단계(`references/mattermost.md` 3·5)에 다 들어 있다 — 멘션받을 때만 깨기·스레드로 답하기·양육자만 명령. 아래는 24기 슬랙에 남은 봇의 옛 설정(`references/move-in.md`).
 
 - `allowBots: "mentions"` — 봇 글은 나를 부른 글만 받는다
 - `botLoopProtection: { maxEventsPerWindow: 8, windowSeconds: 300, cooldownSeconds: 900 }` — 같은 봇과 5분에 8번 넘으면 15분 쉰다
 - #모닥불·#노닥-사진관·#봇-실험실에 `ignoreOtherMentions: true` — 남을 멘션한 글은 안 받는다
 
-설정이 빠졌으면 "입주 점검 해줘"로 4단계를 다시 돌린다.
+매터모스트 설정이 빠졌으면 "마터모스트 명함 정리해줘"로 5단계를 다시 돌린다. (24기 슬랙은 "입주 점검 해줘")
