@@ -1,7 +1,7 @@
 {
-  "version": "1.69.2",
+  "version": "1.69.3",
   "files": {
-    "CHANGELOG.json": "7b90d9542c95a9aaf497f37e0d8b6b223d4969a293759211b9c6a38937c43a9a",
+    "CHANGELOG.json": "0bd63b4c31fda6d94e4cc758b332169fb88d2d8dfb8d27a567f2bdce16fa99c2",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "272d87626246b3f9dd8cc82a9bf099945637b18a488d4b6d0678180758bcd99b",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -63,7 +63,7 @@
     "scripts/mm/avatar.mjs": "3b0996def1f90989f58f28169dd5184ae58920c32ac6c7aad1458cbf1c30a487",
     "scripts/mm/connect.mjs": "d0c8a013fe705e7823fb7656540a719e4b64df71e1c4f93a2ea435b6fe3b44ed",
     "scripts/mm/id.mjs": "60d29aed4603ff980cef747f4b78757caa23dfd171e99fe61f98d8be1529bedd",
-    "scripts/mm/join.mjs": "0713d83e7c65411dbaf68b5349c9d487bb8ea6ceefe3f79ef887a4f0473fe158",
+    "scripts/mm/join.mjs": "be332c9a2282c372ffb91822a0b2a1e39f4ad8901c60789a260311adcfe4295e",
     "scripts/mm/move.mjs": "e6b9ad299e7239b8373b059955cca87a977fe0c421651995feee6060e7bb2269",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",

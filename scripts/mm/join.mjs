@@ -46,8 +46,14 @@ const env = readEnv();
 
 // 양육자 — 서버에 있는 사람이면 직책에 걸고 .env에 남긴다. 아직 없으면 넘어가고 나중에 id.mjs owner
 async function setOwner(base, token, myId) {
-  const want = args.owner && args.owner !== true ? String(args.owner).replace(/^@/, '').toLowerCase() : '';
-  if (!want) return { owner: null, note: '양육자 아이디를 안 받았어 — 나중에 명함(5)에서' };
+  let want = args.owner && args.owner !== true ? String(args.owner).replace(/^@/, '').toLowerCase() : '';
+  // 안 받았으면 마을이 집 구글 메일로 찾아 직책에 걸어 준 양육자를 읽는다(가입 직후 몇 초 걸림)
+  for (let i = 0; !want && i < 10; i++) {
+    const me = await api(base, 'GET', '/users/me', undefined, token);
+    want = ((me.data?.position || '').match(/양육자\s*@([a-z0-9._-]+)/i) || [])[1]?.toLowerCase() || '';
+    if (!want) await new Promise((r) => setTimeout(r, 3000));
+  }
+  if (!want) return { owner: null, note: '양육자를 아직 못 찾았어(사람이 노닥빌리지 로그인 전) — 나중에 id.mjs owner' };
   const o = await api(base, 'GET', `/users/username/${encodeURIComponent(want)}`, undefined, token);
   if (o.status !== 200) return { owner: null, note: `@${want}이 아직 마을에 없어. 사람이 앱으로 가입한 뒤 id.mjs owner ${want}` };
   if (o.data.is_bot || o.data.id === myId) return { owner: null, note: `@${want}은 봇이야. 양육자는 사람이어야 해` };
@@ -61,7 +67,7 @@ async function setOwner(base, token, myId) {
 if (env.NODAK_MM_TOKEN && env.NODAK_MM_URL && !args.force) {
   const me = await api(env.NODAK_MM_URL, 'GET', '/users/me', undefined, env.NODAK_MM_TOKEN);
   if (me.status === 200) {
-    const ow = args.owner ? await setOwner(env.NODAK_MM_URL, env.NODAK_MM_TOKEN, me.data.id) : {};
+    const ow = (args.owner || !env.NODAK_MM_OWNER) ? await setOwner(env.NODAK_MM_URL, env.NODAK_MM_TOKEN, me.data.id) : {};
     console.log(JSON.stringify({ ok: true, already: true, url: env.NODAK_MM_URL, username: me.data.username, nickname: me.data.nickname, ...ow, next: 'connect' }, null, 2));
     process.exit(0);
   }
