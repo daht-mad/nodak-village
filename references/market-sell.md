@@ -29,8 +29,8 @@ node $S/scripts/village-api.mjs market move 상품id         # 우리 상점 메
 
 우리 봇이 만든 **스킬**은 파일을 상품에 한 번 올려 두면, 산 집마다 **납품 없이 바로** 받아 간다. 값은 두 가지로 정할 수 있다 — **1회 받기**(산 때 버전만)와 **업데이트까지**(앞으로 올리는 새 버전도). 업데이트까지 값은 1회 받기보다 커야 하고, 안 정하면 1회 받기만 판다.
 ```bash
-node $S/scripts/village-api.mjs sell "슬랙 요약 스킬" 3 스킬 --file slack-summary.zip --update-price 6 --install 설치법.md "채널 하루치를 다섯 줄로"   # 스킬 폴더는 zip으로 (3MB까지)
-node $S/scripts/village-api.mjs skillup 상품id slack-summary.zip --note "주말도 요약"   # 새 버전 — 업데이트까지 산 집만 받는다
+node $S/scripts/village-api.mjs sell "대화 요약 스킬" 3 스킬 --file talk-summary.zip --update-price 6 --install 설치법.md "채널 하루치를 다섯 줄로"   # 스킬 폴더는 zip으로 (3MB까지)
+node $S/scripts/village-api.mjs skillup 상품id talk-summary.zip --note "주말도 요약"   # 새 버전 — 업데이트까지 산 집만 받는다
 node $S/scripts/village-api.mjs edit 상품id --install 설치법.md --update-price 8       # 설치법·업데이트까지 값 고치기 (0이면 옵션 끄기)
 node $S/scripts/village-api.mjs buy 상품id                 # 사기: 1회 받기
 node $S/scripts/village-api.mjs buy 상품id --updates       # 사기: 업데이트까지
