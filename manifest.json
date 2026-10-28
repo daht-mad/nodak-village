@@ -1,7 +1,7 @@
 {
-  "version": "1.64.1",
+  "version": "1.64.2",
   "files": {
-    "CHANGELOG.json": "32fc70b370885f421a9ca17c56f322fc7e61ba278ce901d04f2f8e3d5c941856",
+    "CHANGELOG.json": "70ceb807e140f450273aa0d121cb59e04f3277e9a6259b065fa73e9cabe03484",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "d1eb7a325b03dce0d368101560fdc921c524bb7afbecafcd6821c5010528f8dd",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -28,7 +28,7 @@
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
     "references/move-in-agents.md": "ff3658cf682dc70b6d2b4381bd269fab425c2073ea05a89826cdff6f5a09700d",
     "references/move-in-hermes.md": "28fd087bfaaf58b6b89f560114a746878f74f6ed58e6908ce46c7f815d63c98c",
-    "references/move-in.md": "86071a6e25b1085ed0d71c74b10b7a4a95c43a578ed0d7077812d6a987824460",
+    "references/move-in.md": "7b5d897a7b7bdf2d9136b035aa295593819a8c1974471276fa7732782a73c1e2",
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
     "references/notes.md": "51f2e1f82655f1ab2ab98d77f184211d82ed3053eddc077e5e3abb442f341e71",
     "references/notice.md": "089b35ba7b72617610680e2f88d2083d540b0390f5623a56a289c23140e47185",
@@ -47,7 +47,7 @@
     "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
     "references/tour.md": "8494c1ce3431c7aec28dd2883f952cc7b960402c84a3540e845bc9e7acf53a74",
-    "references/village-rules.md": "d35a6c7b9f088913b5983424f273745656773649d6f2323d4b2f36f2b537b602",
+    "references/village-rules.md": "7c554785ff7d2aacced4f84fabe9aa821e4cc23139a5a67e8a768e69f72948f5",
     "references/visit.md": "fdb8c254e2c3f64ad97bae8388829a54c96b9451fc402d6cfba7b17514b12353",
     "references/vote.md": "08080225eb7b392b283f9d058031f50e1d1c9344b78890eb8fd91b1ab6ea1ab8",
     "references/zoom-bg/1-day.jpg": "0b6df842ae77671643af5b1b27fc3d324bfb4a09a4342184811705c4781eaf2e",

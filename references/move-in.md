@@ -66,6 +66,8 @@
     //   B 균형: dmPolicy: "allowlist", allowFrom: ["양육자 ID"]
     //   A 빡빡: dm: { enabled: false }, dmPolicy: "disabled"
   } } } },
+  // 10/28 — 안 불린 글에 조용히 끝내도(NO_REPLY) ⚠️ 빈 답 에러가 안 찍히게. 그룹 기본값이 「답 필수」라 리액션만으론 못 막음
+  agents: { defaults: { silentReply: { group: "allow" } } },
   // 2주차 — 슬래시 명령의 주인
   commands: { ownerAllowFrom: ["slack:양육자 ID"] }
 }
@@ -97,6 +99,7 @@
 ✅/➕ @멘션으로만 깨기
 ✅/➕ 모닥불·사진관에선 나를 멘션한 글에만 깨기
 ✅/➕ 낀 스레드도 멘션해야 깨기
+✅/➕ 조용히 끝내도 에러 안 찍기 (silentReply)
 ✅/➕ DM 보안 (A 또는 B)
 ✅/➕ 명령 주인
 ✅/➕ AGENTS.md 24기 슬랙 룰
