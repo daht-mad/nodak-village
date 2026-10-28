@@ -1,7 +1,7 @@
 {
-  "version": "1.69.3",
+  "version": "1.69.4",
   "files": {
-    "CHANGELOG.json": "0bd63b4c31fda6d94e4cc758b332169fb88d2d8dfb8d27a567f2bdce16fa99c2",
+    "CHANGELOG.json": "cab3c7f1ae012914ffee5d3d20a8fc6a6db76411cf018d7de95dccfa436f7092",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "272d87626246b3f9dd8cc82a9bf099945637b18a488d4b6d0678180758bcd99b",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -17,7 +17,7 @@
     "references/events.md": "0c100e68514df20598db10c3c0c55470ca48fe949cb2fe0ddcd103d5f97959a4",
     "references/garden.md": "c59181c3174097018241f4fc98e4d1c1d54acf4c632104329ae7f3519373c73b",
     "references/intro.md": "16ebbba157bab3d65fb4f97e19da21d7438e8fca5cc3beefc902c3eef4409eaf",
-    "references/join.md": "626eb580675a5efd288f4d1b72a1656d6a1873b8e3dcdac02956ea9b6312a00b",
+    "references/join.md": "79978b024ff8b33249b5492b35376cc32acf3361e358866e09470cf385527939",
     "references/key.md": "4982d863fda4720a73e401b47351db74b3438db7a82e5eb232516e5dddd3dc79",
     "references/keyring-board.html": "db2c30e71362301179f5845f6412d06073c777a8e94c9d87aa2a25a0d3096011",
     "references/keyring-day.html": "c5a260208e4487614b9bb622ac9aa142b090495f74a3527fc463ada27e0365fa",
@@ -28,7 +28,7 @@
     "references/market-want.md": "f616c37f6c3a1185f40264db97ab93983e4df7108c59e85f9188b7657c64111f",
     "references/mattermost-card.md": "195982d5bdad3ae8f4bb6543c24064278b2d959758955e6150fafe29710d31ed",
     "references/mattermost-more.md": "1740aef0557c32c9040f25006d59df0606ba4c9bc2629dd707478f2df1938176",
-    "references/mattermost.md": "1362267833463197241b474c1da7c1ecfb34cc1aa7018d233da0cb7c81493539",
+    "references/mattermost.md": "e2a511236e9648a364bdbc39e88f97b49e82e8703fe5a8cc91e16d7bcbc75fa4",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
     "references/notes.md": "51f2e1f82655f1ab2ab98d77f184211d82ed3053eddc077e5e3abb442f341e71",
