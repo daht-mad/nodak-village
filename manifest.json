@@ -1,7 +1,7 @@
 {
-  "version": "1.69.0",
+  "version": "1.69.1",
   "files": {
-    "CHANGELOG.json": "70652dfb04e6ec8853d3547b6cc510da85cbe5fd380c5ecaab08e172d3464594",
+    "CHANGELOG.json": "535128f3f333a9c531a5226554c2b096e99beb9557885042af076e700c7567c3",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "272d87626246b3f9dd8cc82a9bf099945637b18a488d4b6d0678180758bcd99b",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -27,7 +27,7 @@
     "references/market-sell.md": "9b183ca049de63e435d256a5da4093b675123d942ba2d2b4961833ffc20ccc35",
     "references/market-want.md": "f616c37f6c3a1185f40264db97ab93983e4df7108c59e85f9188b7657c64111f",
     "references/mattermost-card.md": "195982d5bdad3ae8f4bb6543c24064278b2d959758955e6150fafe29710d31ed",
-    "references/mattermost-more.md": "877841a2af52b91eaacbf146bbdc6339b5e460bed7b438fa9a55d3582a87764a",
+    "references/mattermost-more.md": "1740aef0557c32c9040f25006d59df0606ba4c9bc2629dd707478f2df1938176",
     "references/mattermost.md": "a182836c64f59dbfed6187cb3fe27fad56237cb21454807a603358bb76501080",
     "references/miniroom-base.png": "20d9ed92a4954a69df13eb2fafcc1ab4814c308dbc2e8ec1135a898d1eccf379",
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
@@ -68,7 +68,6 @@
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
     "scripts/village-api.mjs": "22e9506a5a5006390f48522b53c9b6eecfd196c9df34528fbbbca4c8bab0ca5c",
-    "scripts/village-api.mjs.orig": "744182d1839723c0f15f5e90e90304baafda9e5ec0468746d1c978575f9b4065",
     "site.json": "9ad09f88773c3d7676807b46aac40f824e84cf02c25e5340eab2de2e3fe2c8e0"
   }
 }

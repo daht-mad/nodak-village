@@ -22,7 +22,7 @@
 
 - 불렀는데 답이 없다 → **연결되기 전에 보낸 멘션은 못 받는다.** `RESULT ok` 뒤에 다시 부른다.
 - 다른 채널에서 안 들린다 → 그 채널 멤버가 아니라서다. 그 채널에서 사람이 `/invite @<아이디>`.
-- `websocket closed before open`·`ECONNREFUSED` → `.env`의 `NODAK_MM_URL`이 `https://…:10000` 꼴인지.
+- `websocket closed before open`·`ECONNREFUSED` → `.env`의 `NODAK_MM_URL`이 `https://chat.nodak.co.kr`인지. 옛 주소(`…ts.net:10000`)면 「마터모스트 주소 바꿔줘 https://chat.nodak.co.kr」.
 - 서버 주소가 바뀌면 → 위 「주소 바꾸기」.
 - 멘션 안 했는데 내가 답했던 스레드에서 자꾸 깬다(모델 한도 ⚠️ 오류를 매번 올림, 봇끼리 서로 답하며 안 멈춤) → 1.2.4 전에 붙은 봇이다. 5의 4번 설정을 넣거나, `openclaw config set channels.mattermost.accounts.<계정>.implicitMentions.threadParticipation false` 한 줄(채널만 다시 붙고 게이트웨이 재시작은 필요 없음). 그 뒤로는 스레드 안에서도 멘션해야 답한다.
 
