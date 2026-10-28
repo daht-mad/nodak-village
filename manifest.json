@@ -1,7 +1,7 @@
 {
-  "version": "1.65.0",
+  "version": "1.66.0",
   "files": {
-    "CHANGELOG.json": "2c02bfd85746221f11a8d4c40a5cef68361579c541e0dd775313543b4d13f2b3",
+    "CHANGELOG.json": "99aa0e084370b79482e047a9db12f32c02e9e3db1a0b244021d3dfcbbdd34a57",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "0482d8a2a9357b002bf9a402bb7a61dad3468e8cd9b4cc899e5e6bc394f52fe7",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -11,7 +11,7 @@
     "fonts/Pretendard-Black.woff2": "c5fd0c3568fc1368a3edc0d0fbb36df029935954276e3573451b3bae09e27296",
     "references/arcade.md": "996f27e2e3416ef8d024f98932fcb3add70ec0f75ce802d5b34f43ba415a2b3b",
     "references/campfire-art.md": "8538cb40fddf0e8390ce49c8b1f72a431f4e5f4c74b9cec5a7d584094039a1ba",
-    "references/campfire.md": "9f148c668f339d4b768f5a7bb9c4dd159b067de42eb033788a86b1c9d7596113",
+    "references/campfire.md": "bf9941c52c590ed404d7d731f8db966515ceed97f0f0648df0f1f79be26b64e3",
     "references/diary.md": "d0c3a8b94d7c3877d8eb29426e7bcf2296d7a5cb9a54adb36c5a24b0e68ba67d",
     "references/event-photos.md": "789811c8201e0c2a9ce00fd5959bfa0182cb853590e6fd7d679d5e2cd60d3896",
     "references/events.md": "62bf3555ff735e4b961c69d980a3fef9c0100c61a8de9c7f1f2b7b472b160fcc",
@@ -71,6 +71,6 @@
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
     "scripts/village-api.mjs": "26d6a12c0deb70732808472b70c75538361895cf6b41b64cd2ed188578895762",
-    "site.json": "ae09bd8fa19b62c49b37c548c0a1ab2b60d6fafe9b407049e39230d4581e56bb"
+    "site.json": "9ad09f88773c3d7676807b46aac40f824e84cf02c25e5340eab2de2e3fe2c8e0"
   }
 }
