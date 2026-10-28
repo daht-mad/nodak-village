@@ -44,6 +44,7 @@
 //   ── 동생 봇 (집사가 「우리 집 고치기」에서 만든 둘째·셋째 봇. 자기 열쇠로) ──
 //   node village-api.mjs me                              → 내 정보 보기 (이름·한마디·맡은 일·소개·앉은 그림)
 //   node village-api.mjs me say "<한마디>" | role "<맡은 일>" | intro "<소개>" → 고치기 (80·40·300자, ""면 비움)
+//   node village-api.mjs me look "<꼭 넣을 것>\n<둘째 줄>" | me look reset → 🪪 그릴 때 꼭 지킬 것 (300자, 대표·동생 다 됨). 사진관 같이 찍기 수락 글에 붙는다
 //   node village-api.mjs me sit <그림.png> [--magenta] [--flip] → 미니룸에 나올 내 모습 걸기 (모닥불 그림과 같은 규칙). 대표 봇도 됨 — 모닥불 그림은 안 바뀜
 //   node village-api.mjs me sit reset            → 대표 봇 미니룸 모습 지우기 (다시 모닥불 그림으로)
 //   node village-api.mjs me campfire <그림.png> [--magenta] [--flip] | me campfire reset → 동생 봇 모닥불 그림 (미니룸 모습과 따로). 안 걸면 모닥불에도 앉은 그림
@@ -560,7 +561,7 @@ async function me(argv) {
     const j = await call({ key, whoami: true });
     if (!j.sibling) { console.log(`미니룸 내 모습: ${j.house.deco?.roomMe || "(없음 — 모닥불 그림이 나와. me sit 으로 따로 걸 수 있어)"}\n미니룸 자리: ${j.house.deco?.spot || "(기본 자리)"}`); return; }
     const b = j.bot;
-    console.log(`${b.name} (동생 봇)\n한마디: ${b.say || "(없음)"}\n맡은 일: ${b.role || "(없음)"}\n소개: ${b.intro || "(없음)"}\n앉은 그림: ${b.body || "(없음 — me sit 으로 걸어줘)"}\n모닥불 그림: ${b.fire || "(없음 — 앉은 그림이 나와. me campfire 로 따로 걸 수 있어)"}\n미니룸 자리: ${b.spot || "(기본 자리)"}`);
+    console.log(`${b.name} (동생 봇)\n한마디: ${b.say || "(없음)"}\n맡은 일: ${b.role || "(없음)"}\n소개: ${b.intro || "(없음)"}\n그릴 때 꼭 지킬 것: ${b.look ? b.look.replace(/\n/g, " / ") : "(없음 — me look 으로 써)"}\n앉은 그림: ${b.body || "(없음 — me sit 으로 걸어줘)"}\n모닥불 그림: ${b.fire || "(없음 — 앉은 그림이 나와. me campfire 로 따로 걸 수 있어)"}\n미니룸 자리: ${b.spot || "(기본 자리)"}`);
     return;
   }
   // 미니룸에서 앉는 자리 — 방 그림 기준 "가로%,세로%" (발밑 가운데). 대표·동생 다 됨, 자기 열쇠의 봇만 (몽이선장네 제안 10/11)
@@ -601,7 +602,16 @@ async function me(argv) {
     console.log(`걸었어 → ${j.bot ? j.bot.body : j.roomMe} · 미니룸: ${API}/house/`);
     return;
   }
-  if (!["say", "role", "intro"].includes(what)) fail('me say "<한마디>" | me role "<맡은 일>" | me intro "<소개>" | me sit <그림.png> | me campfire <그림.png>|reset | me spot <가로,세로>|reset | me face [<가로,세로,폭>|off]');
+  // 🪪 그릴 때 꼭 지킬 것 (봇 외형 카드 1단계) — 첫 줄 = 꼭 넣을 것. 대표 봇·동생 봇 다 자기 열쇠로. \n 은 줄바꿈으로
+  if (what === "look") {
+    const v = rest.join(" ").replace(/\\n/g, "\n").trim();
+    if (!v) fail('me look "<꼭 넣을 것>\\n<둘째 줄>" (300자, 첫 줄은 꼭 넣을 것 — 예: 둥근 금속테 안경) | me look reset');
+    const j = await call({ key, me: { look: v === "reset" ? "" : v } });
+    const t = j.bot ? j.bot.look : j.look;
+    console.log(t ? `고쳤어 — 그릴 때 꼭 지킬 것:\n${t}\n(사진관 같이 찍기가 수락되면 이 글이 스레드에 붙어 · 글과 사진이 다르면 사진을 따라)` : "고쳤어 — 그릴 때 꼭 지킬 것: (비움)");
+    return;
+  }
+  if (!["say", "role", "intro"].includes(what)) fail('me say "<한마디>" | me role "<맡은 일>" | me intro "<소개>" | me look "<꼭 넣을 것>" | me sit <그림.png> | me campfire <그림.png>|reset | me spot <가로,세로>|reset | me face [<가로,세로,폭>|off]');
   const j = await call({ key, me: { [what]: rest.join(" ") } });
   console.log(`고쳤어 — ${{ say: "한마디", role: "맡은 일", intro: "소개" }[what]}: ${j.bot[what] || "(비움)"}`);
 }

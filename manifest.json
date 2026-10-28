@@ -1,7 +1,7 @@
 {
-  "version": "1.68.0",
+  "version": "1.69.0",
   "files": {
-    "CHANGELOG.json": "5932f7501b8cb430fdef155df155909d469ec81254b2fac0a17c2c0573308be0",
+    "CHANGELOG.json": "70652dfb04e6ec8853d3547b6cc510da85cbe5fd380c5ecaab08e172d3464594",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "272d87626246b3f9dd8cc82a9bf099945637b18a488d4b6d0678180758bcd99b",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -33,8 +33,8 @@
     "references/newsletter.md": "1c891be05cc00bfb1558f345ff17b926f0faa2374969a788d0e61009973bc767",
     "references/notes.md": "51f2e1f82655f1ab2ab98d77f184211d82ed3053eddc077e5e3abb442f341e71",
     "references/notice.md": "089b35ba7b72617610680e2f88d2083d540b0390f5623a56a289c23140e47185",
-    "references/photo-group.md": "2597123c788c6fe44da53666ae5ff771d4996f99b209a2c8ec72834feae92330",
-    "references/photo.md": "43c68f44ae2f62fd1ba0e644f2d92c036ffe089d374934399044920505251f45",
+    "references/photo-group.md": "cc778d3641fe53631e127b462ba0ea00bd8b1e655a398059ab02233823f47e16",
+    "references/photo.md": "b4b7393cafc8969c531e3dfa7e234aca521f653fe9e90f9941ee759310f84017",
     "references/relay.md": "f8a0e79f1dcc670afd0e2f60df6c6b9d6b060ca12b2f0a3e558f1791e9d130cb",
     "references/room-guests.md": "c5f4c84c985322137239106ae2f37643cfca7274e8ab5de0d5f4a37a1533e356",
     "references/room.md": "c53bfa6865c5b8b8efb209b3afe316fcf84e15d8a6fe60cfe974e1ef7fa84999",
@@ -45,7 +45,7 @@
     "references/shop-form.md": "feec77ef7095e32bd3956460e6b38527dbfc57ab8caa7577bbd4631465911cbe",
     "references/shop-open.md": "b4b789507d8550a936a8042d500f1f378e3c119561dd2129038b785595f39f87",
     "references/shop.md": "37d452df5d83bf126367913b4ccaac861027febd6badcc71ce10a3b3469a79f4",
-    "references/sibling.md": "2c925f53e05c3a54ece9ddb41bbe865e882c6af4aef4f2fa1d97b95d374a0df1",
+    "references/sibling.md": "f016d03e899e484323ab55d09e8ceda5ecbab20249a3cef8352b97a08c40441d",
     "references/style-crayon.jpg": "edda7892859e2dc4b8c2d985784394244b930faad93da2293fc9af17703b7b40",
     "references/tour.md": "ec7a747984bdcf264c5bf7c930335624628f9dcdd3021cdb4f99a35d65f4f59b",
     "references/village-rules.md": "185c892c11eba5f6375afeca5c053be94695242eea95fe124edb1387a7ca6b22",
@@ -67,7 +67,8 @@
     "scripts/mm/move.mjs": "e6b9ad299e7239b8373b059955cca87a977fe0c421651995feee6060e7bb2269",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "744182d1839723c0f15f5e90e90304baafda9e5ec0468746d1c978575f9b4065",
+    "scripts/village-api.mjs": "22e9506a5a5006390f48522b53c9b6eecfd196c9df34528fbbbca4c8bab0ca5c",
+    "scripts/village-api.mjs.orig": "744182d1839723c0f15f5e90e90304baafda9e5ec0468746d1c978575f9b4065",
     "site.json": "9ad09f88773c3d7676807b46aac40f824e84cf02c25e5340eab2de2e3fe2c8e0"
   }
 }
