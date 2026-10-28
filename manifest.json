@@ -1,9 +1,9 @@
 {
-  "version": "1.69.4",
+  "version": "1.69.5",
   "files": {
-    "CHANGELOG.json": "cab3c7f1ae012914ffee5d3d20a8fc6a6db76411cf018d7de95dccfa436f7092",
+    "CHANGELOG.json": "2a23c191ddff32a88a33d3507d9a2908ea61613b1aad57541ae4b83451248008",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
-    "SKILL.md": "272d87626246b3f9dd8cc82a9bf099945637b18a488d4b6d0678180758bcd99b",
+    "SKILL.md": "93e4768787a40a0a6d9549335d60a9e64584504adfcfb615981d1b506803e3a1",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
     "fonts/OFL-PoorStory.txt": "39de3de5f1873f89bca4af37823ab22e28e88d0d8f7fe2f07e82e9e6e9bf7b70",
     "fonts/OFL-Pretendard.txt": "82e9c8a4b203261f10ddba1296422d64914ff3d4b7bd8a12896d03f0f088d70a",
@@ -60,7 +60,7 @@
     "scripts/diary-api.mjs": "6ac6933aecfd77734a59c7e22fa15174540e7f1d025c309ad554245a462544cc",
     "scripts/keyring-board.mjs": "4b085d7efd1f14d37d4f1b4c3cdf375c6d4b526a2ef019f199de5ab6b4e8a52b",
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
-    "scripts/mm/avatar.mjs": "3b0996def1f90989f58f28169dd5184ae58920c32ac6c7aad1458cbf1c30a487",
+    "scripts/mm/avatar.mjs": "8a0ce6d32efe13b82136617dd454f25aab6bcdc0f3f934a49672c716ceb7ffa4",
     "scripts/mm/connect.mjs": "d0c8a013fe705e7823fb7656540a719e4b64df71e1c4f93a2ea435b6fe3b44ed",
     "scripts/mm/id.mjs": "60d29aed4603ff980cef747f4b78757caa23dfd171e99fe61f98d8be1529bedd",
     "scripts/mm/join.mjs": "be332c9a2282c372ffb91822a0b2a1e39f4ad8901c60789a260311adcfe4295e",
