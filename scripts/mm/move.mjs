@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 마을 Mattermost 서버 주소가 바뀌었을 때 — 내 봇 설정의 주소만 새 주소로 바꾼다. 다시 가입·토큰 재발급 없음.
 //   node move.mjs --env ./.env --url https://새주소           (오픈클로)
-//   node move.mjs --env ./.env --url https://새주소 --hermes  (헤르메스 → 끝나면 hermes gateway restart)
+//   node move.mjs --env ./.env --url https://새주소 --hermes [경로]  (헤르메스 — 경로 없으면 $HERMES_HOME/.env, 그것도 없으면 ~/.hermes/.env → 끝나면 hermes gateway restart)
 // 순서: 새 주소에서 내 토큰이 먹는지 먼저 확인 → .env 백업·고침 → 오픈클로 설정의 옛 주소 계정만 바꿈(검증 실패면 되돌림) → 연결 확인
 // 결과는 마지막 줄 RESULT {...} 한 줄.
 import fs from 'node:fs';
@@ -61,7 +61,7 @@ log('.env 고침', envBackup);
 
 // 헤르메스 — ~/.hermes/.env의 MATTERMOST_URL만
 if (args.hermes) {
-  const hpath = path.join(os.homedir(), '.hermes', '.env');
+  const hpath = args.hermes !== true ? String(args.hermes) : path.join(process.env.HERMES_HOME || path.join(os.homedir(), '.hermes'), '.env');
   if (!fs.existsSync(hpath)) finish({ ok: false, error: `${hpath}가 없어`, envBackup });
   const hbackup = `${hpath}.bak-nodak-mm-move-${stamp}`;
   fs.copyFileSync(hpath, hbackup);

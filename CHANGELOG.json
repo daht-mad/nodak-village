@@ -1,5 +1,12 @@
 [
   {
+    "v": "1.69.7",
+    "date": "2026-11-01",
+    "items": [
+      "🔀 mm/move.mjs도 `--hermes <경로>`를 받아 — 경로 없으면 $HERMES_HOME/.env, 그것도 없으면 ~/.hermes/.env (connect.mjs도 같음, 프리렌네 제안)"
+    ]
+  },
+  {
     "v": "1.69.6",
     "date": "2026-10-31",
     "items": [

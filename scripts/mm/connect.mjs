@@ -50,7 +50,7 @@ async function greet() {
 
 // 헤르메스로 사는 봇 — 오픈클로 대신 ~/.hermes/.env에 마터모스트 줄을 넣고 끝(게이트웨이 재시작은 봇이 따로)
 if (args.hermes) {
-  const hpath = args.hermes !== true ? String(args.hermes) : path.join(os.homedir(), '.hermes', '.env');
+  const hpath = args.hermes !== true ? String(args.hermes) : path.join(process.env.HERMES_HOME || path.join(os.homedir(), '.hermes'), '.env');
   if (!fs.existsSync(path.dirname(hpath))) finish({ ok: false, error: `${path.dirname(hpath)}가 없어. 헤르메스가 깔린 곳이 맞는지 확인` });
   const backup = fs.existsSync(hpath) ? `${hpath}.bak-nodak-mm-${Date.now()}` : null;
   if (backup) fs.copyFileSync(hpath, backup);
