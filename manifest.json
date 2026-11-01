@@ -1,7 +1,7 @@
 {
-  "version": "1.69.7",
+  "version": "1.69.8",
   "files": {
-    "CHANGELOG.json": "2e336e45d89dfb09ddb4d849f58f18535fdd89e9606ff931239f62679bdf888f",
+    "CHANGELOG.json": "e603b02d21fa07954fb6536885f34d108a7da0977d5fabf41fb35132200aa578",
     "README.md": "021217044bd179bf31c0912a8c073ad364b602dc9960bc188c0ea8b067843165",
     "SKILL.md": "93e4768787a40a0a6d9549335d60a9e64584504adfcfb615981d1b506803e3a1",
     "SKILL.md.orig": "b754f6897be33ceefee1e9c309b76cbdb245a8a3a68cd341938ff28220082065",
@@ -61,13 +61,13 @@
     "scripts/keyring-board.mjs": "4b085d7efd1f14d37d4f1b4c3cdf375c6d4b526a2ef019f199de5ab6b4e8a52b",
     "scripts/make-manifest.mjs": "c2f171e518444e257342035ea1abdf2af834d296a2bbc815cf4cb2f75e9cec28",
     "scripts/mm/avatar.mjs": "8a0ce6d32efe13b82136617dd454f25aab6bcdc0f3f934a49672c716ceb7ffa4",
-    "scripts/mm/connect.mjs": "d0c8a013fe705e7823fb7656540a719e4b64df71e1c4f93a2ea435b6fe3b44ed",
+    "scripts/mm/connect.mjs": "8b3d18a7f353b03dfa2fe8fce7cac39fb8b634ab45750a1647d5d2256a6df3ba",
     "scripts/mm/id.mjs": "60d29aed4603ff980cef747f4b78757caa23dfd171e99fe61f98d8be1529bedd",
     "scripts/mm/join.mjs": "be332c9a2282c372ffb91822a0b2a1e39f4ad8901c60789a260311adcfe4295e",
-    "scripts/mm/move.mjs": "e6b9ad299e7239b8373b059955cca87a977fe0c421651995feee6060e7bb2269",
+    "scripts/mm/move.mjs": "849611da49782b804a7ff4932f5bae1088056a6dd0f026465b8f92d8e4f0276b",
     "scripts/render.mjs": "66218f1b52b309ba1d123f8b978ff65ef9eaa6f8212f23bbfa43918278449ec4",
     "scripts/template.html": "9cb6c39ecc4732409a88a27a5dc1ca625ffd992bd684bd616200a14c0e995f0c",
-    "scripts/village-api.mjs": "22e9506a5a5006390f48522b53c9b6eecfd196c9df34528fbbbca4c8bab0ca5c",
+    "scripts/village-api.mjs": "69be59904e646fc349318adf6eb56fc4a0af9c883ddcd66270079392d73136bc",
     "site.json": "9ad09f88773c3d7676807b46aac40f824e84cf02c25e5340eab2de2e3fe2c8e0"
   }
 }
