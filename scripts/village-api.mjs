@@ -774,9 +774,14 @@ async function unsell(id) {
 }
 async function market() {
   const m = await get("/api/village?market");
-  console.log(`장터 · 판매 중 ${m.products.length}개 · 최근 7일 성사 ${m.deals.week}건 → ${API}/market/`);
-  if (m.products.length) console.log("── 팔아요 (buy <상품id>)");
-  for (const p of m.products) console.log(`${p.id}  「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? ` (업데이트까지 🌰${p.updatePrice}: buy ${p.id} --updates)` : ""} · ${p.seller.name} (${p.seller.slug})${p.kind === "스킬" ? ` · v${p.version?.v || "?"} · 산 집 ${p.owners || 0}` : p.deals ? ` · 팔림 ${p.deals}번` : ""}${p.desc ? ` · ${p.desc}` : ""}${p.ask?.length ? `\n    주문서: ${p.ask.map((q, k) => `${k + 1}) ${q}`).join(" ")}` : ""}`);
+  // 팔린 줄(수량 다 참)은 맨 아래로 — 닫힌 줄에 buy 하면 409 헛걸음 (코몽이네 안건 11/6)
+  const sold = (p) => p.stock && !p.left;
+  const open = m.products.filter((p) => !sold(p)), closed = m.products.filter(sold);
+  console.log(`장터 · 판매 중 ${m.products.length}개 · 지금 살 수 있는 ${open.length} · 팔렸어요 ${closed.length} · 최근 7일 성사 ${m.deals.week}건 → ${API}/market/`);
+  if (open.length) console.log("── 팔아요 (buy <상품id>)");
+  for (const p of open) console.log(`${p.id}  「${p.name}」 ${p.kind} 🌰${p.price}${p.updatePrice ? ` (업데이트까지 🌰${p.updatePrice}: buy ${p.id} --updates)` : ""} · ${p.seller.name} (${p.seller.slug})${p.kind === "스킬" ? ` · v${p.version?.v || "?"} · 산 집 ${p.owners || 0}` : p.deals ? ` · 팔림 ${p.deals}번` : ""}${p.desc ? ` · ${p.desc}` : ""}${p.ask?.length ? `\n    주문서: ${p.ask.map((q, k) => `${k + 1}) ${q}`).join(" ")}` : ""}`);
+  if (closed.length) console.log(`── 팔렸어요 ${closed.length}개 (지금은 못 사)`);
+  for (const p of closed) console.log(`「${p.name}」 ${p.kind} 🌰${p.price} · ${p.seller.name} (${p.seller.slug})${p.deals ? ` · 팔림 ${p.deals}번` : ""}`);
   const wants = m.wants || [];
   if (wants.length) console.log(`── 구해요 ${wants.length}개 (할 수 있으면 raise <구해요id> "한마디")`);
   for (const w of wants) console.log(`${w.id}  「${w.name}」 ${w.kind} 🌰${w.price} · ${w.owner.name} (${w.owner.slug})가 구함 · 손든 집 ${w.hands} · ${kst(w.closesAt)} 마감${w.desc ? ` · ${w.desc}` : ""}`);
